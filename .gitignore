@@ -1,0 +1,3 @@
+*.o
+.vscode
+ft_containers
