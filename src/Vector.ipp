@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/03 18:09:08 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/03 19:06:46 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -507,16 +507,42 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::i
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_type>::iterator position)
 {
-	(void)position;
-	// TODO:
+	for (size_t i = 0; i < this->length; i++)
+	{
+		if (this->container[i] == *position)
+		{
+			this->container[i] = value_type();
+			for (size_t j = i + 1; j < this->length; j++)
+				this->container[i++] = this->container[j]
+			this->length--;
+			break ;
+		}
+	}
 }
 
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator first, Vector::iterator last)
 {
-	(void)first;
-	(void)last;
-	// TODO:
+	for (size_t i = 0; i < this->length; i++)
+	{
+		if (this->container[i] == *position)
+		{
+			size_t pos_stop = i + 1;
+			for (size_t j = i + 1; j < this->length; j++)
+			{
+				if (this->container[j] == last)
+					break;
+				this->container[j] = value_type();
+				pos_stop++;
+			}
+			for ( ; pos_stop < this->length; pos_stop++)
+			{
+				this->container[i++] = this->container[pos_stop];
+				this->length--;
+			}
+			break ;
+		}
+	}
 }
 
 template<typename value_type>
