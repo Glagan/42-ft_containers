@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/03 17:16:30 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/03 19:26:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,38 @@ int main(void)
 		std::cout << *rit;
 		rit++;
 		if (rit == rite)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	// Assign
+	std::cout << "50 `42` in vector: " << std::endl;
+	vector.assign(50, 42);
+	it = vector.begin();
+	ite = vector.end();
+	int i = 0;
+	while (it != ite)
+	{
+		std::cout << *it << "(" << ++i << ")";
+		it++;
+		if (it == ite)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	// Insert
+	vector.insert(vector.begin(), 50, 43);
+	std::cout << "50 `43` and 50 `42` in vector: " << std::endl;
+	it = vector.begin();
+	ite = vector.end();
+	i = 0;
+	while (it != ite)
+	{
+		std::cout << *it << "(" << ++i << ")";
+		it++;
+		if (it == ite)
 			std::cout << std::endl;
 		else
 			std::cout << ", ";
