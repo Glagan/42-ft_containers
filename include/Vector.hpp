@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 17:14:27 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 18:02:48 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ public:
 	{
 	protected:
 		value_type *pointer;
+		int position;
 	public:
 		iterator();
-		iterator(value_type *vec);
+		iterator(value_type *vec, int position);
 		iterator(iterator const &other);
 		virtual ~iterator();
 
@@ -56,7 +57,7 @@ public:
 	{
 	public:
 		const_iterator();
-		const_iterator(value_type * const vec);
+		const_iterator(value_type * const vec, int position);
 		const_iterator(const_iterator const &other);
 		virtual ~const_iterator();
 
@@ -69,7 +70,7 @@ public:
 	{
 	public:
 		reverse_iterator();
-		reverse_iterator(value_type *vec);
+		reverse_iterator(value_type *vec, int position);
 		reverse_iterator(reverse_iterator const &other);
 		virtual ~reverse_iterator();
 
@@ -85,7 +86,7 @@ public:
 	{
 	public:
 		const_reverse_iterator();
-		const_reverse_iterator(value_type * const vec);
+		const_reverse_iterator(value_type * const vec, int position);
 		const_reverse_iterator(const_reverse_iterator const &other);
 		virtual ~const_reverse_iterator();
 
