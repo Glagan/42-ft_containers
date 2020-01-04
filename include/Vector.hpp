@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 18:02:48 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 19:04:42 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,35 +37,50 @@ public:
 		virtual ~iterator();
 
 		iterator &operator=(iterator const &other);
-		iterator &operator=(value_type *val);
 
-		value_type &operator*();
+		value_type &operator*() const;
+		value_type *operator->() const;
 		bool operator==(iterator const &other) const;
 		bool operator!=(iterator const &other) const;
 		bool operator<(iterator const &other) const;
 		bool operator<=(iterator const &other) const;
 		bool operator>(iterator const &other) const;
 		bool operator>=(iterator const &other) const;
+		int distance(iterator const &other) const;
 
 		iterator operator++(int);
-		iterator operator++();
+		iterator &operator++();
 		iterator operator--(int);
-		iterator operator--();
+		iterator &operator--();
 	};
-
-	class const_iterator: virtual public iterator
+	class const_iterator
 	{
+	protected:
+		value_type * const pointer;
+		int position;
 	public:
 		const_iterator();
 		const_iterator(value_type * const vec, int position);
+		const_iterator(iterator const &other);
 		const_iterator(const_iterator const &other);
 		virtual ~const_iterator();
 
 		const_iterator &operator=(const_iterator const &other);
 
-		value_type const &operator*() const;
-	};
+		value_type &operator*() const;
+		value_type *operator->() const;
+		bool operator==(const_iterator const &other) const;
+		bool operator!=(const_iterator const &other) const;
+		bool operator<(const_iterator const &other) const;
+		bool operator<=(const_iterator const &other) const;
+		bool operator>(const_iterator const &other) const;
+		bool operator>=(const_iterator const &other) const;
 
+		const_iterator operator++(int);
+		const_iterator &operator++();
+		const_iterator operator--(int);
+		const_iterator &operator--();
+	};
 	class reverse_iterator: virtual public iterator
 	{
 	public:
@@ -81,7 +96,6 @@ public:
 		reverse_iterator operator--(int);
 		reverse_iterator operator--();
 	};
-
 	class const_reverse_iterator: public const_iterator, public reverse_iterator
 	{
 	public:
@@ -126,7 +140,8 @@ public:
 	value_type &back(void);
 	value_type const &back(void) const;
 
-	void assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
+	template <class InputIterator>
+	void assign(InputIterator first, InputIterator last);
 	void assign(size_t size, value_type const &val);
 	void push_back(value_type const &val);
 	void pop_back(void);

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 17:34:55 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 18:08:10 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,10 @@ int main(void)
 		else
 			std::cout << ", ";
 	}
+
+	// Vector of classes
+	ft::Vector< ft::Vector<int> > nvector;
+	nvector.push_back(vector);
 
 	// Leaks
 	system("leaks ft_containers");

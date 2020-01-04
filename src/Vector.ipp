@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 18:02:58 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 19:05:05 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ Vector<value_type>::iterator::~iterator()
 }
 
 template<typename value_type>
-value_type &Vector<value_type>::iterator::operator*()
+value_type &Vector<value_type>::iterator::operator*() const
 {
 	return (*(this->pointer + this->position));
 }
 
 template<typename value_type>
-value_type const &Vector<value_type>::const_iterator::operator*() const
+value_type *Vector<value_type>::iterator::operator->() const
 {
-	return (*(this->pointer + this->position));
+	return (this->pointer + this->position);
 }
 
 template<typename value_type>
@@ -100,7 +100,7 @@ typename Vector<value_type>::iterator Vector<value_type>::iterator::operator++(i
 }
 
 template<typename value_type>
-typename Vector<value_type>::iterator Vector<value_type>::iterator::operator++()
+typename Vector<value_type>::iterator &Vector<value_type>::iterator::operator++()
 {
 
 	Vector<value_type>::iterator tmp(*this);
@@ -116,7 +116,7 @@ typename Vector<value_type>::iterator Vector<value_type>::iterator::operator--(i
 }
 
 template<typename value_type>
-typename Vector<value_type>::iterator Vector<value_type>::iterator::operator--()
+typename Vector<value_type>::iterator &Vector<value_type>::iterator::operator--()
 {
 	Vector<value_type>::iterator tmp(*this);
 	operator--();
@@ -125,19 +125,19 @@ typename Vector<value_type>::iterator Vector<value_type>::iterator::operator--()
 
 template<typename value_type>
 Vector<value_type>::const_iterator::const_iterator():
-	iterator(nullptr, 0)
+	pointer(nullptr), position(0)
 {
 }
 
 template<typename value_type>
-Vector<value_type>::const_iterator::const_iterator(value_type *val, int position):
-	iterator(val, position)
+Vector<value_type>::const_iterator::const_iterator(value_type * const val, int position):
+	pointer(val), position(position)
 {
 }
 
 template<typename value_type>
 Vector<value_type>::const_iterator::const_iterator(Vector<value_type>::const_iterator const &other):
-	iterator(other.pointer, other.position)
+	pointer(other.pointer), position(other.position)
 {
 }
 
@@ -152,6 +152,85 @@ typename Vector<value_type>::const_iterator &Vector<value_type>::const_iterator:
 template<typename value_type>
 Vector<value_type>::const_iterator::~const_iterator()
 {
+}
+
+template<typename value_type>
+value_type &Vector<value_type>::const_iterator::operator*() const
+{
+	return (*(this->pointer + this->position));
+}
+
+template<typename value_type>
+value_type *Vector<value_type>::const_iterator::operator->() const
+{
+	return (this->pointer + this->position);
+}
+
+template<typename value_type>
+bool Vector<value_type>::const_iterator::operator==(const_iterator const &other) const
+{
+	return (this->position == other.position);
+}
+
+template<typename value_type>
+bool Vector<value_type>::const_iterator::operator!=(const_iterator const &other) const
+{
+	return (this->position != other.position);
+}
+
+template<typename value_type>
+bool Vector<value_type>::const_iterator::operator<(const_iterator const &other) const
+{
+	return (this->position < other.position);
+}
+
+template<typename value_type>
+bool Vector<value_type>::const_iterator::operator<=(const_iterator const &other) const
+{
+	return (this->position <= other.position);
+}
+
+template<typename value_type>
+bool Vector<value_type>::const_iterator::operator>(const_iterator const &other) const
+{
+	return (this->position > other.position);
+}
+
+template<typename value_type>
+bool Vector<value_type>::const_iterator::operator>=(const_iterator const &other) const
+{
+	return (this->position >= other.position);
+}
+
+template<typename value_type>
+typename Vector<value_type>::const_iterator Vector<value_type>::const_iterator::operator++(int)
+{
+	++this->position;
+	return (*this);
+}
+
+template<typename value_type>
+typename Vector<value_type>::const_iterator &Vector<value_type>::const_iterator::operator++()
+{
+
+	Vector<value_type>::const_iterator tmp(*this);
+	operator++();
+	return (tmp);
+}
+
+template<typename value_type>
+typename Vector<value_type>::const_iterator Vector<value_type>::const_iterator::operator--(int)
+{
+	--this->position;
+	return (*this);
+}
+
+template<typename value_type>
+typename Vector<value_type>::const_iterator &Vector<value_type>::const_iterator::operator--()
+{
+	Vector<value_type>::const_iterator tmp(*this);
+	operator--();
+	return (tmp);
 }
 
 template<typename value_type>
@@ -292,6 +371,7 @@ Vector<value_type> &Vector<value_type>::operator=(Vector<value_type> const &othe
 {
 	this->clear();
 	this->assign(other.begin(), other.end());
+	return (*this);
 }
 
 
@@ -452,14 +532,18 @@ value_type const &Vector<value_type>::back(void) const
 }
 
 template<typename value_type>
-void Vector<value_type>::assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last)
+template<typename InputIterator>
+void Vector<value_type>::assign(InputIterator first, InputIterator last)
 {
 	size_t size = last - first;
 	this->clear();
 	if (size > this->capacity_)
 		this->reserve(size);
 	while (first != last)
-		this->container.push_back(*first++);
+	{
+		this->container.push_back(*first);
+		first++;
+	}
 	this->size_ = size;
 }
 
