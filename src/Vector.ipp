@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/03 19:24:24 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 17:05:24 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,14 +246,14 @@ Vector<value_type>::const_reverse_iterator::~const_reverse_iterator()
 
 template<typename value_type>
 Vector<value_type>::Vector():
-	allocated(128), length(0), container(nullptr), size_type(sizeof(value_type)), difference_type(size_type + 1 - size_type)
+	capacity_(128), size_(0), container(nullptr)
 {
 	this->container = new value_type[128]();
 }
 
 template<typename value_type>
 Vector<value_type>::Vector(Vector<value_type>::iterator first, Vector<value_type>::iterator last):
-	allocated(0), length(0), container(nullptr), size_type(sizeof(value_type)), difference_type(size_type + 1 - size_type)
+	capacity_(0), size_(0), container(nullptr)
 {
 	this->container = nullptr;
 	this->assign(first, last);
@@ -261,7 +261,7 @@ Vector<value_type>::Vector(Vector<value_type>::iterator first, Vector<value_type
 
 template<typename value_type>
 Vector<value_type>::Vector(size_t n, value_type const &val):
-	allocated(0), length(0), container(nullptr), size_type(sizeof(value_type)), difference_type(size_type + 1 - size_type)
+	capacity_(0), size_(0), container(nullptr)
 {
 	this->container = nullptr;
 	this->resize(n, val);
@@ -269,10 +269,10 @@ Vector<value_type>::Vector(size_t n, value_type const &val):
 
 template<typename value_type>
 Vector<value_type>::Vector(Vector<value_type> const &other):
-	allocated(0), length(0), container(nullptr), size_type(sizeof(value_type)), difference_type(size_type + 1 - size_type)
+	capacity_(0), size_(0), container(nullptr)
 {
 	this->container = nullptr;
-	this->reserve(other.allocated);
+	this->reserve(other.capacity_);
 	this->assign(other.begin(), other.end());
 }
 
@@ -280,7 +280,7 @@ template<typename value_type>
 Vector<value_type>::~Vector()
 {
 	delete[] this->container;
-	this->length = 0;
+	this->size_ = 0;
 }
 
 template<typename value_type>
@@ -342,7 +342,7 @@ typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rend(voi
 template<typename value_type>
 size_t Vector<value_type>::size(void) const
 {
-	return (this->length);
+	return (this->size_);
 }
 
 template<typename value_type>
@@ -354,46 +354,46 @@ size_t Vector<value_type>::max_size(void) const
 template<typename value_type>
 void Vector<value_type>::resize(size_t size, value_type val)
 {
-	if (size > this->allocated)
+	if (size > this->capacity_)
 		this->resize(size);
-	if (size > this->length)
+	if (size > this->size_)
 	{
-		for (size_t i = this->length; i < size; i++)
+		for (size_t i = this->size_; i < size; i++)
 			this->container[i] = val;
-		this->length = size;
+		this->size_ = size;
 	}
-	else if (size < this->length)
+	else if (size < this->size_)
 	{
-		for (size_t i = size; i < this->length; i++)
+		for (size_t i = size; i < this->size_; i++)
 			delete this->container[i];
-		this->length = size;
+		this->size_ = size;
 	}
 }
 
 template<typename value_type>
 size_t Vector<value_type>::capacity(void) const
 {
-	return (this->allocated);
+	return (this->capacity_);
 }
 
 template<typename value_type>
 bool Vector<value_type>::empty(void) const
 {
-	return (this->length == 0);
+	return (this->size_ == 0);
 }
 
 template<typename value_type>
 void Vector<value_type>::reserve(size_t size)
 {
-	if (size > this->allocated)
+	if (size > this->capacity_)
 	{
-		this->allocated = size;
+		this->capacity_ = size;
 		value_type *tmp = new value_type[size]();
-		for (size_t i = 0; i < this->allocated; i++)
+		for (size_t i = 0; i < this->capacity_; i++)
 			tmp[i] = this->container[i];
 		delete[] this->container;
 		this->container = tmp;
-		this->allocated = size;
+		this->capacity_ = size;
 	}
 }
 
@@ -413,14 +413,14 @@ value_type const &Vector<value_type>::operator[](size_t idx) const
 template<typename value_type>
 value_type &Vector<value_type>::at(size_t idx)
 {
-	assert(idx < this->length);
+	assert(idx < this->size_);
 	return (this->container[idx]);
 }
 
 template<typename value_type>
 value_type const &Vector<value_type>::at(size_t idx) const
 {
-	assert(idx < this->length);
+	assert(idx < this->size_);
 	return (this->container[idx]);
 }
 
@@ -439,13 +439,13 @@ value_type const &Vector<value_type>::front(void) const
 template<typename value_type>
 value_type &Vector<value_type>::back(void)
 {
-	return (this->container[this->length - 1]);
+	return (this->container[this->size_ - 1]);
 }
 
 template<typename value_type>
 value_type const &Vector<value_type>::back(void) const
 {
-	return (this->container[this->length - 1]);
+	return (this->container[this->size_ - 1]);
 }
 
 template<typename value_type>
@@ -453,36 +453,36 @@ void Vector<value_type>::assign(Vector<value_type>::iterator first, Vector<value
 {
 	size_t size = last - first;
 	this->clear();
-	if (size > this->allocated)
+	if (size > this->capacity_)
 		this->reserve(size);
 	while (first != last)
 		this->container.push_back(*first++);
-	this->length = size;
+	this->size_ = size;
 }
 
 template<typename value_type>
 void Vector<value_type>::assign(size_t size, value_type const &val)
 {
 	this->clear();
-	if (size > this->allocated)
+	if (size > this->capacity_)
 		this->reserve(size);
 	for (size_t i = 0; i < size; i++)
 		this->container[i] = val;
-	this->length = size;
+	this->size_ = size;
 }
 
 template<typename value_type>
 void Vector<value_type>::push_back(value_type const &val)
 {
-	if (this->length == this->allocated)
-		this->reserve(this->allocated + 256);
-	this->container[this->length++] = val;
+	if (this->size_ == this->capacity_)
+		this->reserve(this->capacity_ + 256);
+	this->container[this->size_++] = val;
 }
 
 template<typename value_type>
 void Vector<value_type>::pop_back(void)
 {
-	this->length--;
+	this->size_--;
 }
 
 template<typename value_type>
@@ -494,17 +494,17 @@ typename Vector<value_type>::iterator Vector<value_type>::insert(Vector<value_ty
 template<typename value_type>
 void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t size, value_type const &val)
 {
-	if (this->length + size == this->allocated)
-		this->reserve(this->allocated + size + 256);
-	for (size_t i = 0; i < this->length; i++)
+	if (this->size_ + size == this->capacity_)
+		this->reserve(this->capacity_ + size + 256);
+	for (size_t i = 0; i < this->size_; i++)
 	{
-		if (this->container[i] == position)
+		if (&this->container[i] == &*position)
 		{
-			for (size_t j = this->length - 1; j > i + 1; j++)
+			for (size_t j = this->size_ - 1; j > i + 1; j++)
 				this->container[j + size] = this->container[j - 1];
 			for (size_t j = 0; j < size; j++)
-				this->container[i + j] == val;
-			this->length += size;
+				this->container[i + j] = val;
+			this->size_ += size;
 			break ;
 		}
 	}
@@ -514,17 +514,17 @@ template<typename value_type>
 void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::iterator first, Vector::iterator last)
 {
 	size_t size = last - first;
-	if (this->length + size == this->allocated)
-		this->reserve(this->allocated + size + 256);
-	for (size_t i = 0; i < this->length; i++)
+	if (this->size_ + size == this->capacity_)
+		this->reserve(this->capacity_ + size + 256);
+	for (size_t i = 0; i < this->size_; i++)
 	{
 		if (this->container[i] == position)
 		{
-			for (size_t j = this->length - 1; j > i + 1; j++)
+			for (size_t j = this->size_ - 1; j > i + 1; j++)
 				this->container[j + size] = this->container[j - 1];
 			for (size_t j = 0; j < size; j++)
 				this->container[i + j] == *first++;
-			this->length += size;
+			this->size_ += size;
 			break ;
 		}
 	}
@@ -539,22 +539,22 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_typ
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator first, Vector::iterator last)
 {
-	for (size_t i = 0; i < this->length; i++)
+	for (size_t i = 0; i < this->size_; i++)
 	{
 		if (this->container[i] == first)
 		{
 			size_t pos_stop = i + 1;
-			for (size_t j = i + 1; j < this->length; j++)
+			for (size_t j = i + 1; j < this->size_; j++)
 			{
 				if (this->container[j] == last)
 					break;
 				this->container[j] = value_type();
 				pos_stop++;
 			}
-			for ( ; pos_stop < this->length; pos_stop++)
+			for ( ; pos_stop < this->size_; pos_stop++)
 			{
 				this->container[i++] = this->container[pos_stop];
-				this->length--;
+				this->size_--;
 			}
 			break ;
 		}
@@ -571,9 +571,9 @@ void Vector<value_type>::swap(Vector<value_type> &other)
 template<typename value_type>
 void Vector<value_type>::clear(void)
 {
-	for (size_t i = 0; i < this->length; i++)
+	for (size_t i = 0; i < this->size_; i++)
 		this->container[i] = value_type();
-	this->length = 0;
+	this->size_ = 0;
 }
 
 }

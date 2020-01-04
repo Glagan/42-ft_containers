@@ -6,7 +6,7 @@
 #    By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/02 15:57:50 by ncolomer          #+#    #+#              #
-#    Updated: 2020/01/03 15:51:55 by ncolomer         ###   ########.fr        #
+#    Updated: 2020/01/03 19:30:53 by ncolomer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,6 @@ fclean:			clean
 re:				fclean $(NAME)
 
 test:			$(NAME)
-				
+				./ft_containers
 
 .PHONY:			all clean fclean re

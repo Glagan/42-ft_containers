@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/03 18:05:02 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 17:14:27 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ namespace ft
 template<typename value_type>
 class Vector
 {
-	size_t allocated;
-	size_t length;
+	size_t capacity_;
+	size_t size_;
 	value_type *container;
-	size_t size_type;
-	std::ptrdiff_t difference_type;
 public:
 	class iterator
 	{
