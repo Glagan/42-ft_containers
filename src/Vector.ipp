@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 19:05:05 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 19:42:11 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@ namespace ft
 
 template<typename value_type>
 Vector<value_type>::iterator::iterator():
-	pointer(nullptr), position(0)
+	pointer(nullptr)
 {
 }
 
 template<typename value_type>
-Vector<value_type>::iterator::iterator(value_type *val, int position):
-	pointer(val), position(position)
+Vector<value_type>::iterator::iterator(value_type *val):
+	pointer(val)
 {
 }
 
 template<typename value_type>
 Vector<value_type>::iterator::iterator(Vector<value_type>::iterator const &other):
-	pointer(other.pointer), position(other.position)
+	pointer(other.pointer)
 {
 }
 
@@ -35,7 +35,6 @@ template<typename value_type>
 typename Vector<value_type>::iterator &Vector<value_type>::iterator::operator=(Vector<value_type>::iterator const &other)
 {
 	this->pointer = other.pointer;
-	this->position = other.position;
 	return (*this);
 }
 
@@ -47,55 +46,55 @@ Vector<value_type>::iterator::~iterator()
 template<typename value_type>
 value_type &Vector<value_type>::iterator::operator*() const
 {
-	return (*(this->pointer + this->position));
+	return (*(this->pointer));
 }
 
 template<typename value_type>
 value_type *Vector<value_type>::iterator::operator->() const
 {
-	return (this->pointer + this->position);
+	return (this->pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::iterator::operator==(iterator const &other) const
 {
-	return (this->position == other.position);
+	return (this->pointer == other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::iterator::operator!=(iterator const &other) const
 {
-	return (this->position != other.position);
+	return (this->pointer != other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::iterator::operator<(iterator const &other) const
 {
-	return (this->position < other.position);
+	return (this->pointer < other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::iterator::operator<=(iterator const &other) const
 {
-	return (this->position <= other.position);
+	return (this->pointer <= other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::iterator::operator>(iterator const &other) const
 {
-	return (this->position > other.position);
+	return (this->pointer > other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::iterator::operator>=(iterator const &other) const
 {
-	return (this->position >= other.position);
+	return (this->pointer >= other.pointer);
 }
 
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::iterator::operator++(int)
 {
-	++this->position;
+	++this->pointer;
 	return (*this);
 }
 
@@ -111,7 +110,7 @@ typename Vector<value_type>::iterator &Vector<value_type>::iterator::operator++(
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::iterator::operator--(int)
 {
-	--this->position;
+	--this->pointer;
 	return (*this);
 }
 
@@ -125,19 +124,25 @@ typename Vector<value_type>::iterator &Vector<value_type>::iterator::operator--(
 
 template<typename value_type>
 Vector<value_type>::const_iterator::const_iterator():
-	pointer(nullptr), position(0)
+	pointer(nullptr)
 {
 }
 
 template<typename value_type>
-Vector<value_type>::const_iterator::const_iterator(value_type * const val, int position):
-	pointer(val), position(position)
+Vector<value_type>::const_iterator::const_iterator(value_type const *val):
+	pointer(val)
 {
 }
 
 template<typename value_type>
 Vector<value_type>::const_iterator::const_iterator(Vector<value_type>::const_iterator const &other):
-	pointer(other.pointer), position(other.position)
+	pointer(other.pointer)
+{
+}
+
+template<typename value_type>
+Vector<value_type>::const_iterator::const_iterator(Vector<value_type>::iterator const &other):
+	pointer(other.pointer)
 {
 }
 
@@ -145,7 +150,6 @@ template<typename value_type>
 typename Vector<value_type>::const_iterator &Vector<value_type>::const_iterator::operator=(Vector<value_type>::const_iterator const &other)
 {
 	this->pointer = other.pointer;
-	this->position = other.position;
 	return (*this);
 }
 
@@ -157,55 +161,55 @@ Vector<value_type>::const_iterator::~const_iterator()
 template<typename value_type>
 value_type &Vector<value_type>::const_iterator::operator*() const
 {
-	return (*(this->pointer + this->position));
+	return (*(this->pointer));
 }
 
 template<typename value_type>
 value_type *Vector<value_type>::const_iterator::operator->() const
 {
-	return (this->pointer + this->position);
+	return (this->pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::const_iterator::operator==(const_iterator const &other) const
 {
-	return (this->position == other.position);
+	return (this->pointer == other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::const_iterator::operator!=(const_iterator const &other) const
 {
-	return (this->position != other.position);
+	return (this->pointer != other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::const_iterator::operator<(const_iterator const &other) const
 {
-	return (this->position < other.position);
+	return (this->pointer < other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::const_iterator::operator<=(const_iterator const &other) const
 {
-	return (this->position <= other.position);
+	return (this->pointer <= other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::const_iterator::operator>(const_iterator const &other) const
 {
-	return (this->position > other.position);
+	return (this->pointer > other.pointer);
 }
 
 template<typename value_type>
 bool Vector<value_type>::const_iterator::operator>=(const_iterator const &other) const
 {
-	return (this->position >= other.position);
+	return (this->pointer >= other.pointer);
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::const_iterator::operator++(int)
 {
-	++this->position;
+	++this->pointer;
 	return (*this);
 }
 
@@ -221,7 +225,7 @@ typename Vector<value_type>::const_iterator &Vector<value_type>::const_iterator:
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::const_iterator::operator--(int)
 {
-	--this->position;
+	--this->pointer;
 	return (*this);
 }
 
@@ -235,19 +239,19 @@ typename Vector<value_type>::const_iterator &Vector<value_type>::const_iterator:
 
 template<typename value_type>
 Vector<value_type>::reverse_iterator::reverse_iterator():
-	iterator(nullptr, 0)
+	iterator(nullptr)
 {
 }
 
 template<typename value_type>
-Vector<value_type>::reverse_iterator::reverse_iterator(value_type *val, int position):
-	iterator(val, position)
+Vector<value_type>::reverse_iterator::reverse_iterator(value_type *val):
+	iterator(val)
 {
 }
 
 template<typename value_type>
 Vector<value_type>::reverse_iterator::reverse_iterator(Vector<value_type>::reverse_iterator const &other):
-	iterator(other.pointer, other.position)
+	iterator(other.pointer)
 {
 }
 
@@ -255,7 +259,6 @@ template<typename value_type>
 typename Vector<value_type>::reverse_iterator &Vector<value_type>::reverse_iterator::operator=(Vector<value_type>::reverse_iterator const &other)
 {
 	this->pointer = other.pointer;
-	this->position = other.position;
 	return (*this);
 }
 
@@ -267,7 +270,7 @@ Vector<value_type>::reverse_iterator::~reverse_iterator()
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterator::operator++(int)
 {
-	--this->position;
+	--this->pointer;
 	return (*this);
 }
 
@@ -283,7 +286,7 @@ typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterat
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterator::operator--(int)
 {
-	++this->position;
+	++this->pointer;
 	return (*this);
 }
 
@@ -298,19 +301,19 @@ typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterat
 
 template<typename value_type>
 Vector<value_type>::const_reverse_iterator::const_reverse_iterator():
-	const_iterator(nullptr, 0), reverse_iterator(nullptr, 0)
+	const_iterator(nullptr), reverse_iterator(nullptr)
 {
 }
 
 template<typename value_type>
-Vector<value_type>::const_reverse_iterator::const_reverse_iterator(value_type *val, int position):
-	const_iterator(val, position), reverse_iterator(val, position)
+Vector<value_type>::const_reverse_iterator::const_reverse_iterator(value_type const *val):
+	const_iterator(val), reverse_iterator(val)
 {
 }
 
 template<typename value_type>
 Vector<value_type>::const_reverse_iterator::const_reverse_iterator(Vector<value_type>::const_reverse_iterator const &other):
-	const_iterator(other.pointer, other.position), reverse_iterator(other.pointer, other.position)
+	const_iterator(other.pointer), reverse_iterator(other.pointer)
 {
 }
 
@@ -318,7 +321,6 @@ template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator &Vector<value_type>::const_reverse_iterator::operator=(Vector<value_type>::const_reverse_iterator const &other)
 {
 	this->pointer = other.pointer;
-	this->position = other.position;
 	return (*this);
 }
 
@@ -374,53 +376,52 @@ Vector<value_type> &Vector<value_type>::operator=(Vector<value_type> const &othe
 	return (*this);
 }
 
-
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::begin(void)
 {
-	return (Vector<value_type>::iterator(&this->front(), 0));
+	return (Vector<value_type>::iterator(&(this->front())));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::begin(void) const
 {
-	return (Vector<value_type>::const_iterator(&this->front(), 0));
+	return (Vector<value_type>::const_iterator(&(this->front())));
 }
 
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::rbegin(void)
 {
-	return (Vector<value_type>::reverse_iterator(&this->front(), this->size_ - 1));
+	return (Vector<value_type>::reverse_iterator(&(this->back())));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rbegin(void) const
 {
-	return (Vector<value_type>::const_reverse_iterator(&this->front(), this->size_ - 1));
+	return (Vector<value_type>::const_reverse_iterator(&(this->back())));
 }
 
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::end(void)
 {
-	return (Vector<value_type>::iterator(&this->front(), this->size_));
+	return (Vector<value_type>::iterator((&(this->back())) + 1));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::end(void) const
 {
-	return (Vector<value_type>::const_iterator(&this->front(), this->size_));
+	return (Vector<value_type>::const_iterator((&(this->back())) + 1));
 }
 
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::rend(void)
 {
-	return (Vector<value_type>::reverse_iterator(&this->front(), -1));
+	return (Vector<value_type>::reverse_iterator((&(this->front())) - 1));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rend(void) const
 {
-	return (Vector<value_type>::const_reverse_iterator(&this->front(), -1));
+	return (Vector<value_type>::const_reverse_iterator((&(this->front())) - 1));
 }
 
 template<typename value_type>
@@ -532,8 +533,7 @@ value_type const &Vector<value_type>::back(void) const
 }
 
 template<typename value_type>
-template<typename InputIterator>
-void Vector<value_type>::assign(InputIterator first, InputIterator last)
+void Vector<value_type>::assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last)
 {
 	size_t size = last - first;
 	this->clear();

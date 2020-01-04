@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 19:04:42 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 19:41:54 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ public:
 	{
 	protected:
 		value_type *pointer;
-		int position;
 	public:
 		iterator();
-		iterator(value_type *vec, int position);
+		iterator(value_type *vec);
 		iterator(iterator const &other);
 		virtual ~iterator();
 
@@ -56,11 +55,10 @@ public:
 	class const_iterator
 	{
 	protected:
-		value_type * const pointer;
-		int position;
+		value_type const * pointer;
 	public:
 		const_iterator();
-		const_iterator(value_type * const vec, int position);
+		const_iterator(value_type const * vec);
 		const_iterator(iterator const &other);
 		const_iterator(const_iterator const &other);
 		virtual ~const_iterator();
@@ -85,7 +83,7 @@ public:
 	{
 	public:
 		reverse_iterator();
-		reverse_iterator(value_type *vec, int position);
+		reverse_iterator(value_type *vec);
 		reverse_iterator(reverse_iterator const &other);
 		virtual ~reverse_iterator();
 
@@ -100,7 +98,7 @@ public:
 	{
 	public:
 		const_reverse_iterator();
-		const_reverse_iterator(value_type * const vec, int position);
+		const_reverse_iterator(value_type const * vec);
 		const_reverse_iterator(const_reverse_iterator const &other);
 		virtual ~const_reverse_iterator();
 
@@ -140,8 +138,7 @@ public:
 	value_type &back(void);
 	value_type const &back(void) const;
 
-	template <class InputIterator>
-	void assign(InputIterator first, InputIterator last);
+	void assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
 	void assign(size_t size, value_type const &val);
 	void push_back(value_type const &val);
 	void pop_back(void);
