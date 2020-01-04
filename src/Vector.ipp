@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 17:05:24 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/04 17:51:19 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,9 +387,8 @@ void Vector<value_type>::reserve(size_t size)
 {
 	if (size > this->capacity_)
 	{
-		this->capacity_ = size;
 		value_type *tmp = new value_type[size]();
-		for (size_t i = 0; i < this->capacity_; i++)
+		for (size_t i = 0; i < this->size_; i++)
 			tmp[i] = this->container[i];
 		delete[] this->container;
 		this->container = tmp;
@@ -500,8 +499,8 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t si
 	{
 		if (&this->container[i] == &*position)
 		{
-			for (size_t j = this->size_ - 1; j > i + 1; j++)
-				this->container[j + size] = this->container[j - 1];
+			for (size_t j = this->size_; j >= 1 && j >= i; j--)
+				this->container[j + size - 1] = this->container[j - 1];
 			for (size_t j = 0; j < size; j++)
 				this->container[i + j] = val;
 			this->size_ += size;
