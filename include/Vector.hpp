@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 14:26:13 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:35:57 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,20 @@ public:
 	void swap(Vector<value_type> &other);
 	void clear(void);
 };
+
+template <class T>
+bool operator==(Vector<T> const &lhs, Vector<T> const &rhs);
+template <class T>
+bool operator!=(Vector<T> const &lhs, Vector<T> const &rhs);
+template <class T>
+bool operator<(Vector<T> const &lhs, Vector<T> const &rhs);
+template <class T>
+bool operator<=(Vector<T> const &lhs, Vector<T> const &rhs);
+template <class T>
+bool operator>(Vector<T> const &lhs, Vector<T> const &rhs);
+template <class T>
+bool operator>=(Vector<T> const &lhs, Vector<T> const &rhs);
+
 }
 
 # include "src/Vector.ipp"

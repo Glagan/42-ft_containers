@@ -6,13 +6,12 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:21:55 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:53:01 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 namespace ft
 {
-
 template<typename value_type>
 Vector<value_type>::iterator::iterator():
 	pointer(nullptr)
@@ -671,4 +670,58 @@ void Vector<value_type>::clear(void)
 	this->size_ = 0;
 }
 
+template <typename T>
+bool operator==(Vector<T> const &lhs, Vector<T> const &rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	for (size_t i = 0; i < lhs.size(); i++)
+		if (lhs[i] != rhs[i])
+			return (false);
+	return (true);
+}
+
+template <typename T>
+bool operator!=(Vector<T> const &lhs, Vector<T> const &rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template <typename T>
+bool operator<(Vector<T> const &lhs, Vector<T> const &rhs)
+{
+	typename Vector<T>::const_iterator first1 = lhs.begin();
+	typename Vector<T>::const_iterator last1 = lhs.end();
+	typename Vector<T>::const_iterator first2 = rhs.begin();
+	typename Vector<T>::const_iterator last2 = rhs.end();
+
+	while (first1 != last1)
+	{
+		if (first2 == last2 || *first2 < *first1)
+			return (false);
+		else if (*first1<*first2)
+			return (true);
+		++first1;
+		++first2;
+	}
+	return (first2 != last2);
+}
+
+template <typename T>
+bool operator<=(Vector<T> const &lhs, Vector<T> const &rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template <typename T>
+bool operator>(Vector<T> const &lhs, Vector<T> const &rhs)
+{
+	return (rhs < lhs);
+}
+
+template <typename T>
+bool operator>=(Vector<T> const &lhs, Vector<T> const &rhs)
+{
+	return (!(lhs < rhs));
+}
 }
