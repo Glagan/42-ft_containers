@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 16:58:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 19:22:04 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 int main(void)
 {
 	ft::Vector<int> vector;
+
+	std::cout << "size: " << vector.size() << std::endl
+		<< "capacity: " << vector.capacity() << std::endl
+		<< "empty?: " << vector.empty() << std::endl
+		<< "max_size: " << vector.max_size() << std::endl;
 
 	std::cout << "Empty vector: " << std::endl;
 	ft::Vector<int>::iterator it = vector.begin();
@@ -50,20 +55,20 @@ int main(void)
 	vector.clear();
 
 	// A lot of elements
-	for (size_t i = 0; i < 500; i++)
+	for (size_t i = 0; i < 250; i++)
 		vector.push_back(i);
 
-	std::cout << "500 elements in vector (index): " << std::endl;
-	for (size_t i = 0; i < 500; i++)
+	std::cout << "250 elements in vector (index): " << std::endl;
+	for (size_t i = 0; i < 250; i++)
 	{
 		std::cout << vector[i] << " (" << vector.at(i) << ")";
-		if (i < 499)
+		if (i < 249)
 			std::cout << ", ";
 		else
 			std::cout << std::endl;
 	}
 
-	std::cout << "500 elements in vector (iterator): " << std::endl;
+	std::cout << "250 elements in vector (iterator): " << std::endl;
 	it = vector.begin();
 	ite = vector.end();
 	while (it != ite)
@@ -77,7 +82,7 @@ int main(void)
 	}
 
 	// Reverse
-	std::cout << "500 elements in vector (reverse_iterator): " << std::endl;
+	std::cout << "250 elements in vector (reverse_iterator): " << std::endl;
 	ft::Vector<int>::reverse_iterator rit = vector.rbegin();
 	ft::Vector<int>::reverse_iterator rite = vector.rend();
 	while (rit != rite)
@@ -128,6 +133,11 @@ int main(void)
 	nvector.push_back(vector);
 	nvector.push_back(vvector);
 
+	std::cout << "size: " << vector.size() << std::endl
+		<< "capacity: " << vector.capacity() << std::endl
+		<< "empty?: " << vector.empty() << std::endl
+		<< "max_size: " << vector.max_size() << std::endl;
+
 	std::cout << "50 `43` and 50 `42` in nvector[1]: " << std::endl;
 	it = nvector[1].begin();
 	ite = nvector[1].end();
@@ -163,7 +173,25 @@ int main(void)
 			std::cout << ", ";
 	}
 
+	std::cout << "same vector comparison:" << std::endl
+		<< "comparison ==" << (vvector == nvector[1]) << std::endl
+		<< "comparison !=" << (vvector != nvector[1]) << std::endl
+		<< "comparison < " << (vvector < nvector[1]) << std::endl
+		<< "comparison > " << (vvector > nvector[1]) << std::endl
+		<< "comparison <=" << (vvector <= nvector[1]) << std::endl
+		<< "comparison >=" << (vvector >= nvector[1]) << std::endl;
+
+	std::cout << "different vector comparison:" << std::endl
+		<< "comparison ==" << (vector == nvector[1]) << std::endl
+		<< "comparison !=" << (vector != nvector[1]) << std::endl
+		<< "comparison < " << (vector < nvector[1]) << std::endl
+		<< "comparison > " << (vector > nvector[1]) << std::endl
+		<< "comparison <=" << (vector <= nvector[1]) << std::endl
+		<< "comparison >=" << (vector >= nvector[1]) << std::endl;
+
 	// Leaks
+	std::cout << "#####" << std::endl;
 	system("leaks ft_containers");
+	std::cout << "#####" << std::endl;
 	return (0);
 }

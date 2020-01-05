@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 16:59:43 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 19:00:41 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <cassert>
 # include <cstddef>
+# include <cmath>
 
 namespace ft
 {
@@ -45,7 +46,6 @@ public:
 		bool operator<=(iterator const &other) const;
 		bool operator>(iterator const &other) const;
 		bool operator>=(iterator const &other) const;
-		int distance(iterator const &other) const;
 
 		iterator operator++(int);
 		iterator &operator++();
