@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 16:59:52 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 18:14:38 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,7 +443,7 @@ size_t Vector<value_type>::size(void) const
 template<typename value_type>
 size_t Vector<value_type>::max_size(void) const
 {
-	return (this->size_type * 1000000); // TODO: ???
+	return (18446744073709551616 / sizeof(value_type) - 1);
 }
 
 template<typename value_type>
@@ -596,6 +596,7 @@ typename Vector<value_type>::iterator Vector<value_type>::insert(Vector<value_ty
 template<typename value_type>
 void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t size, value_type const &val)
 {
+	// TODO: use iterator instead of a for loop
 	if (this->size_ + size == this->capacity_)
 		this->reserve(this->capacity_ + size + 256);
 	for (size_t i = 0; i < this->size_; i++)
@@ -615,6 +616,7 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t si
 template<typename value_type>
 void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::iterator first, Vector::iterator last)
 {
+	// TODO: use iterator instead of a for loop
 	size_t size = last - first;
 	if (this->size_ + size == this->capacity_)
 		this->reserve(this->capacity_ + size + 256);
@@ -641,6 +643,7 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_typ
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator first, Vector::iterator last)
 {
+	// TODO: use iterator instead of a for loop
 	for (size_t i = 0; i < this->size_; i++)
 	{
 		if (this->container[i] == first)
@@ -666,8 +669,8 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator
 template<typename value_type>
 void Vector<value_type>::swap(Vector<value_type> &other)
 {
-	(void)other;
 	// TODO:
+	(void)other;
 }
 
 template<typename value_type>
@@ -698,6 +701,7 @@ bool operator!=(Vector<T> const &lhs, Vector<T> const &rhs)
 template <typename T>
 bool operator<(Vector<T> const &lhs, Vector<T> const &rhs)
 {
+	// TODO: check if it works and if it segfault
 	typename Vector<T>::const_iterator first1 = lhs.begin();
 	typename Vector<T>::const_iterator last1 = lhs.end();
 	typename Vector<T>::const_iterator first2 = rhs.begin();
