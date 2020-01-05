@@ -6,16 +6,16 @@
 #    By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/02 15:57:50 by ncolomer          #+#    #+#              #
-#    Updated: 2020/01/03 19:30:53 by ncolomer         ###   ########.fr        #
+#    Updated: 2020/01/05 15:06:39 by ncolomer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS			= main.cpp
+SRCS			= main.cpp test/Number.cpp
 OBJS			= $(SRCS:.cpp=.o)
 
 CXX				= clang++
 RM				= rm -f
-CXXFLAGS		= -Wall -Wextra -Werror -I.
+CXXFLAGS		= -g -Wall -Wextra -Werror -I.
 
 NAME			= ft_containers
 

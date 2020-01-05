@@ -6,12 +6,13 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 18:08:10 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:16:08 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "include/Vector.hpp"
+#include "test/Number.hpp"
 
 int main(void)
 {
@@ -45,21 +46,24 @@ int main(void)
 		it++;
 	}
 
+	// Clear elements
+	vector.clear();
+
 	// A lot of elements
 	for (size_t i = 0; i < 500; i++)
 		vector.push_back(i);
 
-	std::cout << "502 elements in vector (index): " << std::endl;
-	for (size_t i = 0; i < 502; i++)
+	std::cout << "500 elements in vector (index): " << std::endl;
+	for (size_t i = 0; i < 500; i++)
 	{
 		std::cout << vector[i] << " (" << vector.at(i) << ")";
-		if (i < 501)
+		if (i < 499)
 			std::cout << ", ";
 		else
 			std::cout << std::endl;
 	}
 
-	std::cout << "502 elements in vector (iterator): " << std::endl;
+	std::cout << "500 elements in vector (iterator): " << std::endl;
 	it = vector.begin();
 	ite = vector.end();
 	while (it != ite)
@@ -73,7 +77,7 @@ int main(void)
 	}
 
 	// Reverse
-	std::cout << "502 elements in vector (reverse_iterator): " << std::endl;
+	std::cout << "500 elements in vector (reverse_iterator): " << std::endl;
 	ft::Vector<int>::reverse_iterator rit = vector.rbegin();
 	ft::Vector<int>::reverse_iterator rite = vector.rend();
 	while (rit != rite)
@@ -118,9 +122,26 @@ int main(void)
 			std::cout << ", ";
 	}
 
-	// Vector of classes
-	ft::Vector< ft::Vector<int> > nvector;
-	nvector.push_back(vector);
+	// Vector of Number
+	Number nb(5);
+	ft::Vector< Number > nbvector;
+	nbvector.push_back(nb);
+	nb = 42;
+	nbvector.push_back(nb);
+
+	std::cout << "5 and 42 Number in nbvector: " << std::endl;
+	ft::Vector<Number>::iterator itb = nbvector.begin();
+	ft::Vector<Number>::iterator iteb = nbvector.end();
+	i = 0;
+	while (itb != iteb)
+	{
+		std::cout << *itb << "(" << ++i << ")";
+		itb++;
+		if (itb == iteb)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
 
 	// Leaks
 	system("leaks ft_containers");

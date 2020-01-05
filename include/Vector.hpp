@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 19:41:54 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 14:26:13 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ public:
 
 		const_iterator &operator=(const_iterator const &other);
 
-		value_type &operator*() const;
+		value_type const &operator*() const;
 		value_type *operator->() const;
 		bool operator==(const_iterator const &other) const;
 		bool operator!=(const_iterator const &other) const;
@@ -139,6 +139,7 @@ public:
 	value_type const &back(void) const;
 
 	void assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
+	void assign(Vector<value_type>::const_iterator first, Vector<value_type>::const_iterator last);
 	void assign(size_t size, value_type const &val);
 	void push_back(value_type const &val);
 	void pop_back(void);

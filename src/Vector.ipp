@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/04 19:42:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:15:20 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ Vector<value_type>::const_iterator::~const_iterator()
 }
 
 template<typename value_type>
-value_type &Vector<value_type>::const_iterator::operator*() const
+value_type const &Vector<value_type>::const_iterator::operator*() const
 {
 	return (*(this->pointer));
 }
@@ -331,9 +331,9 @@ Vector<value_type>::const_reverse_iterator::~const_reverse_iterator()
 
 template<typename value_type>
 Vector<value_type>::Vector():
-	capacity_(128), size_(0), container(nullptr)
+	capacity_(0), size_(0), container(nullptr)
 {
-	this->container = new value_type[128]();
+	this->reserve(128);
 }
 
 template<typename value_type>
@@ -364,8 +364,11 @@ Vector<value_type>::Vector(Vector<value_type> const &other):
 template<typename value_type>
 Vector<value_type>::~Vector()
 {
-	delete[] this->container;
-	this->size_ = 0;
+	if (this->container)
+	{
+		this->clear();
+		::operator delete(this->container);
+	}
 }
 
 template<typename value_type>
@@ -440,7 +443,7 @@ template<typename value_type>
 void Vector<value_type>::resize(size_t size, value_type val)
 {
 	if (size > this->capacity_)
-		this->resize(size);
+		this->reserve(size);
 	if (size > this->size_)
 	{
 		for (size_t i = this->size_; i < size; i++)
@@ -450,7 +453,7 @@ void Vector<value_type>::resize(size_t size, value_type val)
 	else if (size < this->size_)
 	{
 		for (size_t i = size; i < this->size_; i++)
-			delete this->container[i];
+			this->container[i].~value_type();
 		this->size_ = size;
 	}
 }
@@ -472,10 +475,13 @@ void Vector<value_type>::reserve(size_t size)
 {
 	if (size > this->capacity_)
 	{
-		value_type *tmp = new value_type[size]();
-		for (size_t i = 0; i < this->size_; i++)
-			tmp[i] = this->container[i];
-		delete[] this->container;
+		value_type *tmp = static_cast<value_type*>(::operator new(sizeof(value_type) * size));
+		if (this->container)
+		{
+			for (size_t i = 0; i < this->size_; i++)
+				tmp[i] = this->container[i];
+			::operator delete(this->container);
+		}
 		this->container = tmp;
 		this->capacity_ = size;
 	}
@@ -535,16 +541,20 @@ value_type const &Vector<value_type>::back(void) const
 template<typename value_type>
 void Vector<value_type>::assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last)
 {
-	size_t size = last - first;
 	this->clear();
-	if (size > this->capacity_)
-		this->reserve(size);
 	while (first != last)
 	{
 		this->container.push_back(*first);
 		first++;
 	}
-	this->size_ = size;
+}
+
+template<typename value_type>
+void Vector<value_type>::assign(Vector<value_type>::const_iterator first, Vector<value_type>::const_iterator last)
+{
+	this->clear();
+	while (first != last)
+		this->push_back(*first++);
 }
 
 template<typename value_type>
@@ -569,7 +579,8 @@ void Vector<value_type>::push_back(value_type const &val)
 template<typename value_type>
 void Vector<value_type>::pop_back(void)
 {
-	this->size_--;
+	assert(this->size_ > 0);
+	this->container[--this->size_].~value_type();
 }
 
 template<typename value_type>
@@ -630,12 +641,12 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator
 	{
 		if (this->container[i] == first)
 		{
-			size_t pos_stop = i + 1;
-			for (size_t j = i + 1; j < this->size_; j++)
+			size_t pos_stop = i;
+			for (size_t j = i; j < this->size_; j++)
 			{
 				if (this->container[j] == last)
 					break;
-				this->container[j] = value_type();
+				this->container[j].~value_type();
 				pos_stop++;
 			}
 			for ( ; pos_stop < this->size_; pos_stop++)
@@ -659,7 +670,7 @@ template<typename value_type>
 void Vector<value_type>::clear(void)
 {
 	for (size_t i = 0; i < this->size_; i++)
-		this->container[i] = value_type();
+		this->container[i].~value_type();
 	this->size_ = 0;
 }
 
