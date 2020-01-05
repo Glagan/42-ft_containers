@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:41:18 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 16:58:11 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,11 @@ int main(void)
 	}
 
 	// Assign
-	std::cout << "50 `42` in vector: " << std::endl;
-	vector.assign(50, 42);
-	it = vector.begin();
-	ite = vector.end();
+	std::cout << "50 `42` in vvector: " << std::endl;
+	ft::Vector<int> vvector;
+	vvector.assign(50, 42);
+	it = vvector.begin();
+	ite = vvector.end();
 	int i = 0;
 	while (it != ite)
 	{
@@ -107,10 +108,10 @@ int main(void)
 	}
 
 	// Insert
-	vector.insert(vector.begin(), 50, 43);
-	std::cout << "50 `43` and 50 `42` in vector: " << std::endl;
-	it = vector.begin();
-	ite = vector.end();
+	vvector.insert(vvector.begin(), 50, 43);
+	std::cout << "50 `43` and 50 `42` in vvector: " << std::endl;
+	it = vvector.begin();
+	ite = vvector.end();
 	i = 0;
 	while (it != ite)
 	{
@@ -125,10 +126,11 @@ int main(void)
 	// Vector of Vector
 	ft::Vector< ft::Vector<int> > nvector;
 	nvector.push_back(vector);
+	nvector.push_back(vvector);
 
-	std::cout << "50 `43` and 50 `42` in nvector[0]: " << std::endl;
-	it = nvector[0].begin();
-	ite = nvector[0].end();
+	std::cout << "50 `43` and 50 `42` in nvector[1]: " << std::endl;
+	it = nvector[1].begin();
+	ite = nvector[1].end();
 	i = 0;
 	while (it != ite)
 	{

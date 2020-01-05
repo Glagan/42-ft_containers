@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:53:01 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 16:59:52 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,12 @@ Vector<value_type>::reverse_iterator::reverse_iterator(Vector<value_type>::rever
 }
 
 template<typename value_type>
+Vector<value_type>::reverse_iterator::reverse_iterator(Vector<value_type>::iterator const &other):
+	iterator(other)
+{
+}
+
+template<typename value_type>
 typename Vector<value_type>::reverse_iterator &Vector<value_type>::reverse_iterator::operator=(Vector<value_type>::reverse_iterator const &other)
 {
 	this->pointer = other.pointer;
@@ -274,7 +280,7 @@ typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterat
 }
 
 template<typename value_type>
-typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterator::operator++()
+typename Vector<value_type>::reverse_iterator &Vector<value_type>::reverse_iterator::operator++()
 {
 
 	Vector<value_type>::reverse_iterator tmp(*this);
@@ -290,7 +296,7 @@ typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterat
 }
 
 template<typename value_type>
-typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterator::operator--()
+typename Vector<value_type>::reverse_iterator &Vector<value_type>::reverse_iterator::operator--()
 {
 	Vector<value_type>::reverse_iterator tmp(*this);
 	operator++();
@@ -312,6 +318,12 @@ Vector<value_type>::const_reverse_iterator::const_reverse_iterator(value_type co
 
 template<typename value_type>
 Vector<value_type>::const_reverse_iterator::const_reverse_iterator(Vector<value_type>::const_reverse_iterator const &other):
+	const_iterator(other.pointer), reverse_iterator(other.pointer)
+{
+}
+
+template<typename value_type>
+Vector<value_type>::const_reverse_iterator::const_reverse_iterator(Vector<value_type>::reverse_iterator const &other):
 	const_iterator(other.pointer), reverse_iterator(other.pointer)
 {
 }
@@ -370,7 +382,6 @@ Vector<value_type>::~Vector()
 template<typename value_type>
 Vector<value_type> &Vector<value_type>::operator=(Vector<value_type> const &other)
 {
-	this->clear();
 	this->assign(other.begin(), other.end());
 	return (*this);
 }
@@ -390,37 +401,37 @@ typename Vector<value_type>::const_iterator Vector<value_type>::begin(void) cons
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::rbegin(void)
 {
-	return (Vector<value_type>::reverse_iterator(&(this->back())));
+	return (Vector<value_type>::reverse_iterator(this->end()));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rbegin(void) const
 {
-	return (Vector<value_type>::const_reverse_iterator(&(this->back())));
+	return (Vector<value_type>::const_reverse_iterator(this->end()));
 }
 
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::end(void)
 {
-	return (Vector<value_type>::iterator((&(this->back())) + 1));
+	return (Vector<value_type>::iterator((&(this->front())) + this->size_));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::end(void) const
 {
-	return (Vector<value_type>::const_iterator((&(this->back())) + 1));
+	return (Vector<value_type>::const_iterator((&(this->front())) + this->size_));
 }
 
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::rend(void)
 {
-	return (Vector<value_type>::reverse_iterator((&(this->front())) - 1));
+	return (Vector<value_type>::reverse_iterator(this->begin()));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rend(void) const
 {
-	return (Vector<value_type>::const_reverse_iterator((&(this->front())) - 1));
+	return (Vector<value_type>::const_reverse_iterator(this->begin()));
 }
 
 template<typename value_type>
@@ -539,10 +550,7 @@ void Vector<value_type>::assign(Vector<value_type>::iterator first, Vector<value
 {
 	this->clear();
 	while (first != last)
-	{
-		this->container.push_back(*first);
-		first++;
-	}
+		this->container.push_back(*first++);
 }
 
 template<typename value_type>
@@ -699,7 +707,7 @@ bool operator<(Vector<T> const &lhs, Vector<T> const &rhs)
 	{
 		if (first2 == last2 || *first2 < *first1)
 			return (false);
-		else if (*first1<*first2)
+		else if (*first1 < *first2)
 			return (true);
 		++first1;
 		++first2;

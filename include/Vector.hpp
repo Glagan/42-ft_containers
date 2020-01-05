@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:35:57 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 16:59:43 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ public:
 	public:
 		const_iterator();
 		const_iterator(value_type const * vec);
-		const_iterator(iterator const &other);
 		const_iterator(const_iterator const &other);
+		const_iterator(iterator const &other);
 		virtual ~const_iterator();
 
 		const_iterator &operator=(const_iterator const &other);
@@ -85,14 +85,15 @@ public:
 		reverse_iterator();
 		reverse_iterator(value_type *vec);
 		reverse_iterator(reverse_iterator const &other);
+		reverse_iterator(iterator const &other);
 		virtual ~reverse_iterator();
 
 		reverse_iterator &operator=(reverse_iterator const &other);
 
 		reverse_iterator operator++(int);
-		reverse_iterator operator++();
+		reverse_iterator &operator++();
 		reverse_iterator operator--(int);
-		reverse_iterator operator--();
+		reverse_iterator &operator--();
 	};
 	class const_reverse_iterator: public const_iterator, public reverse_iterator
 	{
@@ -100,6 +101,7 @@ public:
 		const_reverse_iterator();
 		const_reverse_iterator(value_type const * vec);
 		const_reverse_iterator(const_reverse_iterator const &other);
+		const_reverse_iterator(reverse_iterator const &other);
 		virtual ~const_reverse_iterator();
 
 		const_reverse_iterator &operator=(const_reverse_iterator const &other);
