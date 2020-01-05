@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 15:14:47 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 14:29:14 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:25:29 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ Number::Number():
 
 Number::Number(int const &n):
 	n(n)
+{
+	std::cout << "assignation constructor of Number" << std::endl;
+}
+
+Number::Number(Number const &other):
+	n(other.n)
 {
 	std::cout << "copy constructor of Number" << std::endl;
 }

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:15:20 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:21:55 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,10 +365,7 @@ template<typename value_type>
 Vector<value_type>::~Vector()
 {
 	if (this->container)
-	{
-		this->clear();
 		::operator delete(this->container);
-	}
 }
 
 template<typename value_type>

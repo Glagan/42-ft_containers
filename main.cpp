@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:16:08 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/05 15:24:51 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,24 @@ int main(void)
 	std::cout << "50 `43` and 50 `42` in vector: " << std::endl;
 	it = vector.begin();
 	ite = vector.end();
+	i = 0;
+	while (it != ite)
+	{
+		std::cout << *it << "(" << ++i << ")";
+		it++;
+		if (it == ite)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	// Vector of Vector
+	ft::Vector< ft::Vector<int> > nvector;
+	nvector.push_back(vector);
+
+	std::cout << "50 `43` and 50 `42` in nvector[0]: " << std::endl;
+	it = nvector[0].begin();
+	ite = nvector[0].end();
 	i = 0;
 	while (it != ite)
 	{
