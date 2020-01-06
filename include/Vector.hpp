@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/06 17:05:38 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/06 19:41:30 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ public:
 		iterator &operator++();
 		iterator operator--(int);
 		iterator &operator--();
+		iterator& operator+=(int value);
+        iterator operator+(int value) const;
+        friend iterator operator+(int value, iterator const &it);
+        iterator& operator-=(int value);
+        iterator operator-(int value) const;
 	};
 	class const_iterator
 	{
@@ -153,7 +158,7 @@ public:
 	void insert(Vector<value_type>::iterator position, size_t size, value_type const &val);
 	void insert(Vector<value_type>::iterator position, Vector::iterator first, Vector::iterator last);
 	Vector<value_type>::iterator erase(Vector<value_type>::iterator position);
-	Vector<value_type>::iterator erase(Vector::iterator first, Vector::iterator last);
+	Vector<value_type>::iterator erase(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
 	void swap(Vector<value_type> &other);
 	void clear(void);
 };
@@ -170,7 +175,6 @@ template <class T>
 bool operator>(Vector<T> const &lhs, Vector<T> const &rhs);
 template <class T>
 bool operator>=(Vector<T> const &lhs, Vector<T> const &rhs);
-
 }
 
 # include "src/Vector.ipp"

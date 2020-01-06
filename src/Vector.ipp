@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/06 17:06:25 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/06 20:20:15 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,32 @@ typename Vector<value_type>::iterator &Vector<value_type>::iterator::operator--(
 	--this->pointer;
 	return (*this);
 }
+
+template<typename value_type>
+typename Vector<value_type>::iterator& Vector<value_type>::iterator::operator+=(int value)
+{
+}
+
+template<typename value_type>
+typename Vector<value_type>::iterator Vector<value_type>::iterator::operator+(int value) const
+{
+}
+
+template<typename value_type>
+typename Vector<value_type>::iterator Vector<value_type>::iterator::operator+(int value, Vector<value_type>::iterator const &it)
+{
+}
+
+template<typename value_type>
+typename Vector<value_type>::iterator& Vector<value_type>::iterator::operator-=(int value)
+{
+}
+
+template<typename value_type>
+typename Vector<value_type>::iterator Vector<value_type>::iterator::operator-(int value) const
+{
+}
+
 
 template<typename value_type>
 Vector<value_type>::const_iterator::const_iterator():
@@ -414,13 +440,13 @@ Vector<value_type> &Vector<value_type>::operator=(Vector<value_type> const &othe
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::begin(void)
 {
-	return (Vector<value_type>::iterator(&(this->front())));
+	return (Vector<value_type>::iterator(&this->container[0]));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::begin(void) const
 {
-	return (Vector<value_type>::const_iterator(&(this->front())));
+	return (Vector<value_type>::const_iterator(&this->container[0]));
 }
 
 template<typename value_type>
@@ -438,13 +464,13 @@ typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rbegin(v
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::end(void)
 {
-	return (Vector<value_type>::iterator((&(this->front())) + this->size_));
+	return (Vector<value_type>::iterator(&(this->container[this->size_])));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_iterator Vector<value_type>::end(void) const
 {
-	return (Vector<value_type>::const_iterator((&(this->front())) + this->size_));
+	return (Vector<value_type>::const_iterator(&(this->container[this->size_])));
 }
 
 template<typename value_type>
@@ -676,12 +702,13 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::i
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_type>::iterator position)
 {
-	// TODO: Test
-	return (this->erase(position, position + 1));
+	iterator tmp(position);
+	++tmp;
+	return (this->erase(position, tmp));
 }
 
 template<typename value_type>
-typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator first, Vector::iterator last)
+typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_type>::iterator first, Vector<value_type>::iterator last)
 {
 	// TODO: Test
 	Vector<value_type>::iterator it = this->begin();
@@ -698,16 +725,15 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector::iterator
 	size_t stopPos = i;
 	while (first != last)
 	{
-		first->~value_type();
+		(*first).~value_type();
 		stopPos++;
 		deletedElements++;
+		++first;
 	}
 	for ( ; stopPos < this->size_; stopPos++)
-	{
 		this->container[i++] = this->container[stopPos];
-		this->size_--;
-	}
-	this->size -= deletedElements;
+	this->size_ -= deletedElements;
+	std::cout << "return pos " << returnPosition << std::endl;
 	return (&this->container[returnPosition]);
 }
 

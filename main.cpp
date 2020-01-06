@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/06 17:04:48 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/06 19:40:20 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ int main(void)
 			std::cout << ", ";
 	}
 
-	std::cout << "5 and 42 Number in nbvector (reverse_iterator): " << std::endl;
+	std::cout << "42 and 5 Number in nbvector (reverse_iterator): " << std::endl;
 	ft::Vector<Number>::reverse_iterator ritb = nbvector.rbegin();
 	ft::Vector<Number>::reverse_iterator riteb = nbvector.rend();
 	i = 0;
@@ -205,9 +205,52 @@ int main(void)
 		<< "comparison <=" << (vector <= nvector[1]) << std::endl
 		<< "comparison >=" << (vector >= nvector[1]) << std::endl;
 
+	// Erase
+	std::cout << "empty nvector[1] after erase:" << std::endl;
+	it = nvector[1].erase(nvector[1].begin(), nvector[1].end());
+	ite = nvector[1].end();
+	i = 0;
+	while (it != ite)
+	{
+		std::cout << *it++ << "(" << ++i << ")";
+		if (it == ite)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	// Erase 25 to 75
+	std::cout << "nvector[2] after erase [25-75]:" << std::endl;
+	it = nvector[2].erase(nvector[2].begin() + 25, nvector[2].end() + 75);
+	ite = nvector[2].end();
+	i = 0;
+	while (it != ite)
+	{
+		std::cout << *it++ << "(" << ++i << ")";
+		if (it == ite)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	// Erase first
+	std::cout << "nbvector after erasing first element:" << std::endl;
+	itb = nbvector.erase(nbvector.begin());
+	iteb = nbvector.end();
+	i = 0;
+	while (itb != iteb)
+	{
+		std::cout << *itb << "(" << ++i << ", "
+				<< itb->getValue() << ")";
+		if (++itb == iteb)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
 	// Leaks
-	std::cout << "#####" << std::endl;
-	system("leaks ft_containers");
-	std::cout << "#####" << std::endl;
+	//std::cout << "#####" << std::endl;
+	//system("leaks ft_containers");
+	//std::cout << "#####" << std::endl;
 	return (0);
 }
