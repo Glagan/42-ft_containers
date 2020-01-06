@@ -6,10 +6,11 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 19:22:04 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/06 17:04:48 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <vector>
 #include <iostream>
 #include "include/Vector.hpp"
 #include "test/Number.hpp"
@@ -17,6 +18,7 @@
 int main(void)
 {
 	ft::Vector<int> vector;
+	std::vector<int> vv;
 
 	std::cout << "size: " << vector.size() << std::endl
 		<< "capacity: " << vector.capacity() << std::endl
@@ -24,13 +26,15 @@ int main(void)
 		<< "max_size: " << vector.max_size() << std::endl;
 
 	std::cout << "Empty vector: " << std::endl;
-	ft::Vector<int>::iterator it = vector.begin();
-	ft::Vector<int>::iterator ite = vector.end();
+	ft::Vector<int>::iterator it;
+	ft::Vector<int>::iterator ite;
+	/*it = vector.begin();
+	ite = vector.end();
 	while (it != ite)
 	{
 		std::cout << *it << std::endl;
 		it++;
-	}
+	}*/
 
 	// 2 elements
 	vector.push_back(5);
@@ -87,8 +91,7 @@ int main(void)
 	ft::Vector<int>::reverse_iterator rite = vector.rend();
 	while (rit != rite)
 	{
-		std::cout << *rit;
-		rit++;
+		std::cout << *rit++;
 		if (rit == rite)
 			std::cout << std::endl;
 		else
@@ -144,8 +147,7 @@ int main(void)
 	i = 0;
 	while (it != ite)
 	{
-		std::cout << *it << "(" << ++i << ")";
-		it++;
+		std::cout << *it++ << "(" << ++i << ")";
 		if (it == ite)
 			std::cout << std::endl;
 		else
@@ -159,15 +161,29 @@ int main(void)
 	nb = 42;
 	nbvector.push_back(nb);
 
-	std::cout << "5 and 42 Number in nbvector: " << std::endl;
+	std::cout << "5 and 42 Number in nbvector (iterator): " << std::endl;
 	ft::Vector<Number>::iterator itb = nbvector.begin();
 	ft::Vector<Number>::iterator iteb = nbvector.end();
 	i = 0;
 	while (itb != iteb)
 	{
-		std::cout << *itb << "(" << ++i << ")";
-		itb++;
-		if (itb == iteb)
+		std::cout << *itb << "(" << ++i << ", "
+				<< itb->getValue() << ")";
+		if (++itb == iteb)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	std::cout << "5 and 42 Number in nbvector (reverse_iterator): " << std::endl;
+	ft::Vector<Number>::reverse_iterator ritb = nbvector.rbegin();
+	ft::Vector<Number>::reverse_iterator riteb = nbvector.rend();
+	i = 0;
+	while (ritb != riteb)
+	{
+		std::cout << *ritb << "(" << ++i << ", "
+				<< ritb->getValue() << ")";
+		if (++ritb == riteb)
 			std::cout << std::endl;
 		else
 			std::cout << ", ";

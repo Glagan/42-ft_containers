@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 19:00:41 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/06 17:05:38 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ public:
 		const_iterator &operator=(const_iterator const &other);
 
 		value_type const &operator*() const;
-		value_type *operator->() const;
+		value_type const *operator->() const;
 		bool operator==(const_iterator const &other) const;
 		bool operator!=(const_iterator const &other) const;
 		bool operator<(const_iterator const &other) const;
@@ -90,6 +90,8 @@ public:
 
 		reverse_iterator &operator=(reverse_iterator const &other);
 
+		value_type &operator*() const;
+		value_type *operator->() const;
 		reverse_iterator operator++(int);
 		reverse_iterator &operator++();
 		reverse_iterator operator--(int);
@@ -104,6 +106,8 @@ public:
 		const_reverse_iterator(reverse_iterator const &other);
 		virtual ~const_reverse_iterator();
 
+		value_type const &operator*() const;
+		value_type const *operator->() const;
 		const_reverse_iterator &operator=(const_reverse_iterator const &other);
 	};
 

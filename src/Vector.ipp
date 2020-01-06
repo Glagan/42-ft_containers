@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 19:28:41 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/06 17:06:25 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ value_type const &Vector<value_type>::const_iterator::operator*() const
 }
 
 template<typename value_type>
-value_type *Vector<value_type>::const_iterator::operator->() const
+value_type const *Vector<value_type>::const_iterator::operator->() const
 {
 	return (this->pointer);
 }
@@ -271,6 +271,20 @@ Vector<value_type>::reverse_iterator::~reverse_iterator()
 }
 
 template<typename value_type>
+value_type &Vector<value_type>::reverse_iterator::operator*() const
+{
+	iterator tmp(*this);
+	return (*--tmp);
+}
+
+template<typename value_type>
+value_type *Vector<value_type>::reverse_iterator::operator->() const
+{
+	iterator tmp(*this);
+	return (&*--tmp);
+}
+
+template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::reverse_iterator::operator++(int)
 {
 	reverse_iterator tmp(*this);
@@ -338,6 +352,20 @@ Vector<value_type>::const_reverse_iterator::~const_reverse_iterator()
 }
 
 template<typename value_type>
+value_type const &Vector<value_type>::const_reverse_iterator::operator*() const
+{
+	const_iterator tmp(*this);
+	return (*--tmp);
+}
+
+template<typename value_type>
+value_type const *Vector<value_type>::const_reverse_iterator::operator->() const
+{
+	iterator tmp(*this);
+	return (&*--tmp);
+}
+
+template<typename value_type>
 Vector<value_type>::Vector():
 	capacity_(0), size_(0), container(nullptr)
 {
@@ -398,13 +426,13 @@ typename Vector<value_type>::const_iterator Vector<value_type>::begin(void) cons
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::rbegin(void)
 {
-	return (Vector<value_type>::reverse_iterator(--this->end()));
+	return (Vector<value_type>::reverse_iterator(this->end()));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rbegin(void) const
 {
-	return (Vector<value_type>::const_reverse_iterator(--this->end()));
+	return (Vector<value_type>::const_reverse_iterator(this->end()));
 }
 
 template<typename value_type>
@@ -422,13 +450,13 @@ typename Vector<value_type>::const_iterator Vector<value_type>::end(void) const
 template<typename value_type>
 typename Vector<value_type>::reverse_iterator Vector<value_type>::rend(void)
 {
-	return (Vector<value_type>::reverse_iterator(--this->begin()));
+	return (Vector<value_type>::reverse_iterator(this->begin()));
 }
 
 template<typename value_type>
 typename Vector<value_type>::const_reverse_iterator Vector<value_type>::rend(void) const
 {
-	return (Vector<value_type>::const_reverse_iterator(--this->begin()));
+	return (Vector<value_type>::const_reverse_iterator(this->begin()));
 }
 
 template<typename value_type>
@@ -495,12 +523,14 @@ void Vector<value_type>::reserve(size_t size)
 template<typename value_type>
 value_type &Vector<value_type>::operator[](size_t idx)
 {
+	assert(idx < this->size_);
 	return (this->at(idx));
 }
 
 template<typename value_type>
 value_type const &Vector<value_type>::operator[](size_t idx) const
 {
+	assert(idx < this->size_);
 	return (this->at(idx));
 }
 
@@ -521,24 +551,28 @@ value_type const &Vector<value_type>::at(size_t idx) const
 template<typename value_type>
 value_type &Vector<value_type>::front(void)
 {
+	assert(!this->empty());
 	return (this->container[0]);
 }
 
 template<typename value_type>
 value_type const &Vector<value_type>::front(void) const
 {
+	assert(!this->empty());
 	return (this->container[0]);
 }
 
 template<typename value_type>
 value_type &Vector<value_type>::back(void)
 {
+	assert(!this->empty());
 	return (this->container[this->size_ - 1]);
 }
 
 template<typename value_type>
 value_type const &Vector<value_type>::back(void) const
 {
+	assert(!this->empty());
 	return (this->container[this->size_ - 1]);
 }
 
@@ -643,8 +677,7 @@ template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_type>::iterator position)
 {
 	// TODO: Test
-	this->erase(position, position + 1);
-	return (position);
+	return (this->erase(position, position + 1));
 }
 
 template<typename value_type>
