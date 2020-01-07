@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/06 19:40:20 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 16:30:11 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ int main(void)
 
 	std::cout << "2 elements in vector (index): " << std::endl;
 	for (size_t i = 0; i < 2; i++)
-	{
 		std::cout << vector[i] << " (" << vector.at(i) << ")" << std::endl;
-	}
 
 	std::cout << "2 elements in vector (iterator): " << std::endl;
 	it = vector.begin();
@@ -136,10 +134,10 @@ int main(void)
 	nvector.push_back(vector);
 	nvector.push_back(vvector);
 
-	std::cout << "size: " << vector.size() << std::endl
-		<< "capacity: " << vector.capacity() << std::endl
-		<< "empty?: " << vector.empty() << std::endl
-		<< "max_size: " << vector.max_size() << std::endl;
+	std::cout << "nvector size: " << vector.size() << std::endl
+		<< "nvector capacity: " << vector.capacity() << std::endl
+		<< "nvector empty?: " << vector.empty() << std::endl
+		<< "nvector max_size: " << vector.max_size() << std::endl;
 
 	std::cout << "50 `43` and 50 `42` in nvector[1]: " << std::endl;
 	it = nvector[1].begin();
@@ -207,7 +205,26 @@ int main(void)
 
 	// Erase
 	std::cout << "empty nvector[1] after erase:" << std::endl;
-	it = nvector[1].erase(nvector[1].begin(), nvector[1].end());
+	/*it = nvector[1].erase(nvector[1].begin(), nvector[1].end());
+	ite = nvector[1].end();
+	i = 0;
+	while (it != ite)
+	{
+		std::cout << *it++ << "(" << ++i << ")";
+		if (it == ite)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}*/
+
+	// Erase 25 to 75
+	std::cout << "nvector[1] size: " << nvector[1].size() << std::endl
+		<< "nvector[1] capacity: " << nvector[1].capacity() << std::endl
+		<< "nvector[1] empty?: " << nvector[1].empty() << std::endl
+		<< "nvector[1] max_size: " << nvector[1].max_size() << std::endl;
+	std::cout << "nvector[1] after erase [25-75]:" << std::endl;
+	nvector[1].erase(nvector[1].begin() + 25, nvector[1].begin() + 75);
+	it = nvector[1].begin();
 	ite = nvector[1].end();
 	i = 0;
 	while (it != ite)
@@ -218,25 +235,19 @@ int main(void)
 		else
 			std::cout << ", ";
 	}
-
-	// Erase 25 to 75
-	std::cout << "nvector[2] after erase [25-75]:" << std::endl;
-	it = nvector[2].erase(nvector[2].begin() + 25, nvector[2].end() + 75);
-	ite = nvector[2].end();
-	i = 0;
-	while (it != ite)
-	{
-		std::cout << *it++ << "(" << ++i << ")";
-		if (it == ite)
-			std::cout << std::endl;
-		else
-			std::cout << ", ";
-	}
+	std::cout << "nvector[1] size: " << nvector[1].size() << std::endl
+		<< "nvector[1] capacity: " << nvector[1].capacity() << std::endl
+		<< "nvector[1] empty?: " << nvector[1].empty() << std::endl
+		<< "nvector[1] max_size: " << nvector[1].max_size() << std::endl;
 
 	// Erase first
-	std::cout << "nbvector after erasing first element:" << std::endl;
-	itb = nbvector.erase(nbvector.begin());
-	iteb = nbvector.end();
+	ft::Vector<Number> nbbvector;
+	nbbvector.push_back(43);
+	nbbvector.push_back(44);
+	nbbvector.push_back(45);
+	std::cout << "nbbvector after erasing first element:" << std::endl;
+	itb = nbbvector.erase(nbbvector.begin());
+	iteb = nbbvector.end();
 	i = 0;
 	while (itb != iteb)
 	{

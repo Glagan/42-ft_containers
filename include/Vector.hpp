@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/06 19:41:30 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 16:31:18 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ public:
 		iterator &operator--();
 		iterator& operator+=(int value);
         iterator operator+(int value) const;
-        friend iterator operator+(int value, iterator const &it);
         iterator& operator-=(int value);
         iterator operator-(int value) const;
 	};
@@ -78,6 +77,10 @@ public:
 		bool operator<=(const_iterator const &other) const;
 		bool operator>(const_iterator const &other) const;
 		bool operator>=(const_iterator const &other) const;
+		const_iterator &operator+=(int value);
+        const_iterator operator+(int value) const;
+        const_iterator &operator-=(int value);
+        const_iterator operator-(int value) const;
 
 		const_iterator operator++(int);
 		const_iterator &operator++();
