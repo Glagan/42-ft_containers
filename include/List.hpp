@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 17:47:24 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 18:45:43 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class List
 {
 private:
 	Node<value_type> *container;
+	Node<value_type> *end;
 	size_t size_;
 public:
 	class iterator

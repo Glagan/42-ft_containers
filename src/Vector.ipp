@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 16:31:45 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 18:55:18 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,7 +436,6 @@ template<typename value_type>
 Vector<value_type>::Vector(Vector<value_type>::iterator first, Vector<value_type>::iterator last):
 	capacity_(0), size_(0), container(nullptr)
 {
-	this->container = nullptr;
 	this->assign(first, last);
 }
 
@@ -444,15 +443,13 @@ template<typename value_type>
 Vector<value_type>::Vector(size_t n, value_type const &val):
 	capacity_(0), size_(0), container(nullptr)
 {
-	this->container = nullptr;
-	this->resize(n, val);
+	this->assign(n, val);
 }
 
 template<typename value_type>
 Vector<value_type>::Vector(Vector<value_type> const &other):
 	capacity_(0), size_(0), container(nullptr)
 {
-	this->container = nullptr;
 	this->reserve(other.capacity_);
 	this->assign(other.begin(), other.end());
 }
