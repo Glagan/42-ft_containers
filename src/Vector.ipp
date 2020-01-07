@@ -744,7 +744,6 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_typ
 template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_type>::iterator first, Vector<value_type>::iterator last)
 {
-	// TODO: Test
 	Vector<value_type>::iterator it = this->begin();
 	size_t i = 0;
 	while (it != first)

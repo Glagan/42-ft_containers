@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 16:30:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 16:35:11 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,6 +247,22 @@ int main(void)
 	nbbvector.push_back(45);
 	std::cout << "nbbvector after erasing first element:" << std::endl;
 	itb = nbbvector.erase(nbbvector.begin());
+	iteb = nbbvector.end();
+	i = 0;
+	while (itb != iteb)
+	{
+		std::cout << *itb << "(" << ++i << ", "
+				<< itb->getValue() << ")";
+		if (++itb == iteb)
+			std::cout << std::endl;
+		else
+			std::cout << ", ";
+	}
+
+	// Erase last
+	std::cout << "nbbvector after erasing last element:" << std::endl;
+	nbbvector.erase(nbbvector.end() - 1);
+	itb = nbbvector.begin();
 	iteb = nbbvector.end();
 	i = 0;
 	while (itb != iteb)
