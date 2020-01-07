@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 16:31:18 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 16:49:54 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ namespace ft
 template<typename value_type>
 class Vector
 {
+private:
 	size_t capacity_;
 	size_t size_;
 	value_type *container;
