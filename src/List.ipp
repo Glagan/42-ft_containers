@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 19:19:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/07 20:08:00 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -688,6 +688,16 @@ template<typename value_type>
 typename List<value_type>::iterator List<value_type>::insert(List<value_type>::iterator position, value_type const &val)
 {
 	// TODO: TODO
+	Node<value_type> *node = *position;
+	if (node == this->end)
+		this->push_back(val);
+	Node<value_type> *newNode = new Node<value_type>(val);
+	newNode->next = node;
+	newNode->previous = node->previous;
+	node->previous->next = newNode;
+	node->previous = newNode;
+	++this->size_;
+	return (List<value_type>::iterator(newNode));
 }
 
 template<typename value_type>
