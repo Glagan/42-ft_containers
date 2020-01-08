@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 17:30:22 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/08 14:06:28 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define TEST_HPP
 
 # include <iostream>
-# include "Number.hpp"
-# include "Vector.hpp"
-# include "List.hpp"
+# include "test/Number.hpp"
+# include "include/Vector.hpp"
+# include "include/List.hpp"
 
 void test_Vector(void);
 void test_List(void);

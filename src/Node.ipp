@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:41 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 17:38:48 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/08 14:19:19 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,15 @@ Node<value_type> &Node<value_type>::operator=(Node const &other)
 	this->value_ = other.value_;
 	this->next_ = other.next_;
 	return (*this);
+}
+
+template<typename value_type>
+void Node<value_type>::erase(void)
+{
+	if (this->previous_)
+		this->previous_->next = this->next_;
+	if (this->next_)
+		this->next_->previous_ = this->previous_;
 }
 
 template<typename value_type>
