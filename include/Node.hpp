@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/08 18:06:02 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/08 19:15:21 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,21 @@ private:
 public:
 	Node();
 	Node(value_type const &val);
-	Node(Node<value_type> *previous, value_type const &val, Node<value_type> *next);
+	Node(Node<value_type> *previous, value_type const &val, Node<value_type> *next=nullptr);
 	Node(Node<value_type> const &other);
 	~Node();
 
 	Node<value_type> &operator=(Node<value_type> const &other);
 
-	void erase(void);
+	void insert_before(Node<value_type> *node);
+	void insert_after(Node<value_type> *node);
+	void disconnect(void);
+	void swap(Node<value_type> *node);
 	value_type &value(void);
 	value_type const &value(void) const;
-	Node<value_type> *previous(void);
+	Node<value_type> *&previous(void);
 	Node<value_type> const *previous(void) const;
-	Node<value_type> *next(void);
+	Node<value_type> *&next(void);
 	Node<value_type> const *next(void) const;
 };
 }

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/08 14:16:45 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/08 19:19:18 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ public:
 	void merge(List &x, Compare comp);
 	void sort(void);
 	template<typename Compare>
-	void sort(List &x, Compare comp);
+	void sort(Compare comp);
 	void reverse(void);
 };
 
