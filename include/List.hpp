@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/08 19:19:18 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 13:52:58 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ public:
 		virtual ~iterator();
 
 		iterator &operator=(iterator const &other);
+		Node<value_type> *as_node(void) const;
 
 		value_type &operator*() const;
 		value_type *operator->() const;
@@ -70,6 +71,7 @@ public:
 		virtual ~const_iterator();
 
 		const_iterator &operator=(const_iterator const &other);
+		Node<value_type> const *as_node(void) const;
 
 		value_type const &operator*() const;
 		value_type const *operator->() const;

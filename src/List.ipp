@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/08 19:27:35 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 13:53:05 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ typename List<value_type>::iterator &List<value_type>::iterator::operator=(List<
 {
 	this->pointer = other.pointer;
 	return (*this);
+}
+
+template<typename value_type>
+Node<value_type> *List<value_type>::iterator::as_node(void) const
+{
+	return (this->pointer);
 }
 
 template<typename value_type>
@@ -188,6 +194,12 @@ typename List<value_type>::const_iterator &List<value_type>::const_iterator::ope
 {
 	this->pointer = other.pointer;
 	return (*this);
+}
+
+template<typename value_type>
+Node<value_type> const *List<value_type>::const_iterator::as_node(void) const
+{
+	return (this->pointer);
 }
 
 template<typename value_type>
@@ -479,7 +491,8 @@ List<value_type>::~List()
 
 	while (first != last)
 	{
-		tmp = *first++;
+		tmp = first++.as_node();
+		tmp->disconnect();
 		delete tmp;
 	}
 }
@@ -541,7 +554,7 @@ typename List<value_type>::const_reverse_iterator List<value_type>::rend(void) c
 template<typename value_type>
 bool List<value_type>::empty(void) const
 {
-	return (this->size_ == 0)
+	return (this->size_ == 0);
 }
 
 template<typename value_type>
@@ -553,7 +566,7 @@ size_t List<value_type>::size(void) const
 template<typename value_type>
 size_t List<value_type>::max_size(void) const
 {
-	return (((std::pow(2, 64) - 1) / ((sizeof(Node<value_type> * 2) + sizeof(value_type)) - 1);
+	return (((std::pow(2, 64) - 1) / ((sizeof(Node<value_type>) * 2) + sizeof(value_type))) - 1);
 }
 
 template<typename value_type>
@@ -607,17 +620,15 @@ void List<value_type>::assign(size_t size, value_type const &val)
 template<typename value_type>
 void List<value_type>::push_front(value_type const &val)
 {
+	Node<value_type> *tmp = new Node<value_type>(val);
 	if (this->size_ == 0)
 	{
-		tmp->previous = nullptr;
-		tmp->next = nullptr;
+		tmp->previous() = nullptr;
+		tmp->next() = nullptr;
 		this->end_ = tmp;
 	}
 	else
-	{
-		Node<value_type> *tmp = new Node<value_type>(val);
 		this->begin_->insert_before(tmp);
-	}
 	this->begin_ = tmp;
 	++this->size_;
 }
@@ -634,6 +645,7 @@ void List<value_type>::pop_front(void)
 	else
 	{
 		Node<value_type> *tmp = this->begin_;
+		this->begin_ = tmp->next();
 		tmp->disconnect();
 		delete tmp;
 	}
@@ -663,6 +675,7 @@ void List<value_type>::pop_back(void)
 	else
 	{
 		Node<value_type> *tmp = this->end_;
+		this->end_ = tmp->next();
 		tmp->disconnect();
 		delete tmp;
 		if (--this->size_ == 1)
@@ -673,15 +686,19 @@ void List<value_type>::pop_back(void)
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::insert(List<value_type>::iterator position, value_type const &val)
 {
-	if (node == this->end_)
-		this->push_back(val);
-	else
+	if (position.as_node() == this->begin_)
 	{
-		Node<value_type> *node = *position;
-		Node<value_type> *newNode = new Node<value_type>(val);
-		*position->insert_before(newNode); // TODO: can't access list previous/next from iterator
-		++this->size_;
+		this->push_front(val);
+		return (this->begin());
 	}
+	else if (position.as_node() == this->end_)
+	{
+		this->push_back(val);
+		return (this->end());
+	}
+	Node<value_type> *newNode = new Node<value_type>(val);
+	position.as_node()->insert_before(newNode);
+	++this->size_;
 	return (List<value_type>::iterator(newNode));
 }
 
@@ -700,26 +717,30 @@ void List<value_type>::insert(List<value_type>::iterator position, List::iterato
 }
 
 template<typename value_type>
-List<value_type>::iterator List<value_type>::erase(List<value_type>::iterator position)
+typename List<value_type>::iterator List<value_type>::erase(List<value_type>::iterator position)
 {
-	if (position == this->begin())
-		this->pop_front();
-	else if (position == this->end())
-		this->pop_back();
-	else
+	if (position.as_node() == this->begin())
 	{
-		Node<value_type> *next = *position->next();
-		*position->disconnect(); // TODO: can't access list previous/next from iterator
-		delete *position;
-		--this->size_;
+		this->pop_front();
+		return (this->begin());
 	}
+	else if (position.as_node() == this->end())
+	{
+		this->pop_back();
+		return (this->end());
+	}
+	Node<value_type> *next = position.as_node()->next();
+	position.as_node()->disconnect();
+	delete position.as_node();
+	--this->size_;
+	return (List<value_type>::iterator(next));
 }
 
 template<typename value_type>
-List<value_type>::iterator List<value_type>::erase(List<value_type>::iterator first, List<value_type>::iterator last)
+typename List<value_type>::iterator List<value_type>::erase(List<value_type>::iterator first, List<value_type>::iterator last)
 {
 	while (first != last)
-		this->erase(*first++);
+		this->erase(first++);
 }
 
 template<typename value_type>
@@ -789,13 +810,8 @@ void List<value_type>::unique(void)
 	List<value_type>::iterator last = this->end();
 
 	while (++next != last)
-	{
 		if (*first++ == *next)
-		{
-			this->erase(next);
-			next = first;
-		}
-	}
+			next = this->erase(next);
 }
 
 template<typename value_type>
@@ -807,13 +823,8 @@ void List<value_type>::unique(BinaryPredicate binary_pred)
 	List<value_type>::iterator last = this->end();
 
 	while (++next != last)
-	{
-		if ((*binery_pred)(*first++, *next))
-		{
-			this->erase(next);
-			next = first;
-		}
-	}
+		if ((*binary_pred)(*first++, *next))
+			next = this->erase(next);
 }
 
 template<typename value_type>
@@ -835,7 +846,7 @@ void List<value_type>::merge(List &x)
 		{
 			if (*otherFirst < *first)
 			{
-				*first->insert_before(*otherFirst); // TODO: can't access list previous/next from iterator
+				first.as_node()->insert_before(otherFirst.as_node());
 				break ;
 			}
 		}
@@ -862,7 +873,7 @@ void List<value_type>::merge(List &x, Compare comp)
 		{
 			if ((*comp)(*otherFirst, *first))
 			{
-				*first->insert_before(*otherFirst); // TODO: can't access list previous/next from iterator
+				first.as_node()->insert_before(otherFirst.as_node());
 				break ;
 			}
 		}
@@ -880,7 +891,7 @@ void List<value_type>::sort(void)
 		List<value_type>::iterator next = first;
 		while (++next != last)
 			if (*first < *next)
-				*first->swap(*next); // TODO: can't access list previous/next from iterator
+				first.as_node()->swap(next.as_node());
 		++first;
 	}
 }
@@ -897,7 +908,7 @@ void List<value_type>::sort(Compare comp)
 		List<value_type>::iterator next = first;
 		while (++next != last)
 			if ((*comp)(*next, *first))
-				*first->swap(*next); // TODO: can't access list previous/next from iterator
+				first.as_node()->swap(next.as_node());
 		++first;
 	}
 }
