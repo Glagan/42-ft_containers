@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 13:52:58 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:46:10 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,17 @@
 
 namespace ft
 {
-template<typename value_type>
+template<typename T>
 class List
 {
+protected:
+	typedef ptrdiff_t difference_type;
+	typedef size_t size_type;
+	typedef T value_type;
+	typedef value_type *pointer;
+	typedef value_type const *const_pointer;
+	typedef value_type &reference;
+	typedef value_type const &const_reference;
 private:
 	Node<value_type> *begin_;
 	Node<value_type> *end_;
@@ -124,50 +132,50 @@ public:
 	};
 
 	List();
-	List(size_t n, value_type const &val=value_type());
-	List(List<value_type>::iterator first, List<value_type>::iterator last);
+	List(size_t n, const_reference val=value_type());
+	List(iterator first, iterator last);
 	List(List const &other);
 	virtual ~List();
 
 	List &operator=(List const &other);
 
-	typename List<value_type>::iterator begin(void);
-	typename List<value_type>::const_iterator begin(void) const;
-	typename List<value_type>::reverse_iterator rbegin(void);
-	typename List<value_type>::const_reverse_iterator rbegin(void) const;
-	typename List<value_type>::iterator end(void);
-	typename List<value_type>::const_iterator end(void) const;
-	typename List<value_type>::reverse_iterator rend(void);
-	typename List<value_type>::const_reverse_iterator rend(void) const;
+	iterator begin(void);
+	const_iterator begin(void) const;
+	reverse_iterator rbegin(void);
+	const_reverse_iterator rbegin(void) const;
+	iterator end(void);
+	const_iterator end(void) const;
+	reverse_iterator rend(void);
+	const_reverse_iterator rend(void) const;
 
 	bool empty(void) const;
 	size_t size(void) const;
 	size_t max_size(void) const;
 
-	value_type &front();
-	value_type const &front() const;
-	value_type &back();
-	value_type const &back() const;
+	reference front();
+	const_reference front() const;
+	reference back();
+	const_reference back() const;
 
-	void assign(List<value_type>::iterator first, List<value_type>::iterator last);
-	void assign(List<value_type>::const_iterator first, List<value_type>::const_iterator last);
-	void assign(size_t size, value_type const &val);
-	void push_front(value_type const &val);
+	void assign(iterator first, iterator last);
+	void assign(const_iterator first, const_iterator last);
+	void assign(size_t size, const_reference val);
+	void push_front(const_reference val);
 	void pop_front(void);
-	void push_back(value_type const &val);
+	void push_back(const_reference val);
 	void pop_back(void);
-	List<value_type>::iterator insert(List<value_type>::iterator position, value_type const &val);
-	void insert(List<value_type>::iterator position, size_t size, value_type const &val);
-	void insert(List<value_type>::iterator position, List::iterator first, List::iterator last);
-	List<value_type>::iterator erase(List<value_type>::iterator position);
-	List<value_type>::iterator erase(List<value_type>::iterator first, List<value_type>::iterator last);
+	iterator insert(iterator position, const_reference val);
+	void insert(iterator position, size_t size, const_reference val);
+	void insert(iterator position, List::iterator first, List::iterator last);
+	iterator erase(iterator position);
+	iterator erase(iterator first, iterator last);
 	void swap(List<value_type> &other);
 	void clear(void);
 
-	void splice(List<value_type>::iterator position, List<value_type> &x);
-	void splice(List<value_type>::iterator position, List<value_type> &x, List<value_type>::iterator it);
-	void splice(List<value_type>::iterator position, List<value_type> &x, List<value_type>::iterator first, List<value_type>::iterator last);
-	void remove(value_type const &val);
+	void splice(iterator position, List<value_type> &x);
+	void splice(iterator position, List<value_type> &x, iterator it);
+	void splice(iterator position, List<value_type> &x, iterator first, iterator last);
+	void remove(const_reference val);
 	template<typename Predicate>
 	void remove_if(Predicate pred);
 	void unique(void);

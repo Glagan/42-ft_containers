@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 16:49:54 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:36:03 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,21 @@
 
 namespace ft
 {
-template<typename value_type>
+template<typename T>
 class Vector
 {
+protected:
+	typedef ptrdiff_t difference_type;
+	typedef size_t size_type;
+	typedef T value_type;
+	typedef T* pointer;
+	typedef T const * const_pointer;
+	typedef T& reference;
+	typedef T const & const_reference;
 private:
 	size_t capacity_;
 	size_t size_;
-	value_type *container;
+	pointer container;
 public:
 	class iterator
 	{
@@ -52,18 +60,18 @@ public:
 		iterator &operator++();
 		iterator operator--(int);
 		iterator &operator--();
-		iterator& operator+=(int value);
-        iterator operator+(int value) const;
-        iterator& operator-=(int value);
-        iterator operator-(int value) const;
+		iterator &operator+=(int value);
+		iterator operator+(int value) const;
+		iterator &operator-=(int value);
+		iterator operator-(int value) const;
 	};
 	class const_iterator
 	{
 	protected:
-		value_type const * pointer;
+		value_type const *pointer;
 	public:
 		const_iterator();
-		const_iterator(value_type const * vec);
+		const_iterator(value_type const *vec);
 		const_iterator(const_iterator const &other);
 		const_iterator(iterator const &other);
 		virtual ~const_iterator();
@@ -79,9 +87,9 @@ public:
 		bool operator>(const_iterator const &other) const;
 		bool operator>=(const_iterator const &other) const;
 		const_iterator &operator+=(int value);
-        const_iterator operator+(int value) const;
-        const_iterator &operator-=(int value);
-        const_iterator operator-(int value) const;
+		const_iterator operator+(int value) const;
+		const_iterator &operator-=(int value);
+		const_iterator operator-(int value) const;
 
 		const_iterator operator++(int);
 		const_iterator &operator++();
@@ -110,7 +118,7 @@ public:
 	{
 	public:
 		const_reverse_iterator();
-		const_reverse_iterator(value_type const * vec);
+		const_reverse_iterator(value_type const *vec);
 		const_reverse_iterator(const_reverse_iterator const &other);
 		const_reverse_iterator(reverse_iterator const &other);
 		virtual ~const_reverse_iterator();
@@ -121,21 +129,21 @@ public:
 	};
 
 	Vector();
-	Vector(size_t n, value_type const &val=value_type());
-	Vector(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
+	Vector(size_t n, const_reference val=value_type());
+	Vector(iterator first, iterator last);
 	Vector(Vector<value_type> const &other);
 	virtual ~Vector();
 
 	Vector<value_type> &operator=(Vector<value_type> const &other);
 
-	typename Vector<value_type>::iterator begin(void);
-	typename Vector<value_type>::const_iterator begin(void) const;
-	typename Vector<value_type>::reverse_iterator rbegin(void);
-	typename Vector<value_type>::const_reverse_iterator rbegin(void) const;
-	typename Vector<value_type>::iterator end(void);
-	typename Vector<value_type>::const_iterator end(void) const;
-	typename Vector<value_type>::reverse_iterator rend(void);
-	typename Vector<value_type>::const_reverse_iterator rend(void) const;
+	iterator begin(void);
+	const_iterator begin(void) const;
+	reverse_iterator rbegin(void);
+	const_reverse_iterator rbegin(void) const;
+	iterator end(void);
+	const_iterator end(void) const;
+	reverse_iterator rend(void);
+	const_reverse_iterator rend(void) const;
 
 	size_t size(void) const;
 	size_t max_size(void) const;
@@ -144,25 +152,25 @@ public:
 	bool empty(void) const;
 	void reserve(size_t size);
 
-	value_type &operator[](size_t idx);
-	value_type const &operator[](size_t idx) const;
-	value_type &at(size_t idx);
-	value_type const &at(size_t idx) const;
-	value_type &front(void);
-	value_type const &front(void) const;
-	value_type &back(void);
-	value_type const &back(void) const;
+	reference operator[](size_t idx);
+	const_reference operator[](size_t idx) const;
+	reference at(size_t idx);
+	const_reference at(size_t idx) const;
+	reference front(void);
+	const_reference front(void) const;
+	reference back(void);
+	const_reference back(void) const;
 
-	void assign(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
-	void assign(Vector<value_type>::const_iterator first, Vector<value_type>::const_iterator last);
-	void assign(size_t size, value_type const &val);
-	void push_back(value_type const &val);
+	void assign(iterator first, iterator last);
+	void assign(const_iterator first, const_iterator last);
+	void assign(size_t size, const_reference val);
+	void push_back(const_reference val);
 	void pop_back(void);
-	Vector<value_type>::iterator insert(Vector<value_type>::iterator position, value_type const &val);
-	void insert(Vector<value_type>::iterator position, size_t size, value_type const &val);
-	void insert(Vector<value_type>::iterator position, Vector::iterator first, Vector::iterator last);
-	Vector<value_type>::iterator erase(Vector<value_type>::iterator position);
-	Vector<value_type>::iterator erase(Vector<value_type>::iterator first, Vector<value_type>::iterator last);
+	iterator insert(iterator position, const_reference val);
+	void insert(iterator position, size_t size, const_reference val);
+	void insert(iterator position, iterator first, iterator last);
+	iterator erase(iterator position);
+	iterator erase(iterator first, iterator last);
 	void swap(Vector<value_type> &other);
 	void clear(void);
 };

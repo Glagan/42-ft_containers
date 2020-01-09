@@ -6,14 +6,18 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 17:30:53 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:47:48 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.hpp"
+#include <vector>
 
 void test_Vector(void)
 {
+	ft::Vector<int> empty_vector;
+	(void)empty_vector;
+
 	ft::Vector<int> vector;
 
 	std::cout << "size: " << vector.size() << std::endl
@@ -21,16 +25,7 @@ void test_Vector(void)
 		<< "empty?: " << vector.empty() << std::endl
 		<< "max_size: " << vector.max_size() << std::endl;
 
-	std::cout << "Empty vector: " << std::endl;
-	ft::Vector<int>::iterator it;
-	ft::Vector<int>::iterator ite;
-	/*it = vector.begin();
-	ite = vector.end();
-	while (it != ite)
-	{
-		std::cout << *it << std::endl;
-		it++;
-	}*/
+	std::cout << "Empty vector: <nothing>" << std::endl;
 
 	// 2 elements
 	vector.push_back(5);
@@ -41,6 +36,8 @@ void test_Vector(void)
 		std::cout << vector[i] << " (" << vector.at(i) << ")" << std::endl;
 
 	std::cout << "2 elements in vector (iterator): " << std::endl;
+	ft::Vector<int>::iterator it;
+	ft::Vector<int>::iterator ite;
 	it = vector.begin();
 	ite = vector.end();
 	while (it != ite)
@@ -200,18 +197,7 @@ void test_Vector(void)
 		<< "comparison >=" << (vector >= nvector[1]) << std::endl;
 
 	// Erase
-	std::cout << "empty nvector[1] after erase:" << std::endl;
-	/*it = nvector[1].erase(nvector[1].begin(), nvector[1].end());
-	ite = nvector[1].end();
-	i = 0;
-	while (it != ite)
-	{
-		std::cout << *it++ << "(" << ++i << ")";
-		if (it == ite)
-			std::cout << std::endl;
-		else
-			std::cout << ", ";
-	}*/
+	std::cout << "empty nvector[1] after erase: <nothing>" << std::endl;
 
 	// Erase 25 to 75
 	std::cout << "nvector[1] size: " << nvector[1].size() << std::endl

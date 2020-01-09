@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 13:53:05 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 17:29:45 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,15 +363,13 @@ List<value_type>::reverse_iterator::~reverse_iterator()
 template<typename value_type>
 value_type &List<value_type>::reverse_iterator::operator*() const
 {
-	iterator tmp(*this);
-	return (*--tmp);
+	return (this->pointer->value());
 }
 
 template<typename value_type>
 value_type *List<value_type>::reverse_iterator::operator->() const
 {
-	iterator tmp(*this);
-	return (&*--tmp);
+	return (&this->pointer->value());
 }
 
 template<typename value_type>
@@ -485,15 +483,18 @@ List<value_type>::List(List<value_type> const &other):
 template<typename value_type>
 List<value_type>::~List()
 {
-	List<value_type>::iterator first = this->begin();
-	List<value_type>::iterator last = this->end();
-	Node<value_type> *tmp;
-
-	while (first != last)
+	if (this->size_ > 0)
 	{
-		tmp = first++.as_node();
-		tmp->disconnect();
-		delete tmp;
+		List<value_type>::iterator first = this->begin();
+		List<value_type>::iterator last = this->end();
+		Node<value_type> *tmp;
+
+		while (first != last)
+		{
+			tmp = first++.as_node();
+			tmp->disconnect();
+			delete tmp;
+		}
 	}
 }
 
@@ -518,37 +519,37 @@ typename List<value_type>::const_iterator List<value_type>::begin(void) const
 template<typename value_type>
 typename List<value_type>::reverse_iterator List<value_type>::rbegin(void)
 {
-	return (List<value_type>::reverse_iterator(--this->end()));
+	return (List<value_type>::reverse_iterator(this->end_));
 }
 
 template<typename value_type>
 typename List<value_type>::const_reverse_iterator List<value_type>::rbegin(void) const
 {
-	return (List<value_type>::const_reverse_iterator(--this->end()));
+	return (List<value_type>::const_reverse_iterator(this->end_));
 }
 
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::end(void)
 {
-	return (List<value_type>::iterator(this->end_)++);
+	return (List<value_type>::iterator(nullptr));
 }
 
 template<typename value_type>
 typename List<value_type>::const_iterator List<value_type>::end(void) const
 {
-	return (List<value_type>::const_iterator(this->end_)++);
+	return (List<value_type>::const_iterator(nullptr));
 }
 
 template<typename value_type>
 typename List<value_type>::reverse_iterator List<value_type>::rend(void)
 {
-	return (List<value_type>::reverse_iterator(--this->begin()));
+	return (List<value_type>::reverse_iterator(nullptr));
 }
 
 template<typename value_type>
 typename List<value_type>::const_reverse_iterator List<value_type>::rend(void) const
 {
-	return (List<value_type>::const_reverse_iterator(--this->begin()));
+	return (List<value_type>::const_reverse_iterator(nullptr));
 }
 
 template<typename value_type>
@@ -746,6 +747,7 @@ typename List<value_type>::iterator List<value_type>::erase(List<value_type>::it
 template<typename value_type>
 void List<value_type>::swap(List<value_type> &other)
 {
+	(void)other;
 	// TODO: TODO
 }
 
@@ -758,18 +760,27 @@ void List<value_type>::clear(void)
 template<typename value_type>
 void List<value_type>::splice(List<value_type>::iterator position, List<value_type> &x)
 {
+	(void)position;
+	(void)x;
 	// TODO: TODO
 }
 
 template<typename value_type>
 void List<value_type>::splice(List<value_type>::iterator position, List<value_type> &x, List<value_type>::iterator it)
 {
+	(void)position;
+	(void)x;
+	(void)it;
 	// TODO: TODO
 }
 
 template<typename value_type>
 void List<value_type>::splice(List<value_type>::iterator position, List<value_type> &x, List<value_type>::iterator first, List<value_type>::iterator last)
 {
+	(void)position;
+	(void)x;
+	(void)first;
+	(void)last;
 	// TODO: TODO
 }
 

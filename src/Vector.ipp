@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/07 18:55:18 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:39:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ Vector<value_type>::iterator::iterator():
 }
 
 template<typename value_type>
-Vector<value_type>::iterator::iterator(value_type *val):
-	pointer(val)
+Vector<value_type>::iterator::iterator(value_type *vec):
+	pointer(vec)
 {
 }
 
@@ -448,10 +448,10 @@ Vector<value_type>::Vector(size_t n, value_type const &val):
 
 template<typename value_type>
 Vector<value_type>::Vector(Vector<value_type> const &other):
-	capacity_(0), size_(0), container(nullptr)
+	capacity_(0), size_(other.size_), container(nullptr)
 {
 	this->reserve(other.capacity_);
-	this->assign(other.begin(), other.end());
+	std::memcpy(static_cast<void*>(this->container), static_cast<void*>(other.container), this->size_);
 }
 
 template<typename value_type>
@@ -567,8 +567,7 @@ void Vector<value_type>::reserve(size_t size)
 		value_type *tmp = static_cast<value_type*>(::operator new(sizeof(value_type) * size));
 		if (this->container)
 		{
-			for (size_t i = 0; i < this->size_; i++)
-				tmp[i] = this->container[i];
+			std::memcpy(static_cast<void*>(tmp), static_cast<void*>(this->container), this->size_);
 			::operator delete(this->container);
 		}
 		this->container = tmp;
