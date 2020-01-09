@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 19:47:48 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:54:16 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void test_Vector(void)
 	// 2 elements
 	vector.push_back(5);
 	vector.push_back(42);
+	std::cout << "Last vector element: " << *--vector.end() << std::endl;
 
 	std::cout << "2 elements in vector (index): " << std::endl;
 	for (size_t i = 0; i < 2; i++)

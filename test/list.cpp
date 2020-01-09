@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 17:32:32 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/09 19:54:43 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void test_List(void)
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(3);
+		std::cout << "Last list element: " << *--lst.end() << std::endl;
 
 		ft::List<int>::iterator it = lst.begin();
 		ft::List<int>::iterator ite = lst.end();
@@ -54,7 +55,7 @@ void test_List(void)
 		ft::List<int>::iterator it = lst.begin();
 		ft::List<int>::iterator ite = lst.end();
 		int i = 0;
-		std::cout << "\5, 42, 3:" << std::endl;
+		std::cout << "5, 42, 3:" << std::endl;
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << std::endl;
 
