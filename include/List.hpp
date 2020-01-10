@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 19:46:10 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/10 13:37:58 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 
 namespace ft
 {
+/**
+ * List::iterator
+ * Lists always have an empty node that represent it's end, it's next is never assigned a value
+ * and it's previous is the list last element
+ */
 template<typename T>
 class List
 {
@@ -35,6 +40,8 @@ private:
 	Node<value_type> *begin_;
 	Node<value_type> *end_;
 	size_t size_;
+
+	void make_bounds(void);
 public:
 	class iterator
 	{

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 17:29:45 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/10 13:55:26 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -457,12 +457,14 @@ template<typename value_type>
 List<value_type>::List():
 	begin_(nullptr), end_(nullptr), size_(0)
 {
+	this->make_bounds();
 }
 
 template<typename value_type>
 List<value_type>::List(size_t n, value_type const &val):
 	begin_(nullptr), end_(nullptr), size_(0)
 {
+	this->make_bounds();
 	this->assign(n, val);
 }
 
@@ -470,6 +472,7 @@ template<typename value_type>
 List<value_type>::List(List<value_type>::iterator first, List<value_type>::iterator last):
 	begin_(nullptr), end_(nullptr), size_(0)
 {
+	this->make_bounds();
 	this->assign(first, last);
 }
 
@@ -477,12 +480,14 @@ template<typename value_type>
 List<value_type>::List(List<value_type> const &other):
 	begin_(nullptr), end_(nullptr), size_(0)
 {
+	this->make_bounds();
 	this->assign(other.begin(), other.end());
 }
 
 template<typename value_type>
 List<value_type>::~List()
 {
+	// TODO: Better
 	if (this->size_ > 0)
 	{
 		List<value_type>::iterator first = this->begin();
@@ -496,6 +501,15 @@ List<value_type>::~List()
 			delete tmp;
 		}
 	}
+}
+
+template<typename value_type>
+void List<value_type>::make_bounds(void)
+{
+	this->end_ = new Node<value_type>();
+	this->end_->next() = nullptr;
+	this->end_->previous() = nullptr;
+	this->begin_ = this->end_;
 }
 
 template<typename value_type>
@@ -519,37 +533,37 @@ typename List<value_type>::const_iterator List<value_type>::begin(void) const
 template<typename value_type>
 typename List<value_type>::reverse_iterator List<value_type>::rbegin(void)
 {
-	return (List<value_type>::reverse_iterator(this->end_));
+	return (List<value_type>::reverse_iterator(--this->end()));
 }
 
 template<typename value_type>
 typename List<value_type>::const_reverse_iterator List<value_type>::rbegin(void) const
 {
-	return (List<value_type>::const_reverse_iterator(this->end_));
+	return (List<value_type>::const_reverse_iterator(--this->end()));
 }
 
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::end(void)
 {
-	return (List<value_type>::iterator(nullptr));
+	return (List<value_type>::iterator(this->end_));
 }
 
 template<typename value_type>
 typename List<value_type>::const_iterator List<value_type>::end(void) const
 {
-	return (List<value_type>::const_iterator(nullptr));
+	return (List<value_type>::const_iterator(this->end_));
 }
 
 template<typename value_type>
 typename List<value_type>::reverse_iterator List<value_type>::rend(void)
 {
-	return (List<value_type>::reverse_iterator(nullptr));
+	return (List<value_type>::reverse_iterator(--this->begin()));
 }
 
 template<typename value_type>
 typename List<value_type>::const_reverse_iterator List<value_type>::rend(void) const
 {
-	return (List<value_type>::const_reverse_iterator(nullptr));
+	return (List<value_type>::const_reverse_iterator(--this->begin()));
 }
 
 template<typename value_type>
@@ -585,13 +599,13 @@ value_type const &List<value_type>::front() const
 template<typename value_type>
 value_type &List<value_type>::back()
 {
-	return (this->begin_->previous()->value());
+	return (this->end_->previous()->value());
 }
 
 template<typename value_type>
 value_type const &List<value_type>::back() const
 {
-	return (this->begin_->previous()->value());
+	return (this->end_->previous()->value());
 }
 
 template<typename value_type>
@@ -599,7 +613,7 @@ void List<value_type>::assign(List<value_type>::iterator first, List<value_type>
 {
 	this->clear();
 	while (first != last)
-		this->begin_.push_back(*first++);
+		this->push_back(*first++);
 }
 
 template<typename value_type>
@@ -607,7 +621,7 @@ void List<value_type>::assign(List<value_type>::const_iterator first, List<value
 {
 	this->clear();
 	while (first != last)
-		this->begin_.push_back(*first++);
+		this->push_back(*first++);
 }
 
 template<typename value_type>
@@ -615,7 +629,7 @@ void List<value_type>::assign(size_t size, value_type const &val)
 {
 	this->clear();
 	for (size_t i = 0; i < size; i++)
-		this->begin_.push_back(val);
+		this->push_back(val);
 }
 
 template<typename value_type>
@@ -623,11 +637,7 @@ void List<value_type>::push_front(value_type const &val)
 {
 	Node<value_type> *tmp = new Node<value_type>(val);
 	if (this->size_ == 0)
-	{
-		tmp->previous() = nullptr;
-		tmp->next() = nullptr;
-		this->end_ = tmp;
-	}
+		this->end_->insert_before(tmp);
 	else
 		this->begin_->insert_before(tmp);
 	this->begin_ = tmp;
@@ -640,32 +650,27 @@ void List<value_type>::pop_front(void)
 	if (this->size_ == 1)
 	{
 		delete this->begin_;
-		this->begin_ = nullptr;
-		this->end_ = nullptr;
+		this->begin_ = this->end_;
+		this->end_->previous() = nullptr;
 	}
-	else
+	else if (this->size_ >= 1)
 	{
-		Node<value_type> *tmp = this->begin_;
-		this->begin_ = tmp->next();
-		tmp->disconnect();
-		delete tmp;
+		Node<value_type> *tmp = this->begin_->next();
+		this->begin_->disconnect();
+		delete this->begin_;
+		this->begin_ = tmp;
 	}
-	if (--this->size_ == 1)
-		this->end_ = this->begin_;
+	--this->size_;
 }
 
 template<typename value_type>
 void List<value_type>::push_back(value_type const &val)
 {
+	Node<value_type> *tmp = new Node<value_type>(val);
+	this->end_->insert_before(tmp);
 	if (this->size_ == 0)
-		this->push_front(val);
-	else
-	{
-		Node<value_type> *tmp = new Node<value_type>(val);
-		this->end_->insert_after(tmp);
-		this->end_ = tmp;
-		++this->size_;
-	}
+		this->begin_ = tmp;
+	++this->size_;
 }
 
 template<typename value_type>
@@ -673,26 +678,24 @@ void List<value_type>::pop_back(void)
 {
 	if (this->size_ == 1)
 		this->pop_front();
-	else
+	else if (this->size_ >= 1)
 	{
-		Node<value_type> *tmp = this->end_;
-		this->end_ = tmp->next();
-		tmp->disconnect();
+		Node<value_type> *tmp = this->end_->previous();
+		this->end_->previous()->disconnect();
 		delete tmp;
-		if (--this->size_ == 1)
-			this->begin_ = this->end_;
+		--this->size_;
 	}
 }
 
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::insert(List<value_type>::iterator position, value_type const &val)
 {
-	if (position.as_node() == this->begin_)
+	if (position == this->begin())
 	{
 		this->push_front(val);
 		return (this->begin());
 	}
-	else if (position.as_node() == this->end_)
+	else if (position == this->end())
 	{
 		this->push_back(val);
 		return (this->end());
@@ -720,12 +723,12 @@ void List<value_type>::insert(List<value_type>::iterator position, List::iterato
 template<typename value_type>
 typename List<value_type>::iterator List<value_type>::erase(List<value_type>::iterator position)
 {
-	if (position.as_node() == this->begin())
+	if (position == this->begin())
 	{
 		this->pop_front();
 		return (this->begin());
 	}
-	else if (position.as_node() == this->end())
+	else if (position == this->end())
 	{
 		this->pop_back();
 		return (this->end());
@@ -793,8 +796,9 @@ void List<value_type>::remove(value_type const &val)
 	while (first != last)
 	{
 		if (*first == val)
-			this->erase(first);
-		++first;
+			first = this->erase(first);
+		else
+			++first;
 	}
 }
 
@@ -808,8 +812,9 @@ void List<value_type>::remove_if(Predicate pred)
 	while (first != last)
 	{
 		if ((*pred)(*first))
-			this->erase(first);
-		++first;
+			first = this->erase(first);
+		else
+			++first;
 	}
 }
 
@@ -820,7 +825,7 @@ void List<value_type>::unique(void)
 	List<value_type>::iterator next = first;
 	List<value_type>::iterator last = this->end();
 
-	while (++next != last)
+	while (next != last && ++next != last)
 		if (*first++ == *next)
 			next = this->erase(next);
 }
@@ -833,7 +838,7 @@ void List<value_type>::unique(BinaryPredicate binary_pred)
 	List<value_type>::iterator next = first;
 	List<value_type>::iterator last = this->end();
 
-	while (++next != last)
+	while (next != last && ++next != last)
 		if ((*binary_pred)(*first++, *next))
 			next = this->erase(next);
 }
@@ -843,6 +848,11 @@ void List<value_type>::merge(List &x)
 {
 	if (&x == this)
 		return ;
+	if (this->size_ == 0)
+	{
+		this->assign(x.begin(), x.end());
+		return ;
+	}
 	List<value_type>::iterator otherFirst = x.begin();
 	List<value_type>::iterator next = otherFirst;
 	List<value_type>::iterator otherLast = x.end();
@@ -870,6 +880,11 @@ void List<value_type>::merge(List &x, Compare comp)
 {
 	if (&x == this)
 		return ;
+	if (this->size_ == 0)
+	{
+		this->assign(x.begin(), x.end());
+		return ;
+	}
 	List<value_type>::iterator otherFirst = x.begin();
 	List<value_type>::iterator next = otherFirst;
 	List<value_type>::iterator otherLast = x.end();
@@ -927,9 +942,11 @@ void List<value_type>::sort(Compare comp)
 template<typename value_type>
 void List<value_type>::reverse(void)
 {
-	Node<value_type> *tmp;
-	tmp = this->begin_;
-	this->begin_ = this->end_;
-	this->end_ = tmp;
+	if (this->size_ <= 1)
+		return ;
+	Node<value_type> *tmp = this->end_->next();
+	this->end_->next() = this->end_->previous();
+	this->end_->previous() = tmp;
+	this->begin_ = this->end_->next();
 }
 }

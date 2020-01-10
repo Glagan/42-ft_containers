@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:41 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/08 19:17:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/10 13:54:52 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ template<typename value_type>
 void Node<value_type>::insert_before(Node<value_type> *node)
 {
 	if (this->previous_)
+	{
 		node->previous() = this->previous_;
+		this->previous_->next() = node;
+	}
 	node->next() = this;
 	this->previous_ = node;
 }
@@ -63,7 +66,10 @@ template<typename value_type>
 void Node<value_type>::insert_after(Node<value_type> *node)
 {
 	if (this->next_)
+	{
 		node->next() = this->next_;
+		this->next_->previous() = node;
+	}
 	node->previous() = this;
 	this->next_ = node;
 }
