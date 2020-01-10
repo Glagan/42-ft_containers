@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/10 13:37:58 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/10 18:14:37 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ private:
 	size_t size_;
 
 	void make_bounds(void);
+	void reset_bounds(void);
 public:
 	class iterator
 	{
@@ -177,6 +178,7 @@ public:
 	iterator erase(iterator position);
 	iterator erase(iterator first, iterator last);
 	void swap(List<value_type> &other);
+	void resize(size_t n, value_type val=value_type());
 	void clear(void);
 
 	void splice(iterator position, List<value_type> &x);

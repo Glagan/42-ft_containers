@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 19:54:16 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/10 18:56:46 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,20 @@ void test_Vector(void)
 	vector.clear();
 
 	// A lot of elements
-	for (size_t i = 0; i < 250; i++)
+	for (size_t i = 0; i < 50; i++)
 		vector.push_back(i);
 
-	std::cout << "250 elements in vector (index): " << std::endl;
-	for (size_t i = 0; i < 250; i++)
+	std::cout << "50 elements in vector (index): " << std::endl;
+	for (size_t i = 0; i < 50; i++)
 	{
 		std::cout << vector[i] << " (" << vector.at(i) << ")";
-		if (i < 249)
+		if (i < 49)
 			std::cout << ", ";
 		else
 			std::cout << std::endl;
 	}
 
-	std::cout << "250 elements in vector (iterator): " << std::endl;
+	std::cout << "50 elements in vector (iterator): " << std::endl;
 	it = vector.begin();
 	ite = vector.end();
 	while (it != ite)
@@ -78,7 +78,7 @@ void test_Vector(void)
 	}
 
 	// Reverse
-	std::cout << "250 elements in vector (reverse_iterator): " << std::endl;
+	std::cout << "50 elements in vector (reverse_iterator): " << std::endl;
 	ft::Vector<int>::reverse_iterator rit = vector.rbegin();
 	ft::Vector<int>::reverse_iterator rite = vector.rend();
 	while (rit != rite)

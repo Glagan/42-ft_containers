@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/09 19:39:59 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/10 19:02:46 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -436,6 +436,7 @@ template<typename value_type>
 Vector<value_type>::Vector(Vector<value_type>::iterator first, Vector<value_type>::iterator last):
 	capacity_(0), size_(0), container(nullptr)
 {
+	this->reserve(128);
 	this->assign(first, last);
 }
 
@@ -451,12 +452,13 @@ Vector<value_type>::Vector(Vector<value_type> const &other):
 	capacity_(0), size_(other.size_), container(nullptr)
 {
 	this->reserve(other.capacity_);
-	std::memcpy(static_cast<void*>(this->container), static_cast<void*>(other.container), this->size_);
+	std::memcpy(static_cast<void*>(this->container), static_cast<void*>(other.container), other.size_);
 }
 
 template<typename value_type>
 Vector<value_type>::~Vector()
 {
+	this->clear();
 	if (this->container)
 		::operator delete(this->container);
 }
@@ -464,6 +466,8 @@ Vector<value_type>::~Vector()
 template<typename value_type>
 Vector<value_type> &Vector<value_type>::operator=(Vector<value_type> const &other)
 {
+	if (this->capacity_ == 0)
+		this->reserve(128);
 	this->assign(other.begin(), other.end());
 	return (*this);
 }
@@ -637,7 +641,7 @@ void Vector<value_type>::assign(Vector<value_type>::iterator first, Vector<value
 {
 	this->clear();
 	while (first != last)
-		this->container.push_back(*first++);
+		this->push_back(*first++);
 }
 
 template<typename value_type>
@@ -663,7 +667,7 @@ template<typename value_type>
 void Vector<value_type>::push_back(value_type const &val)
 {
 	if (this->size_ == this->capacity_)
-		this->reserve(this->capacity_ + 256);
+		this->reserve(this->capacity_ * 2);
 	this->container[this->size_++] = val;
 }
 
@@ -684,7 +688,7 @@ template<typename value_type>
 void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t size, value_type const &val)
 {
 	if (this->size_ + size == this->capacity_)
-		this->reserve(this->capacity_ + size + 256);
+		this->reserve(this->capacity_ * 2);
 	Vector<value_type>::iterator it = this->begin();
 	size_t i = 0;
 	while (it != position)
@@ -695,9 +699,11 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t si
 	if (it == this->end())
 		return ;
 	for (size_t j = this->size_; j >= 1 && j >= i; j--)
-		this->container[j + size - 1] = this->container[j - 1];
+		std::memmove(static_cast<void*>(this->container + j + size - 1),
+					static_cast<void*>(this->container + j - 1), 1);
 	for (size_t j = 0; j < size; j++)
-		this->container[i + j] = val;
+		std::memcpy(static_cast<void*>(this->container + i + j),
+					&val, 1);
 	this->size_ += size;
 }
 
@@ -712,7 +718,7 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::i
 		++cfirst;
 	}
 	if (this->size_ + size == this->capacity_)
-		this->reserve(this->capacity_ + size + 256);
+		this->reserve(this->capacity_ * 2);
 	Vector<value_type>::iterator it = this->begin();
 	size_t i = 0;
 	while (it != position)
@@ -723,9 +729,11 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::i
 	if (it == this->end())
 		return ;
 	for (size_t j = this->size_ - 1; j > i + 1; j++)
-		this->container[j + size] = this->container[j - 1];
+		std::memmove(static_cast<void*>(this->container + j + size),
+					static_cast<void*>(this->container + j - 1), 1);
 	for (size_t j = 0; j < size; j++)
-		this->container[i + j] == *first++;
+		std::memcpy(static_cast<void*>(this->container + i + j),
+					&*first++, 1);
 	this->size_ += size;
 }
 
@@ -759,7 +767,8 @@ typename Vector<value_type>::iterator Vector<value_type>::erase(Vector<value_typ
 		stopPos++;
 	}
 	for ( ; stopPos < this->size_; stopPos++)
-		this->container[i++] = this->container[stopPos];
+		std::memmove(static_cast<void*>(this->container + i++),
+					static_cast<void*>(this->container + stopPos), 1);
 	this->size_ -= deletedElements;
 	return (Vector<value_type>::iterator(&this->container[returnPosition]));
 }
