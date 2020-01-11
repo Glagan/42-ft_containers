@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:31:57 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:44:54 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -682,6 +682,7 @@ template<typename value_type>
 typename Vector<value_type>::iterator Vector<value_type>::insert(Vector<value_type>::iterator position, value_type const &val)
 {
 	this->insert(position, 1, val);
+	return (++position);
 }
 
 template<typename value_type>
@@ -696,8 +697,6 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t si
 		++it;
 		++i;
 	}
-	if (it == this->end())
-		return ;
 	for (size_t j = this->size_; j >= 1 && j >= i; j--)
 		std::memmove(static_cast<void*>(this->container + j + size - 1),
 					static_cast<void*>(this->container + j - 1), 1);

@@ -6,12 +6,11 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:40:53 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:25:39 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.hpp"
-#include <list>
 
 bool less_than_99(int const &nbr)
 {
@@ -183,21 +182,11 @@ void test_List(void)
 		lst.push_back(42);
 		lst.push_back(3);
 
-		ft::List<int>::iterator it = lst.begin();
-		ft::List<int>::iterator ite = lst.end();
-		int i = 1;
-		std::cout << "[5, 42, 3]:" << '\n';
-		while (it != ite)
-			std::cout << i++ << " -> " << *it++ << '\n';
+		display_container("[5, 42, 3]:", lst);
 		std::cout << "[3] -> " << *lst.erase(++lst.begin()) << '\n';
+		display_container("42 deleted [5, 3]:", lst);
 
-		it = lst.begin();
-		ite = lst.end();
-		std::cout << "42 deleted [5, 3]:" << '\n';
-		while (it != ite)
-			std::cout << *it++ << '\n';
-
-		it = lst.erase(--lst.end());
+		ft::List<int>::iterator it = lst.erase(--lst.end());
 		std::cout << "deleted [end] -> ";
 		if (it == lst.end())
 			std::cout << "returned [end]" << '\n';
@@ -217,40 +206,17 @@ void test_List(void)
 		ft::List<int> lst;
 
 		lst.assign(5, 42);
-		ft::List<int>::iterator it = lst.begin();
-		ft::List<int>::iterator ite = lst.end();
-		int i = 1;
-		std::cout << "[42, 42, 42, 42, 42]:\n\t";
-		while (it != ite)
-			std::cout << "[" << i++ << "] " << *it++ <<  ", ";
-		std::cout << '\n';
+		display_container("[42, 42, 42, 42, 42]:", lst);
 
 		ft::List<int> lst2;
 		lst2.assign(5, 43);
-
+		display_container("lst2[43, 43, 43, 43, 43]:", lst2);
 		lst.assign(lst2.begin(), lst2.end());
-		it = lst.begin();
-		ite = lst.end();
-		i = 1;
-		std::cout << "[43, 43, 43, 43, 43]:\n\t";
-		while (it != ite)
-			std::cout << "[" << i++ << "] " << *it++ << ", ";
-		std::cout << '\n';
+		display_container("lst [43, 43, 43, 43, 43]:", lst);
+
 		lst2.assign(5, 44);
-
-		it = lst.begin();
-		ite = lst.end();
-		std::cout << "lst[43, 43, 43, 43, 43]:\n\t";
-		while (it != ite)
-			std::cout <<  *it++ << ", ";
-		std::cout << '\n';
-
-		it = lst2.begin();
-		ite = lst2.end();
-		std::cout << "lst2[44, 44, 44, 44, 44]:\n\t";
-		while (it != ite)
-			std::cout << *it++ << ", ";
-		std::cout << '\n';
+		display_container("lst[43, 43, 43, 43, 43]:", lst);
+		display_container("lst2[44, 44, 44, 44, 44]:", lst2);
 	}
 
 	std::cout << "\n---insert\n" << '\n';
@@ -258,38 +224,18 @@ void test_List(void)
 		ft::List<int> lst;
 
 		lst.insert(lst.begin(), 5);
-		ft::List<int>::iterator it = lst.begin();
-		ft::List<int>::iterator ite = lst.end();
-		std::cout << "[5]:" << '\n';
-		while (it != ite)
-			std::cout << *it++ <<  ", ";
-		std::cout << '\n';
+		display_container("[5]:", lst);
 
 		lst.insert(lst.begin(), 2, 42);
-		it = lst.begin();
-		ite = lst.end();
-		std::cout << "lst[42, 42, 5]:" << '\n';
-		while (it != ite)
-			std::cout << *it++ <<  ", ";
-		std::cout << '\n';
+		display_container("lst[42, 42, 5]:", lst);
 
 		ft::List<int> lst2;
 
 		lst2.insert(lst2.begin(), lst.begin(), lst.end());
-		it = lst2.begin();
-		ite = lst2.end();
-		std::cout << "lst to lst2[42, 42, 5]:" << '\n';
-		while (it != ite)
-			std::cout << *it++ <<  ", ";
-		std::cout << '\n';
+		display_container("lst to lst2[42, 42, 5]:", lst2);
 
 		lst2.insert(lst2.end(), lst.begin(), lst.end());
-		it = lst2.begin();
-		ite = lst2.end();
-		std::cout << "lst to lst2[42, 42, 5, 42, 42, 5]:" << '\n';
-		while (it != ite)
-			std::cout << *it++ <<  ", ";
-		std::cout << '\n';
+		display_container("lst to lst2[42, 42, 5, 42, 42, 5]:", lst2);
 	}
 
 	std::cout << "\n---remove\n" << '\n';
@@ -303,25 +249,25 @@ void test_List(void)
 		lst.push_back(5);
 		lst.push_back(45);
 
-		display_list("[5, 42, 43, 42, 44, 5, 45]:", lst);
+		display_container("[5, 42, 43, 42, 44, 5, 45]:", lst);
 
 		lst.remove(45);
-		display_list("[5, 42, 43, 42, 44, 5] delete {45} :", lst);
+		display_container("[5, 42, 43, 42, 44, 5] delete {45} :", lst);
 
 		lst.remove(5);
-		display_list("[42, 43, 42, 44] delete {5}:", lst);
+		display_container("[42, 43, 42, 44] delete {5}:", lst);
 
 		lst.remove(99);
-		display_list("[42, 43, 42, 44] delete {99}:", lst);
+		display_container("[42, 43, 42, 44] delete {99}:", lst);
 
 		lst.remove(42);
-		display_list("[42, 43, 42, 44] delete {42}:", lst);
+		display_container("[42, 43, 42, 44] delete {42}:", lst);
 
 		lst.remove(43);
-		display_list("[42, 43, 42, 44] delete {43}:", lst);
+		display_container("[42, 43, 42, 44] delete {43}:", lst);
 
 		lst.remove(44);
-		display_list("[42, 43, 42, 44] delete {44}:", lst);
+		display_container("[42, 43, 42, 44] delete {44}:", lst);
 	}
 
 	std::cout << "\n---remove_if\n" << '\n';
@@ -335,16 +281,16 @@ void test_List(void)
 		lst.push_back(5);
 		lst.push_back(45);
 
-		display_list("[5, 42, 43, 42, 44, 5, 45]:", lst);
+		display_container("[5, 42, 43, 42, 44, 5, 45]:", lst);
 
 		lst.remove_if(&less_than_43);
-		display_list("[43, 44, 45] delete {<43}:", lst);
+		display_container("[43, 44, 45] delete {<43}:", lst);
 
 		lst.remove_if(&less_than_1);
-		display_list("[43, 44, 45] delete {<1}:", lst);
+		display_container("[43, 44, 45] delete {<1}:", lst);
 
 		lst.remove_if(&less_than_99);
-		display_list("[] delete {<99}:", lst);
+		display_container("[] delete {<99}:", lst);
 	}
 
 	std::cout << "\n---unique\n" << '\n';
@@ -361,19 +307,19 @@ void test_List(void)
 		lst.push_back(45);
 		lst.push_back(45);
 
-		display_list("[5, 5, 42, 42, 44, 43, 44, 5, 45, 45]:", lst);
+		display_container("[5, 5, 42, 42, 44, 43, 44, 5, 45, 45]:", lst);
 
 		lst.unique();
-		display_list("[5, 42, 44, 43, 44, 5, 45] {unique}:", lst);
+		display_container("[5, 42, 44, 43, 44, 5, 45] {unique}:", lst);
 
 		lst.unique();
-		display_list("[5, 42, 44, 43, 44, 5, 45] {unique: no change}:", lst);
+		display_container("[5, 42, 44, 43, 44, 5, 45] {unique: no change}:", lst);
 
 		lst.remove(43);
-		display_list("[5, 42, 44, 44, 5, 45] delete {43}:", lst);
+		display_container("[5, 42, 44, 44, 5, 45] delete {43}:", lst);
 
 		lst.unique();
-		display_list("[5, 42, 44, 5, 45] {unique}:", lst);
+		display_container("[5, 42, 44, 5, 45] {unique}:", lst);
 	}
 
 	std::cout << "\n---unique (binary pred)\n" << '\n';
@@ -390,13 +336,13 @@ void test_List(void)
 		lst.push_back(45);
 		lst.push_back(45);
 
-		display_list("[5, 5, 42, 42, 44, 43, 44, 5, 45, 45]:", lst);
+		display_container("[5, 5, 42, 42, 44, 43, 44, 5, 45, 45]:", lst);
 
 		lst.unique(&lesser_than_rhs);
-		display_list("[5, 42, 44, 43, 44, 5, 45] {lesser_than_rhs}:", lst);
+		display_container("[5, 42, 44, 43, 44, 5, 45] {lesser_than_rhs}:", lst);
 
 		lst.unique(&lesser_than_rhs);
-		display_list("[5, 42, 44, 43, 44, 5, 45] {lesser_than_rhs: no change}:", lst);
+		display_container("[5, 42, 44, 43, 44, 5, 45] {lesser_than_rhs: no change}:", lst);
 
 		std::cout << "double list:" << '\n';
 		{
@@ -411,10 +357,10 @@ void test_List(void)
 			lst.push_back(73.0);
 			lst.push_back(73.35);
 
-			display_list("[2.72, 3.14, 12.15, 12.77, 15.3, 72.25, 73.0, 73.35]:", lst);
+			display_container("[2.72, 3.14, 12.15, 12.77, 15.3, 72.25, 73.0, 73.35]:", lst);
 
 			lst.unique(&same_integral_part);
-			display_list("[2.72, 3.14, 12.15, 15.3, 72.25, 73.0] {same_integral_part}:", lst);
+			display_container("[2.72, 3.14, 12.15, 15.3, 72.25, 73.0] {same_integral_part}:", lst);
 		}
 	}
 
@@ -434,15 +380,15 @@ void test_List(void)
 
 		std::cout << "lst size "<< lst.size() << ", lst2 size " << lst2.size() << '\n';
 
-		display_list("[5, 42, 43, 44]:", lst);
-		display_list("[12, 28, 45, 5]:", lst2);
+		display_container("[5, 42, 43, 44]:", lst);
+		display_container("[12, 28, 45, 5]:", lst2);
 
 		lst.merge(lst2);
 
 		std::cout << "lst size "<< lst.size() << ", lst2 size " << lst2.size() << '\n';
 		std::cout << "lst2 empty ? " << lst2.size() << '\n';
-		display_list("[5, 5, 12, 28, 42, 43, 44, 45] {lst after merge}:", lst);
-		display_list("empty lst2 after merge []:", lst2);
+		display_container("[5, 5, 12, 28, 42, 43, 44, 45] {lst after merge}:", lst);
+		display_container("empty lst2 after merge []:", lst2);
 	}
 
 	std::cout << "\n---merge (comp)\n" << '\n';
@@ -461,16 +407,16 @@ void test_List(void)
 
 		std::cout << "lst size "<< lst.size() << ", lst2 size " << lst2.size() << '\n';
 
-		display_list("[5, 42, 43, 44]:", lst);
-		display_list("[12, 28, 45, 5]:", lst2);
+		display_container("[5, 42, 43, 44]:", lst);
+		display_container("[12, 28, 45, 5]:", lst2);
 
 		std::cout << "reverse merge comparator:" << '\n';
 		lst.merge(lst2, &lesser_than_rhs);
 
 		std::cout << "lst size "<< lst.size() << ", lst2 size " << lst2.size() << '\n';
 		std::cout << "lst2 empty ? " << lst2.size() << '\n';
-		display_list("[5, 5, 12, 28, 42, 43, 44, 45] {lst after merge}:", lst);
-		display_list("empty lst2 after merge []:", lst2);
+		display_container("[5, 5, 12, 28, 42, 43, 44, 45] {lst after merge}:", lst);
+		display_container("empty lst2 after merge []:", lst2);
 	}
 
 	std::cout << "\n---sort\n" << '\n';
@@ -484,13 +430,13 @@ void test_List(void)
 		lst.push_back(42);
 		lst.push_back(5);
 
-		display_list("[44, 58, 43, 43, 42, 42, 5]:", lst);
+		display_container("[44, 58, 43, 43, 42, 42, 5]:", lst);
 
 		lst.sort();
-		display_list("[5, 42, 42, 43, 43, 44, 58] {sorted}:", lst);
+		display_container("[5, 42, 42, 43, 43, 44, 58] {sorted}:", lst);
 
 		lst.sort();
-		display_list("[5, 42, 42, 43, 43, 44, 58] {sorted: no change}:", lst);
+		display_container("[5, 42, 42, 43, 43, 44, 58] {sorted: no change}:", lst);
 	}
 
 	std::cout << "\n---sort (comp)\n" << '\n';
@@ -504,13 +450,13 @@ void test_List(void)
 		lst.push_back(58);
 		lst.push_back(43);
 
-		display_list("[5, 42, 42, 44, 43, 58, 43]:", lst);
+		display_container("[5, 42, 42, 44, 43, 58, 43]:", lst);
 
 		lst.sort(&sort_desc);
-		display_list("[58, 44, 43, 43, 42, 42, 5] {sorted desc}:", lst);
+		display_container("[58, 44, 43, 43, 42, 42, 5] {sorted desc}:", lst);
 
 		lst.sort(&sort_desc);
-		display_list("[58, 44, 43, 43, 42, 42, 5] {sorted desc: no change}:", lst);
+		display_container("[58, 44, 43, 43, 42, 42, 5] {sorted desc: no change}:", lst);
 	}
 
 	std::cout << "\n---reverse\n" << '\n';
@@ -522,25 +468,25 @@ void test_List(void)
 		lst.push_back(44);
 		lst.push_back(58);
 
-		display_list("[5, 42, 43, 44, 58]:", lst);
+		display_container("[5, 42, 43, 44, 58]:", lst);
 
 		lst.reverse();
-		display_list("[58, 44, 43, 42, 5] {reversed}:", lst);
+		display_container("[58, 44, 43, 42, 5] {reversed}:", lst);
 
 		lst.reverse();
-		display_list("[5, 42, 43, 44, 58] {reversed twice}:", lst);
+		display_container("[5, 42, 43, 44, 58] {reversed twice}:", lst);
 
 		ft::List<int> lst2;
 		lst2.push_back(5);
 		lst2.push_back(42);
 
-		display_list("[5, 42]:", lst2);
+		display_container("[5, 42]:", lst2);
 
 		lst2.reverse();
-		display_list("[42, 5] {reversed}:", lst2);
+		display_container("[42, 5] {reversed}:", lst2);
 
 		lst2.reverse();
-		display_list("[5, 42] {reversed twice}:", lst2);
+		display_container("[5, 42] {reversed twice}:", lst2);
 	}
 
 	std::cout << "\n---resize\n" << '\n';
@@ -549,19 +495,19 @@ void test_List(void)
 		lst.push_back(5);
 		lst.push_back(42);
 
-		display_list("[5, 42]:", lst);
+		display_container("[5, 42]:", lst);
 
 		lst.resize(5, 43);
-		display_list("[5, 42, 43, 43, 43]:", lst);
+		display_container("[5, 42, 43, 43, 43]:", lst);
 
 		lst.resize(1);
-		display_list("[5]:", lst);
+		display_container("[5]:", lst);
 
 		lst.resize(0);
-		display_list("[]:", lst);
+		display_container("[]:", lst);
 
 		lst.resize(5);
-		display_list("[0, 0, 0, 0, 0]:", lst);
+		display_container("[0, 0, 0, 0, 0]:", lst);
 	}
 
 	std::cout << "\n---splice\n" << '\n';
@@ -575,20 +521,20 @@ void test_List(void)
 		lst2.push_back(45);
 		lst2.push_back(58);
 
-		display_list("[5, 42]:", lst);
-		display_list("[43, 45, 58]:", lst2);
+		display_container("[5, 42]:", lst);
+		display_container("[43, 45, 58]:", lst2);
 
 		lst.splice(lst.begin(), lst2, lst2.begin());
-		display_list("[43, 5, 42] {spliced first element of lst2 at begin}:", lst);
-		display_list("[45, 58] {first element removed}:", lst2);
+		display_container("[43, 5, 42] {spliced first element of lst2 at begin}:", lst);
+		display_container("[45, 58] {first element removed}:", lst2);
 
 		lst.splice(lst.end(), lst2, lst2.begin(), lst2.end());
-		display_list("[43, 5, 42, 45, 58] {splice everything at end}:", lst);
-		display_list("[] {empty}:", lst2);
+		display_container("[43, 5, 42, 45, 58] {splice everything at end}:", lst);
+		display_container("[] {empty}:", lst2);
 
 		lst2.splice(lst2.begin(), lst);
-		display_list("[] {empty now}:", lst);
-		display_list("[43, 5, 42, 45, 58] {spliced content of lst}:", lst2);
+		display_container("[] {empty now}:", lst);
+		display_container("[43, 5, 42, 45, 58] {spliced content of lst}:", lst2);
 	}
 
 	std::cout << "\n---comparison\n" << '\n';

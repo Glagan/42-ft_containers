@@ -6,12 +6,11 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 15:54:57 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:40:45 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 16:57:42 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.hpp"
-#include <stack>
 
 void test_Stack(void)
 {
@@ -44,7 +43,7 @@ void test_Stack(void)
 		lst.push_back(42);
 		lst.push_back(43);
 		lst.push_back(99);
-		display_list("[5, 42, 43, 99] {ft::List}:", lst);
+		display_container("[5, 42, 43, 99] {ft::List}:", lst);
 
 		ft::Stack<int> stk(lst);
 		std::cout << "stack empty? " << stk.empty() << '\n';
@@ -60,7 +59,7 @@ void test_Stack(void)
 		stk.pop();
 		std::cout << "[] (size: " << stk.size() << ")\n";
 
-		display_list("[5, 42, 43, 99] {ft::List after, no change}:", lst);
+		display_container("[5, 42, 43, 99] {ft::List after, no change}:", lst);
 	}
 
 	std::cout << "\n---comparison\n" << '\n';

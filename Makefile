@@ -6,12 +6,13 @@
 #    By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/02 15:57:50 by ncolomer          #+#    #+#              #
-#    Updated: 2020/01/11 15:59:11 by ncolomer         ###   ########.fr        #
+#    Updated: 2020/01/11 16:46:15 by ncolomer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS			= main.cpp \
-					test/Number.cpp test/vector.cpp test/list.cpp test/stack.cpp
+					test/Number.cpp test/vector.cpp test/list.cpp test/stack.cpp \
+					test/queue.cpp
 OBJS			= $(SRCS:.cpp=.o)
 
 CXX				= clang++
