@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/10 19:02:46 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 16:31:57 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -788,8 +788,8 @@ void Vector<value_type>::clear(void)
 	this->size_ = 0;
 }
 
-template <typename T>
-bool operator==(Vector<T> const &lhs, Vector<T> const &rhs)
+template<typename value_type>
+bool operator==(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
 	if (lhs.size() != rhs.size())
 		return (false);
@@ -799,19 +799,19 @@ bool operator==(Vector<T> const &lhs, Vector<T> const &rhs)
 	return (true);
 }
 
-template <typename T>
-bool operator!=(Vector<T> const &lhs, Vector<T> const &rhs)
+template<typename value_type>
+bool operator!=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
 	return (!(lhs == rhs));
 }
 
-template <typename T>
-bool operator<(Vector<T> const &lhs, Vector<T> const &rhs)
+template<typename value_type>
+bool operator<(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
-	typename Vector<T>::const_iterator first1 = lhs.begin();
-	typename Vector<T>::const_iterator last1 = lhs.end();
-	typename Vector<T>::const_iterator first2 = rhs.begin();
-	typename Vector<T>::const_iterator last2 = rhs.end();
+	typename Vector<value_type>::const_iterator first1 = lhs.begin();
+	typename Vector<value_type>::const_iterator last1 = lhs.end();
+	typename Vector<value_type>::const_iterator first2 = rhs.begin();
+	typename Vector<value_type>::const_iterator last2 = rhs.end();
 
 	while (first1 != last1)
 	{
@@ -825,20 +825,20 @@ bool operator<(Vector<T> const &lhs, Vector<T> const &rhs)
 	return (first2 != last2);
 }
 
-template <typename T>
-bool operator<=(Vector<T> const &lhs, Vector<T> const &rhs)
+template<typename value_type>
+bool operator<=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
 	return (!(rhs < lhs));
 }
 
-template <typename T>
-bool operator>(Vector<T> const &lhs, Vector<T> const &rhs)
+template<typename value_type>
+bool operator>(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
 	return (rhs < lhs);
 }
 
-template <typename T>
-bool operator>=(Vector<T> const &lhs, Vector<T> const &rhs)
+template<typename value_type>
+bool operator>=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
 	return (!(lhs < rhs));
 }

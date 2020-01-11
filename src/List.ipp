@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 15:31:43 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 16:36:25 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -510,6 +510,7 @@ template<typename value_type>
 List<value_type> &List<value_type>::operator=(List<value_type> const &other)
 {
 	this->assign(other.begin(), other.end());
+	return (*this);
 }
 
 template<typename value_type>
@@ -974,5 +975,64 @@ void List<value_type>::reverse(void)
 		--last;
 		first++.as_node()->swap(last--.as_node());
 	}
+}
+
+template<typename T>
+bool operator==(List<T> const &lhs, List<T> const &rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	typename List<T>::const_iterator first1 = lhs.begin();
+	typename List<T>::const_iterator last1 = lhs.end();
+	typename List<T>::const_iterator first2 = rhs.begin();
+	typename List<T>::const_iterator last2 = rhs.end();
+	while (first1 != last1)
+		if (*first1++ != *first2++)
+			return (false);
+	return (true);
+}
+
+template<typename value_type>
+bool operator!=(List<value_type> const &lhs, List<value_type> const &rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template<typename value_type>
+bool operator<(List<value_type> const &lhs, List<value_type> const &rhs)
+{
+	typename List<value_type>::const_iterator first1 = lhs.begin();
+	typename List<value_type>::const_iterator last1 = lhs.end();
+	typename List<value_type>::const_iterator first2 = rhs.begin();
+	typename List<value_type>::const_iterator last2 = rhs.end();
+
+	while (first1 != last1)
+	{
+		if (first2 == last2 || *first2 < *first1)
+			return (false);
+		else if (*first1 < *first2)
+			return (true);
+		++first1;
+		++first2;
+	}
+	return (first2 != last2);
+}
+
+template<typename value_type>
+bool operator<=(List<value_type> const &lhs, List<value_type> const &rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template<typename value_type>
+bool operator>(List<value_type> const &lhs, List<value_type> const &rhs)
+{
+	return (rhs < lhs);
+}
+
+template<typename value_type>
+bool operator>=(List<value_type> const &lhs, List<value_type> const &rhs)
+{
+	return (!(lhs < rhs));
 }
 }

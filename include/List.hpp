@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 14:08:00 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 16:31:36 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,18 +197,18 @@ public:
 	void reverse(void);
 };
 
-template<typename T>
-bool operator==(List<T> const &lhs, List<T> const &rhs);
-template<typename T>
-bool operator!=(List<T> const &lhs, List<T> const &rhs);
-template<typename T>
-bool operator<(List<T> const &lhs, List<T> const &rhs);
-template<typename T>
-bool operator<=(List<T> const &lhs, List<T> const &rhs);
-template<typename T>
-bool operator>(List<T> const &lhs, List<T> const &rhs);
-template<typename T>
-bool operator>=(List<T> const &lhs, List<T> const &rhs);
+template<typename value_type>
+bool operator==(List<value_type> const &lhs, List<value_type> const &rhs);
+template<typename value_type>
+bool operator!=(List<value_type> const &lhs, List<value_type> const &rhs);
+template<typename value_type>
+bool operator<(List<value_type> const &lhs, List<value_type> const &rhs);
+template<typename value_type>
+bool operator<=(List<value_type> const &lhs, List<value_type> const &rhs);
+template<typename value_type>
+bool operator>(List<value_type> const &lhs, List<value_type> const &rhs);
+template<typename value_type>
+bool operator>=(List<value_type> const &lhs, List<value_type> const &rhs);
 }
 
 # include "src/List.ipp"

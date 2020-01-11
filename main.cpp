@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/10 19:00:12 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 16:05:31 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int main(void)
 	test("List");
 	test_List();
 	end_test("List");
-	/*test("Stack");
-	test_List();
+	test("Stack");
+	test_Stack();
 	end_test("Stack");
-	test("Queue");
-	test_List();
+	/*test("Queue");
+	test_Queue();
 	end_test("Queue");
 	test("Map");
-	test_List();
+	test_Map();
 	end_test("Map");*/
 
 	// Leaks
