@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 14:54:38 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 15:35:34 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -527,5 +527,83 @@ void test_List(void)
 
 		lst.sort(&sort_desc);
 		display_list("[58, 44, 43, 43, 42, 42, 5] {sorted desc: no change}:", lst);
+	}
+
+	std::cout << "\n---reverse\n" << std::endl;
+	{
+		ft::List<int> lst;
+		lst.push_back(5);
+		lst.push_back(42);
+		lst.push_back(43);
+		lst.push_back(44);
+		lst.push_back(58);
+
+		display_list("[5, 42, 43, 44, 58]:", lst);
+
+		lst.reverse();
+		display_list("[58, 44, 43, 42, 5] {reversed}:", lst);
+
+		lst.reverse();
+		display_list("[5, 42, 43, 44, 58] {reversed twice}:", lst);
+
+		ft::List<int> lst2;
+		lst2.push_back(5);
+		lst2.push_back(42);
+
+		display_list("[5, 42]:", lst2);
+
+		lst2.reverse();
+		display_list("[42, 5] {reversed}:", lst2);
+
+		lst2.reverse();
+		display_list("[5, 42] {reversed twice}:", lst2);
+	}
+
+	std::cout << "\n---resize\n" << std::endl;
+	{
+		ft::List<int> lst;
+		lst.push_back(5);
+		lst.push_back(42);
+
+		display_list("[5, 42]:", lst);
+
+		lst.resize(5, 43);
+		display_list("[5, 42, 43, 43, 43]:", lst);
+
+		lst.resize(1);
+		display_list("[5]:", lst);
+
+		lst.resize(0);
+		display_list("[]:", lst);
+
+		lst.resize(5);
+		display_list("[0, 0, 0, 0, 0]:", lst);
+	}
+
+	std::cout << "\n---splice\n" << std::endl;
+	{
+		ft::List<int> lst;
+		lst.push_back(5);
+		lst.push_back(42);
+
+		ft::List<int> lst2;
+		lst2.push_back(43);
+		lst2.push_back(45);
+		lst2.push_back(58);
+
+		display_list("[5, 42]:", lst);
+		display_list("[43, 45, 58]:", lst2);
+
+		lst.splice(lst.begin(), lst2, lst2.begin());
+		display_list("[43, 5, 42] {spliced first element of lst2 at begin}:", lst);
+		display_list("[45, 58] {first element removed}:", lst2);
+
+		lst.splice(lst.end(), lst2, lst2.begin(), lst2.end());
+		display_list("[43, 5, 42, 45, 58] {splice everything at end}:", lst);
+		display_list("[] {empty}:", lst2);
+
+		lst2.splice(lst2.begin(), lst);
+		display_list("[] {empty now}:", lst);
+		display_list("[43, 5, 42, 45, 58] {spliced content of lst}:", lst2);
 	}
 }

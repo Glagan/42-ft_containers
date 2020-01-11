@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 14:56:29 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 15:31:43 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -752,9 +752,21 @@ void List<value_type>::swap(List<value_type> &other)
 template<typename value_type>
 void List<value_type>::resize(size_t n, value_type val)
 {
-	(void)n;
-	(void)val;
-	// TODO: TODO
+	if (n == 0)
+		this->clear();
+	else if (n < this->size_)
+	{
+		size_t i = 0;
+		List<value_type>::iterator first = this->begin();
+		while (i < n)
+		{
+			++i;
+			++first;
+		}
+		this->erase(first, this->end());
+	}
+	else
+		this->insert(this->end(), n - this->size_, val);
 }
 
 template<typename value_type>
@@ -767,28 +779,33 @@ void List<value_type>::clear(void)
 template<typename value_type>
 void List<value_type>::splice(List<value_type>::iterator position, List<value_type> &x)
 {
-	(void)position;
-	(void)x;
-	// TODO: TODO
+	this->splice(position, x, x.begin(), x.end());
 }
 
 template<typename value_type>
 void List<value_type>::splice(List<value_type>::iterator position, List<value_type> &x, List<value_type>::iterator it)
 {
-	(void)position;
-	(void)x;
-	(void)it;
-	// TODO: TODO
+	List<value_type>::iterator next = it;
+	this->splice(position, x, it, ++next);
 }
 
 template<typename value_type>
 void List<value_type>::splice(List<value_type>::iterator position, List<value_type> &x, List<value_type>::iterator first, List<value_type>::iterator last)
 {
-	(void)position;
-	(void)x;
-	(void)first;
-	(void)last;
-	// TODO: TODO
+	while (first != last)
+	{
+		Node<value_type> *tmp = first++.as_node();
+		if (tmp == x.begin_)
+			x.begin_ = tmp->next();
+		tmp->disconnect();
+		position.as_node()->insert_before(tmp);
+		if (position.as_node() == this->begin_)
+			this->begin_ = tmp;
+		++this->size_;
+		--x.size_;
+	}
+	if (x.size_ == 0)
+		x.reset_bounds();
 }
 
 template<typename value_type>
@@ -947,9 +964,15 @@ void List<value_type>::reverse(void)
 {
 	if (this->size_ <= 1)
 		return ;
-	Node<value_type> *tmp = this->end_->next();
-	this->end_->next() = this->end_->previous();
-	this->end_->previous() = tmp;
-	this->begin_ = this->end_->next();
+	size_t limit = this->size_ / 2;
+	List<value_type>::iterator first = this->begin();
+	List<value_type>::iterator last = this->end();
+
+	this->begin_ = this->end_->previous();
+	for (size_t i = 0; i < limit; i++)
+	{
+		--last;
+		first++.as_node()->swap(last--.as_node());
+	}
 }
 }
