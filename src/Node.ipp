@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:41 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/10 13:54:52 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 14:53:27 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void Node<value_type>::insert_before(Node<value_type> *node)
 {
 	if (this->previous_)
 	{
-		node->previous() = this->previous_;
-		this->previous_->next() = node;
+		node->previous_ = this->previous_;
+		this->previous_->next_ = node;
 	}
-	node->next() = this;
+	node->next_ = this;
 	this->previous_ = node;
 }
 
@@ -67,10 +67,10 @@ void Node<value_type>::insert_after(Node<value_type> *node)
 {
 	if (this->next_)
 	{
-		node->next() = this->next_;
-		this->next_->previous() = node;
+		node->next_ = this->next_;
+		this->next_->previous_ = node;
 	}
-	node->previous() = this;
+	node->previous_ = this;
 	this->next_ = node;
 }
 
@@ -78,21 +78,63 @@ template<typename value_type>
 void Node<value_type>::disconnect(void)
 {
 	if (this->previous_)
-		this->previous_->next() = this->next_;
+		this->previous_->next_ = this->next_;
 	if (this->next_)
-		this->next_->previous() = this->previous_;
+		this->next_->previous_ = this->previous_;
 }
 
 template<typename value_type>
 void Node<value_type>::swap(Node<value_type> *node)
 {
-	Node<value_type> *previous = this->previous_;
-	Node<value_type> *next = this->next_;
+	if (this->next_ == node)
+	{
+		if (this->previous_)
+			this->previous_->next_ = node;
+		node->previous_ = this->previous_;
+		this->previous_ = node;
+		if (node->next_)
+			node->next_->previous_ = this;
+		this->next_ = node->next_;
+		node->next_ = this;
+	}
+	else if (this->previous_ == node)
+	{
+		if (node->previous_)
+			node->previous_->next_ = this;
+		this->previous_ = node->previous_;
+		node->previous_ = this;
+		if (this->next_)
+			this->next_->previous_ = node;
+		node->next_ = this->next_;
+		this->next_ = node;
+	}
+	else
+	{
+		Node<value_type> *previous = this->previous_;
+		Node<value_type> *next = this->next_;
 
-	this->previous_ = node->previous_;
-	this->next_ = node->next_;
-	node->previous_ = previous;
-	node->next_ = next;
+		if (this->previous_)
+			this->previous_->next_ = node;
+		if (this->next_)
+			this->next_->previous_ = node;
+		this->previous_ = node->previous_;
+		this->next_ = node->next_;
+		if (node->previous_)
+			node->previous_->next_ = this;
+		if (node->next_)
+			node->next_->previous_ = this;
+		node->previous_ = previous;
+		node->next_ = next;
+	}
+}
+
+template<typename value_type>
+void Node<value_type>::swap_values(Node<value_type> *node)
+{
+	value_type tmp;
+	std::memmove(static_cast<void*>(&tmp), static_cast<void*>(&node->value_), 1);
+	std::memmove(static_cast<void*>(&node->value_), static_cast<void*>(&this->value_), 1);
+	std::memmove(static_cast<void*>(&this->value_), static_cast<void*>(&tmp), 1);
 }
 
 template<typename value_type>

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/10 18:59:33 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 14:54:38 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool lesser_than_rhs(int const &nbr1, int const &nbr2)
 
 bool sort_desc(int const &nbr1, int const &nbr2)
 {
-	return (nbr1 < nbr2);
+	return (nbr1 > nbr2);
 }
 
 bool same_integral_part(double first, double second)
@@ -72,7 +72,7 @@ void test_List(void)
 	std::cout << "empty? " << empty_list.empty() << std::endl;
 	std::cout << "empty list size = " << empty_list.size() << std::endl;
 
-	std::list<int> lst;
+	ft::List<int> lst;
 	lst.push_back(5);
 	lst.push_back(42);
 
@@ -489,8 +489,7 @@ void test_List(void)
 		display_list("empty lst2 after merge []:", lst2);
 	}
 
-	// TODO: Fix
-	/*std::cout << "\n---sort\n" << std::endl;
+	std::cout << "\n---sort\n" << std::endl;
 	{
 		ft::List<int> lst;
 		lst.push_back(44);
@@ -526,7 +525,7 @@ void test_List(void)
 		lst.sort(&sort_desc);
 		display_list("[58, 44, 43, 43, 42, 42, 5] {sorted desc}:", lst);
 
-		lst.sort();
+		lst.sort(&sort_desc);
 		display_list("[58, 44, 43, 43, 42, 42, 5] {sorted desc: no change}:", lst);
-	}*/
+	}
 }

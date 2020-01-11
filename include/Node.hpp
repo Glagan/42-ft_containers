@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/08 19:15:21 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 14:28:56 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ public:
 	void insert_after(Node<value_type> *node);
 	void disconnect(void);
 	void swap(Node<value_type> *node);
+	void swap_values(Node<value_type> *node);
 	value_type &value(void);
 	value_type const &value(void) const;
 	Node<value_type> *&previous(void);
