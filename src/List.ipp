@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:36:25 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:59:56 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -881,7 +881,7 @@ void List<value_type>::merge(List &x)
 {
 	if (&x == this)
 		return ;
-	this->merge(x, &List<int>::value_less);
+	this->merge(x, &List<value_type>::value_less);
 }
 
 template<typename value_type>

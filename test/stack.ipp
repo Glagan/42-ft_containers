@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.cpp                                          :+:      :+:    :+:   */
+/*   stack.ipp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 15:54:57 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:57:42 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 17:55:19 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.hpp"
-
+template<typename test_type>
 void test_Stack(void)
 {
 	std::cout << "---basic\n" << '\n';
 
-	ft::Stack<int> empty_stack;
+	ft::Stack<test_type> empty_stack;
 	std::cout << "empty? " << empty_stack.empty() << '\n';
 	std::cout << "empty stack size = " << empty_stack.size() << '\n';
 
-	ft::Stack<int> stk;
+	ft::Stack<test_type> stk;
 	std::cout << "[] (size: " << stk.size() << ")\n";
 	stk.push(5);
 	std::cout << "[5].top() = " << stk.top() << " (size: " << stk.size() << ", empty? " << stk.empty() << ")\n";
@@ -38,14 +37,14 @@ void test_Stack(void)
 
 	std::cout << "\n---with container\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
 		lst.push_back(99);
 		display_container("[5, 42, 43, 99] {ft::List}:", lst);
 
-		ft::Stack<int> stk(lst);
+		ft::Stack<test_type> stk(lst);
 		std::cout << "stack empty? " << stk.empty() << '\n';
 		std::cout << "stack size = " << stk.size() << '\n';
 
@@ -64,20 +63,20 @@ void test_Stack(void)
 
 	std::cout << "\n---comparison\n" << '\n';
 	{
-		ft::Stack<int> stk;
+		ft::Stack<test_type> stk;
 		stk.push(5);
 		stk.push(42);
 
-		ft::Stack<int> stk2;
+		ft::Stack<test_type> stk2;
 		stk2.push(5);
 		stk2.push(42);
 
-		ft::Stack<int> stk3;
+		ft::Stack<test_type> stk3;
 		stk3.push(5);
 		stk3.push(42);
 		stk3.push(43);
 
-		ft::Stack<int> stk4;
+		ft::Stack<test_type> stk4;
 		stk4.push(99);
 		stk4.push(5);
 		stk4.push(42);

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 14:49:20 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 17:44:54 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:04:58 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -701,8 +701,7 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, size_t si
 		std::memmove(static_cast<void*>(this->container + j + size - 1),
 					static_cast<void*>(this->container + j - 1), 1);
 	for (size_t j = 0; j < size; j++)
-		std::memcpy(static_cast<void*>(this->container + i + j),
-					&val, 1);
+		this->container[i + j] = val;
 	this->size_ += size;
 }
 
@@ -731,8 +730,7 @@ void Vector<value_type>::insert(Vector<value_type>::iterator position, Vector::i
 		std::memmove(static_cast<void*>(this->container + j + size),
 					static_cast<void*>(this->container + j - 1), 1);
 	for (size_t j = 0; j < size; j++)
-		std::memcpy(static_cast<void*>(this->container + i + j),
-					&*first++, 1);
+		this->container[i + j] = *first++;
 	this->size_ += size;
 }
 

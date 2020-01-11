@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 15:14:47 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/05 15:25:29 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:05:50 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@ Number &Number::operator=(int value)
 	return (*this);
 }
 
+bool Number::operator==(Number const &b)
+{
+	return (this->n == b.n);
+}
+
+bool Number::operator!=(Number const &b)
+{
+	return (this->n != b.n);
+}
+
 bool Number::operator<(Number const &b)
 {
 	return (this->n < b.n);
@@ -68,14 +78,64 @@ bool Number::operator>=(Number const &b)
 	return (this->n >= b.n);
 }
 
-bool Number::operator==(Number const &b)
+bool Number::operator==(int const &n)
 {
-	return (this->n == b.n);
+	return (this->n == n);
 }
 
-bool Number::operator!=(Number const &b)
+bool Number::operator!=(int const &n)
 {
-	return (this->n != b.n);
+	return (this->n != n);
+}
+
+bool Number::operator<(int const &n)
+{
+	return (this->n < n);
+}
+
+bool Number::operator<=(int const &n)
+{
+	return (this->n <= n);
+}
+
+bool Number::operator>(int const &n)
+{
+	return (this->n > n);
+}
+
+bool Number::operator>=(int const &n)
+{
+	return (this->n >= n);
+}
+
+bool operator==(Number const &lhs, Number const &rhs)
+{
+	return (lhs.getValue() == rhs.getValue());
+}
+
+bool operator!=(Number const &lhs, Number const &rhs)
+{
+	return (lhs.getValue() != rhs.getValue());
+}
+
+bool operator<(Number const &lhs, Number const &rhs)
+{
+	return (lhs.getValue() < rhs.getValue());
+}
+
+bool operator<=(Number const &lhs, Number const &rhs)
+{
+	return (lhs.getValue() <= rhs.getValue());
+}
+
+bool operator>(Number const &lhs, Number const &rhs)
+{
+	return (lhs.getValue() > rhs.getValue());
+}
+
+bool operator>=(Number const &lhs, Number const &rhs)
+{
+	return (lhs.getValue() >= rhs.getValue());
 }
 
 int Number::getValue(void) const

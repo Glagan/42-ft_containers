@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.cpp                                           :+:      :+:    :+:   */
+/*   list.ipp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 17:25:39 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:03:28 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.hpp"
-
-bool less_than_99(int const &nbr)
+template<typename T>
+bool less_than_99(T const &nbr)
 {
 	return (nbr < 99);
 }
 
-bool less_than_43(int const &nbr)
+template<typename T>
+bool less_than_43(T const &nbr)
 {
 	return (nbr < 43);
 }
 
-bool less_than_1(int const &nbr)
+template<typename T>
+bool less_than_1(T const &nbr)
 {
 	return (nbr < 1);
 }
 
-bool lesser_than_rhs(int const &nbr1, int const &nbr2)
+template<typename T>
+bool lesser_than_rhs(T const &nbr1, T const &nbr2)
 {
 	return (nbr1 <= nbr2);
 }
 
-bool sort_desc(int const &nbr1, int const &nbr2)
+template<typename T>
+bool sort_desc(T const &nbr1, T const &nbr2)
 {
 	return (nbr1 > nbr2);
 }
@@ -42,11 +45,12 @@ bool same_integral_part(double first, double second)
 	return (int(first) == int(second));
 }
 
+template<typename test_type>
 void test_List(void)
 {
 	std::cout << "---basic\n" << '\n';
 
-	ft::List<int> empty_list;
+	ft::List<test_type> empty_list;
 	if (empty_list.begin() == empty_list.end())
 		std::cout << "[begin] == [end] on empty list" << '\n';
 	else
@@ -55,7 +59,7 @@ void test_List(void)
 	std::cout << "empty? " << empty_list.empty() << '\n';
 	std::cout << "empty list size = " << empty_list.size() << '\n';
 
-	ft::List<int> lst;
+	ft::List<test_type> lst;
 	lst.push_back(5);
 	lst.push_back(42);
 
@@ -65,20 +69,20 @@ void test_List(void)
 
 	std::cout << "\n---push_back\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(3);
 
-		ft::List<int>::iterator it = lst.begin();
-		ft::List<int>::iterator ite = lst.end();
+		typename ft::List<test_type>::iterator it = lst.begin();
+		typename ft::List<test_type>::iterator ite = lst.end();
 		int i = 1;
 		std::cout << "[5, 42, 3]:" << '\n';
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << '\n';
 
-		ft::List<int>::reverse_iterator rit = lst.rbegin();
-		ft::List<int>::reverse_iterator rite = lst.rend();
+		typename ft::List<test_type>::reverse_iterator rit = lst.rbegin();
+		typename ft::List<test_type>::reverse_iterator rite = lst.rend();
 		i = 1;
 		std::cout << "(reverse) [5, 42, 3]:" << '\n';
 		while (rit != rite)
@@ -105,20 +109,20 @@ void test_List(void)
 
 	std::cout << "\n---push_front\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_front(3);
 		lst.push_front(42);
 		lst.push_front(5);
 
-		ft::List<int>::iterator it = lst.begin();
-		ft::List<int>::iterator ite = lst.end();
+		typename ft::List<test_type>::iterator it = lst.begin();
+		typename ft::List<test_type>::iterator ite = lst.end();
 		int i = 1;
 		std::cout << "[5, 42, 3]:" << '\n';
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << '\n';
 
-		ft::List<int>::reverse_iterator rit = lst.rbegin();
-		ft::List<int>::reverse_iterator rite = lst.rend();
+		typename ft::List<test_type>::reverse_iterator rit = lst.rbegin();
+		typename ft::List<test_type>::reverse_iterator rite = lst.rend();
 		i = 1;
 		std::cout << "(reverse) [5, 42, 3]:" << '\n';
 		while (rit != rite)
@@ -145,19 +149,19 @@ void test_List(void)
 
 	std::cout << "\n---clear\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(3);
 
-		ft::List<int>::iterator it = lst.begin();
-		ft::List<int>::iterator ite = lst.end();
+		typename ft::List<test_type>::iterator it = lst.begin();
+		typename ft::List<test_type>::iterator ite = lst.end();
 		int i = 1;
 		std::cout << "[5, 42, 3]:" << '\n';
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << '\n';
 
-		ft::List<int> lst2(lst);
+		ft::List<test_type> lst2(lst);
 		lst.clear();
 
 		it = lst.begin();
@@ -177,7 +181,7 @@ void test_List(void)
 
 	std::cout << "\n---erase\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(3);
@@ -186,7 +190,7 @@ void test_List(void)
 		std::cout << "[3] -> " << *lst.erase(++lst.begin()) << '\n';
 		display_container("42 deleted [5, 3]:", lst);
 
-		ft::List<int>::iterator it = lst.erase(--lst.end());
+		typename ft::List<test_type>::iterator it = lst.erase(--lst.end());
 		std::cout << "deleted [end] -> ";
 		if (it == lst.end())
 			std::cout << "returned [end]" << '\n';
@@ -203,12 +207,12 @@ void test_List(void)
 
 	std::cout << "\n---assign\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 
 		lst.assign(5, 42);
 		display_container("[42, 42, 42, 42, 42]:", lst);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 		lst2.assign(5, 43);
 		display_container("lst2[43, 43, 43, 43, 43]:", lst2);
 		lst.assign(lst2.begin(), lst2.end());
@@ -221,7 +225,7 @@ void test_List(void)
 
 	std::cout << "\n---insert\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 
 		lst.insert(lst.begin(), 5);
 		display_container("[5]:", lst);
@@ -229,7 +233,7 @@ void test_List(void)
 		lst.insert(lst.begin(), 2, 42);
 		display_container("lst[42, 42, 5]:", lst);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 
 		lst2.insert(lst2.begin(), lst.begin(), lst.end());
 		display_container("lst to lst2[42, 42, 5]:", lst2);
@@ -240,7 +244,7 @@ void test_List(void)
 
 	std::cout << "\n---remove\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
@@ -272,7 +276,7 @@ void test_List(void)
 
 	std::cout << "\n---remove_if\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
@@ -283,19 +287,19 @@ void test_List(void)
 
 		display_container("[5, 42, 43, 42, 44, 5, 45]:", lst);
 
-		lst.remove_if(&less_than_43);
+		lst.remove_if(&less_than_43<test_type>);
 		display_container("[43, 44, 45] delete {<43}:", lst);
 
-		lst.remove_if(&less_than_1);
+		lst.remove_if(&less_than_1<test_type>);
 		display_container("[43, 44, 45] delete {<1}:", lst);
 
-		lst.remove_if(&less_than_99);
+		lst.remove_if(&less_than_99<test_type>);
 		display_container("[] delete {<99}:", lst);
 	}
 
 	std::cout << "\n---unique\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(5);
 		lst.push_back(42);
@@ -324,7 +328,7 @@ void test_List(void)
 
 	std::cout << "\n---unique (binary pred)\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(5);
 		lst.push_back(42);
@@ -338,15 +342,14 @@ void test_List(void)
 
 		display_container("[5, 5, 42, 42, 44, 43, 44, 5, 45, 45]:", lst);
 
-		lst.unique(&lesser_than_rhs);
+		lst.unique(&lesser_than_rhs<test_type>);
 		display_container("[5, 42, 44, 43, 44, 5, 45] {lesser_than_rhs}:", lst);
 
-		lst.unique(&lesser_than_rhs);
+		lst.unique(&lesser_than_rhs<test_type>);
 		display_container("[5, 42, 44, 43, 44, 5, 45] {lesser_than_rhs: no change}:", lst);
 
 		std::cout << "double list:" << '\n';
 		{
-
 			ft::List<double> lst;
 			lst.push_back(2.72);
 			lst.push_back(3.14);
@@ -366,13 +369,13 @@ void test_List(void)
 
 	std::cout << "\n---merge\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
 		lst.push_back(44);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 		lst2.push_back(12);
 		lst2.push_back(28);
 		lst2.push_back(45);
@@ -393,13 +396,13 @@ void test_List(void)
 
 	std::cout << "\n---merge (comp)\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
 		lst.push_back(44);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 		lst2.push_back(12);
 		lst2.push_back(28);
 		lst2.push_back(45);
@@ -411,7 +414,7 @@ void test_List(void)
 		display_container("[12, 28, 45, 5]:", lst2);
 
 		std::cout << "reverse merge comparator:" << '\n';
-		lst.merge(lst2, &lesser_than_rhs);
+		lst.merge(lst2, &lesser_than_rhs<test_type>);
 
 		std::cout << "lst size "<< lst.size() << ", lst2 size " << lst2.size() << '\n';
 		std::cout << "lst2 empty ? " << lst2.size() << '\n';
@@ -421,7 +424,7 @@ void test_List(void)
 
 	std::cout << "\n---sort\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(44);
 		lst.push_back(58);
 		lst.push_back(43);
@@ -441,7 +444,7 @@ void test_List(void)
 
 	std::cout << "\n---sort (comp)\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(42);
@@ -452,16 +455,16 @@ void test_List(void)
 
 		display_container("[5, 42, 42, 44, 43, 58, 43]:", lst);
 
-		lst.sort(&sort_desc);
+		lst.sort(&sort_desc<test_type>);
 		display_container("[58, 44, 43, 43, 42, 42, 5] {sorted desc}:", lst);
 
-		lst.sort(&sort_desc);
+		lst.sort(&sort_desc<test_type>);
 		display_container("[58, 44, 43, 43, 42, 42, 5] {sorted desc: no change}:", lst);
 	}
 
 	std::cout << "\n---reverse\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
@@ -476,7 +479,7 @@ void test_List(void)
 		lst.reverse();
 		display_container("[5, 42, 43, 44, 58] {reversed twice}:", lst);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 		lst2.push_back(5);
 		lst2.push_back(42);
 
@@ -491,7 +494,7 @@ void test_List(void)
 
 	std::cout << "\n---resize\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 
@@ -512,11 +515,11 @@ void test_List(void)
 
 	std::cout << "\n---splice\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 		lst2.push_back(43);
 		lst2.push_back(45);
 		lst2.push_back(58);
@@ -539,20 +542,20 @@ void test_List(void)
 
 	std::cout << "\n---comparison\n" << '\n';
 	{
-		ft::List<int> lst;
+		ft::List<test_type> lst;
 		lst.push_back(5);
 		lst.push_back(42);
 
-		ft::List<int> lst2;
+		ft::List<test_type> lst2;
 		lst2.push_back(5);
 		lst2.push_back(42);
 
-		ft::List<int> lst3;
+		ft::List<test_type> lst3;
 		lst3.push_back(5);
 		lst3.push_back(42);
 		lst3.push_back(43);
 
-		ft::List<int> lst4;
+		ft::List<test_type> lst4;
 		lst4.push_back(99);
 		lst4.push_back(42);
 		lst4.push_back(43);
