@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:06:47 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:45:40 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,20 @@ int main(void)
 	test_Queue<int>();
 	test_Queue<Number>();
 	end_test("Queue");
-	/*test("Map");
-	test_Map();
-	end_test("Map");*/
+	test("Map");
+	test_Map<char, int>();
+	test_Map<char, Number>();
+	test_Map<Number, int>();
+	test_Map<Number, Number>();
+	end_test("Map");
+
+	// Check Number count
+	std::cout << "Total Number created: " << Number::getCreated() << '\n'
+			<< "Total Number destructed: " << Number::getDestructed() << '\n';
 
 	// Leaks
 	/*
-	std::cout << "#####" << std::endl;
+	std::cout << "\n#####" << '\n';
 	system("leaks ft_containers");
 	std::cout << "#####" << std::endl;
 	//*/

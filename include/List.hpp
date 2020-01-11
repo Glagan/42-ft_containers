@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:31:36 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:27:41 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ protected:
 private:
 	Node<value_type> *begin_;
 	Node<value_type> *end_;
-	size_t size_;
+	size_type size_;
 
 	void make_bounds(void);
 	void reset_bounds(void);
@@ -138,7 +138,7 @@ public:
 	};
 
 	List();
-	List(size_t n, const_reference val=value_type());
+	List(size_type n, const_reference val=value_type());
 	List(iterator first, iterator last);
 	List(List const &other);
 	virtual ~List();
@@ -155,8 +155,8 @@ public:
 	const_reverse_iterator rend(void) const;
 
 	bool empty(void) const;
-	size_t size(void) const;
-	size_t max_size(void) const;
+	size_type size(void) const;
+	size_type max_size(void) const;
 
 	reference front();
 	const_reference front() const;
@@ -165,23 +165,23 @@ public:
 
 	void assign(iterator first, iterator last);
 	void assign(const_iterator first, const_iterator last);
-	void assign(size_t size, const_reference val);
+	void assign(size_type size, const_reference val);
 	void push_front(const_reference val);
 	void pop_front(void);
 	void push_back(const_reference val);
 	void pop_back(void);
 	iterator insert(iterator position, const_reference val);
-	void insert(iterator position, size_t size, const_reference val);
+	void insert(iterator position, size_type size, const_reference val);
 	void insert(iterator position, List::iterator first, List::iterator last);
 	iterator erase(iterator position);
 	iterator erase(iterator first, iterator last);
-	void swap(List<value_type> &other);
-	void resize(size_t n, value_type val=value_type());
+	void swap(List &other);
+	void resize(size_type n, value_type val=value_type());
 	void clear(void);
 
-	void splice(iterator position, List<value_type> &x);
-	void splice(iterator position, List<value_type> &x, iterator it);
-	void splice(iterator position, List<value_type> &x, iterator first, iterator last);
+	void splice(iterator position, List &x);
+	void splice(iterator position, List &x, iterator it);
+	void splice(iterator position, List &x, iterator first, iterator last);
 	void remove(const_reference val);
 	template<typename Predicate>
 	void remove_if(Predicate pred);

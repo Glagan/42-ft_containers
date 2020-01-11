@@ -6,32 +6,39 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 15:14:47 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:05:50 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 19:00:01 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Number.hpp"
 
+int Number::created = 0;
+int Number::destructed = 0;
+
 Number::Number():
 	n(0)
 {
+	Number::created++;
 	std::cout << "default constructor of Number" << std::endl;
 }
 
 Number::Number(int const &n):
 	n(n)
 {
+	Number::created++;
 	std::cout << "assignation constructor of Number" << std::endl;
 }
 
 Number::Number(Number const &other):
 	n(other.n)
 {
+	Number::created++;
 	std::cout << "copy constructor of Number" << std::endl;
 }
 
 Number::~Number()
 {
+	Number::destructed++;
 	std::cout << "destructor of Number" << std::endl;
 }
 
@@ -141,6 +148,16 @@ bool operator>=(Number const &lhs, Number const &rhs)
 int Number::getValue(void) const
 {
 	return (this->n);
+}
+
+int Number::getCreated(void)
+{
+	return (Number::created);
+}
+
+int Number::getDestructed(void)
+{
+	return (Number::destructed);
 }
 
 std::ostream &operator<<(std::ostream &out, Number const &n)

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:32:05 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:28:10 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ protected:
 	typedef T& reference;
 	typedef T const & const_reference;
 private:
-	size_t capacity_;
-	size_t size_;
+	size_type capacity_;
+	size_type size_;
 	pointer container;
 public:
 	class iterator
@@ -129,12 +129,12 @@ public:
 	};
 
 	Vector();
-	Vector(size_t n, const_reference val=value_type());
+	Vector(size_type n, const_reference val=value_type());
 	Vector(iterator first, iterator last);
-	Vector(Vector<value_type> const &other);
+	Vector(Vector const &other);
 	virtual ~Vector();
 
-	Vector<value_type> &operator=(Vector<value_type> const &other);
+	Vector &operator=(Vector const &other);
 
 	iterator begin(void);
 	const_iterator begin(void) const;
@@ -145,17 +145,17 @@ public:
 	reverse_iterator rend(void);
 	const_reverse_iterator rend(void) const;
 
-	size_t size(void) const;
-	size_t max_size(void) const;
-	void resize(size_t size, value_type val=value_type());
-	size_t capacity(void) const;
+	size_type size(void) const;
+	size_type max_size(void) const;
+	void resize(size_type size, value_type val=value_type());
+	size_type capacity(void) const;
 	bool empty(void) const;
-	void reserve(size_t size);
+	void reserve(size_type size);
 
-	reference operator[](size_t idx);
-	const_reference operator[](size_t idx) const;
-	reference at(size_t idx);
-	const_reference at(size_t idx) const;
+	reference operator[](size_type idx);
+	const_reference operator[](size_type idx) const;
+	reference at(size_type idx);
+	const_reference at(size_type idx) const;
 	reference front(void);
 	const_reference front(void) const;
 	reference back(void);
@@ -163,15 +163,15 @@ public:
 
 	void assign(iterator first, iterator last);
 	void assign(const_iterator first, const_iterator last);
-	void assign(size_t size, const_reference val);
+	void assign(size_type size, const_reference val);
 	void push_back(const_reference val);
 	void pop_back(void);
 	iterator insert(iterator position, const_reference val);
-	void insert(iterator position, size_t size, const_reference val);
+	void insert(iterator position, size_type size, const_reference val);
 	void insert(iterator position, iterator first, iterator last);
 	iterator erase(iterator position);
 	iterator erase(iterator first, iterator last);
-	void swap(Vector<value_type> &other);
+	void swap(Vector &other);
 	void clear(void);
 };
 

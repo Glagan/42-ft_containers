@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 14:28:56 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/11 18:28:31 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,23 @@ private:
 public:
 	Node();
 	Node(value_type const &val);
-	Node(Node<value_type> *previous, value_type const &val, Node<value_type> *next=nullptr);
-	Node(Node<value_type> const &other);
+	Node(Node *previous, value_type const &val, Node *next=nullptr);
+	Node(Node const &other);
 	~Node();
 
-	Node<value_type> &operator=(Node<value_type> const &other);
+	Node &operator=(Node const &other);
 
-	void insert_before(Node<value_type> *node);
-	void insert_after(Node<value_type> *node);
+	void insert_before(Node *node);
+	void insert_after(Node *node);
 	void disconnect(void);
-	void swap(Node<value_type> *node);
-	void swap_values(Node<value_type> *node);
+	void swap(Node *node);
+	void swap_values(Node *node);
 	value_type &value(void);
 	value_type const &value(void) const;
-	Node<value_type> *&previous(void);
-	Node<value_type> const *previous(void) const;
-	Node<value_type> *&next(void);
-	Node<value_type> const *next(void) const;
+	Node *&previous(void);
+	Node const *previous(void) const;
+	Node *&next(void);
+	Node const *next(void) const;
 };
 }
 
