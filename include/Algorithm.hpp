@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 19:01:39 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 19:12:19 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 19:51:23 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,6 @@ bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 		++first2;
 	}
 	return (first2 != last2);
-}
-
-template<class InputIterator, class T>
-InputIterator find(InputIterator first, InputIterator last, const T& val)
-{
-	while (first != last)
-	{
-		if (*first == val)
-			return first;
-		++first;
-	}
-	return last;
 }
 
 template<class value_type>

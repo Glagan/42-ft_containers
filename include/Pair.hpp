@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:23:17 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:15:44 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 19:44:13 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ Pair<first_type, second_type> make_pair(first_type const &first, second_type con
 	return (Pair<first_type, second_type>(first, second));
 }
 }
-
 
 #endif

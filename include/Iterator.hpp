@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:16:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 18:42:53 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 20:47:01 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ public:
 protected:
 	pointer p;
 public:
-	Iterator(): p(nullptr) {}
-	Iterator(pointer p): p(p) {}
-	Iterator(Iterator const &other): p(other.p) {}
+	Iterator():
+		p(nullptr) {}
+	Iterator(pointer p):
+		p(p) { std::cout << "pointer: " << p << std::endl; }
+	Iterator(Iterator const &other):
+		p(other.p) {}
 	virtual ~Iterator() {}
 
 	Iterator &operator=(Iterator const &other)
@@ -141,7 +144,8 @@ public:
 };
 
 template<typename T>
-class ReverseIterator: public Iterator<T>
+class ReverseIterator:
+	virtual public Iterator<T>
 {
 public:
 	using typename Iterator<T>::value_type;
@@ -151,10 +155,14 @@ public:
     using typename Iterator<T>::const_reference;
     using typename Iterator<T>::difference_type;
 public:
-	ReverseIterator(): Iterator<T>(nullptr) {}
-	ReverseIterator(pointer p): Iterator<T>(p) {}
-	ReverseIterator(ReverseIterator const &other): Iterator<T>(other.p) {}
-	ReverseIterator(Iterator<T> const &other): Iterator<T>(other) {}
+	ReverseIterator():
+		Iterator<T>(nullptr) {}
+	ReverseIterator(pointer p):
+		Iterator<T>(p) {}
+	ReverseIterator(Iterator<T> const &other):
+		Iterator<T>(other) {}
+	ReverseIterator(ReverseIterator const &other):
+		Iterator<T>(other.p) {}
 	virtual ~ReverseIterator() {}
 
 	ReverseIterator &operator=(ReverseIterator const &other)
@@ -208,7 +216,8 @@ public:
 };
 
 template<typename T, typename N>
-class ListIterator: public Iterator<N>
+class ListIterator:
+	virtual public Iterator<N>
 {
 public:
 	typedef T value_type;
@@ -220,10 +229,14 @@ public:
 	typedef node_type* node_pointer;
     typedef std::ptrdiff_t difference_type;
 public:
-	ListIterator(): Iterator<node_type>(nullptr) {}
-	ListIterator(node_pointer p): Iterator<node_type>(p) {}
-	ListIterator(Iterator<node_type> const &other): Iterator<node_type>(other) {}
-	ListIterator(ListIterator<value_type, node_type> const &other): Iterator<node_type>(other) {}
+	ListIterator():
+		Iterator<node_type>(nullptr) {}
+	ListIterator(node_pointer p):
+		Iterator<node_type>(p) {}
+	ListIterator(Iterator<node_type> const &other):
+		Iterator<node_type>(other) {}
+	ListIterator(ListIterator<value_type, node_type> const &other):
+		Iterator<node_type>(other) {}
 	virtual ~ListIterator() {}
 
 	node_pointer as_node(void) const
@@ -302,7 +315,9 @@ public:
 };
 
 template<typename T, typename N>
-class ReverseListIterator: public ListIterator<T, N>
+class ReverseListIterator:
+	virtual public ListIterator<T, N>,
+	virtual public ReverseIterator<N>
 {
 public:
 	using typename ListIterator<T, N>::value_type;
@@ -314,10 +329,14 @@ public:
     using typename ListIterator<T, N>::node_pointer;
     using typename ListIterator<T, N>::difference_type;
 public:
-	ReverseListIterator(): ListIterator<T, N>(nullptr) {}
-	ReverseListIterator(pointer p): ListIterator<T, N>(p) {}
-	ReverseListIterator(ReverseListIterator const &other): ListIterator<T, N>(other.p) {}
-	ReverseListIterator(ListIterator<T, N> const &other): ListIterator<T, N>(other) {}
+	ReverseListIterator():
+		Iterator<node_type>(nullptr), ListIterator<value_type, node_type>(nullptr), ReverseIterator<node_type>(nullptr) {}
+	ReverseListIterator(node_pointer p):
+		Iterator<node_type>(p), ListIterator<value_type, node_type>(p), ReverseIterator<node_type>(p) {}
+	ReverseListIterator(Iterator<node_type> const &other):
+		Iterator<node_type>(other), ListIterator<value_type, node_type>(other), ReverseIterator<node_type>(other) {}
+	ReverseListIterator(ReverseListIterator<value_type, node_type> const &other):
+		Iterator<node_type>(other.p), ListIterator<value_type, node_type>(other.p), ReverseIterator<node_type>(other.p) {}
 	virtual ~ReverseListIterator() {}
 
 	ReverseListIterator &operator=(ReverseListIterator const &other)
