@@ -1,14 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.ipp                                           :+:      :+:    :+:   */
+/*   list_test.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:03:28 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 18:41:00 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef LIST_TEST_HPP
+# define LIST_TEST_HPP
+
+# include "test/test.hpp"
 
 template<typename T>
 bool less_than_99(T const &nbr)
@@ -585,3 +590,5 @@ void test_List(void)
 			<< "comparison >= " << (lst4 >= lst) << '\n';
 	}
 }
+
+#endif

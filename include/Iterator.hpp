@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:16:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:04:54 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 18:42:53 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -368,6 +368,16 @@ public:
 		this->p = this->p->next();
 		return (*this);
 	}
+};
+
+template<typename T, typename N>
+class MapIterator: public Iterator<N>
+{
+};
+
+template<typename T, typename N>
+class ReverseMapIterator: public MapIterator<T, N>
+{
 };
 }
 

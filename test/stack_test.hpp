@@ -1,14 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.ipp                                          :+:      :+:    :+:   */
+/*   stack_test.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 15:54:57 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 17:55:19 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 18:40:17 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef STACK_TEST_HPP
+# define STACK_TEST_HPP
+
+# include "test/test.hpp"
 
 template<typename test_type>
 void test_Stack(void)
@@ -106,3 +111,5 @@ void test_Stack(void)
 			<< "comparison >= " << (stk4 >= stk) << '\n';
 	}
 }
+
+#endif

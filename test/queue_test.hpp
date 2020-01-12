@@ -1,14 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   queue.ipp                                          :+:      :+:    :+:   */
+/*   queue_test.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 16:45:43 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 17:59:42 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 18:39:15 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef QUEUE_TEST_HPP
+# define QUEUE_TEST_HPP
+
+# include "test/test.hpp"
 
 template<typename test_type>
 void test_Queue(void)
@@ -106,3 +111,5 @@ void test_Queue(void)
 			<< "comparison >= " << (que4 >= que) << '\n';
 	}
 }
+
+#endif

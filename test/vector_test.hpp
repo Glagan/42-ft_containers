@@ -1,14 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector.ipp                                         :+:      :+:    :+:   */
+/*   vector_test.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:07:39 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 18:40:22 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef VECTOR_TEST_HPP
+# define VECTOR_TEST_HPP
+
+# include "test/test.hpp"
 
 template<typename test_type>
 void test_Vector(void)
@@ -263,3 +268,5 @@ void test_Vector(void)
 			<< "comparison >= " << (vec4 >= vec) << '\n';
 	}
 }
+
+#endif

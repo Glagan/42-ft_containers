@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:40:16 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 18:42:34 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ void display_container(std::string const &header, Container const &ctn)
 	}
 }
 
-# include "vector.ipp"
-# include "list.ipp"
-# include "stack.ipp"
-# include "queue.ipp"
-# include "map.ipp"
+# include "test/vector_test.hpp"
+# include "test/list_test.hpp"
+# include "test/stack_test.hpp"
+# include "test/queue_test.hpp"
+# include "test/map_test.hpp"
 
 #endif
