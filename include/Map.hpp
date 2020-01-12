@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 14:45:00 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 15:30:30 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ public:
 		}
     };
 private:
-	Tree tree;
+	Tree<value_type, key_compare> tree;
 	size_type size_;
 public:
 	class iterator

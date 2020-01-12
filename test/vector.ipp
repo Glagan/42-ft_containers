@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 13:20:40 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 17:07:39 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void test_Vector(void)
 		it = vec2.begin();
 		ite = vec2.end();
 		i = 1;
+		// TODO: Fix this test
 		std::cout << "copied vector before clear [5, 2, 3]:" << '\n';
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << '\n';
