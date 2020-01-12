@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 16:54:31 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 17:58:37 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,67 +39,357 @@ private:
 	size_type size_;
 	pointer container;
 public:
-	Vector();
-	Vector(size_type n, const_reference val=value_type());
-	Vector(iterator first, iterator last);
-	Vector(Vector const &other);
-	virtual ~Vector();
+	Vector():
+		capacity_(0), size_(0), container(nullptr)
+	{
+		this->reserve(128);
+	}
+	Vector(size_type n, const_reference val=value_type()):
+		capacity_(0), size_(0), container(nullptr)
+	{
+		this->assign(n, val);
+	}
+	Vector(iterator first, iterator last):
+		capacity_(0), size_(0), container(nullptr)
+	{
+		this->reserve(128);
+		this->assign(first, last);
+	}
+	Vector(Vector const &other):
+		capacity_(0), size_(other.size_), container(nullptr)
+	{
+		this->reserve(other.capacity_);
+		std::memcpy(static_cast<void*>(this->container), static_cast<void*>(other.container), other.size_);
+	}
+	virtual ~Vector()
+	{
+		this->clear();
+		if (this->container)
+			::operator delete(this->container);
+	}
 
-	Vector &operator=(Vector const &other);
+	Vector &operator=(Vector const &other)
+	{
+		if (this->capacity_ == 0)
+			this->reserve(128);
+		this->assign(other.begin(), other.end());
+		return (*this);
+	}
 
-	iterator begin(void);
-	const_iterator begin(void) const;
-	reverse_iterator rbegin(void);
-	const_reverse_iterator rbegin(void) const;
-	iterator end(void);
-	const_iterator end(void) const;
-	reverse_iterator rend(void);
-	const_reverse_iterator rend(void) const;
+	iterator begin(void)
+	{
+		return (iterator(&this->container[0]));
+	}
+	const_iterator begin(void) const
+	{
+		return (const_iterator(&this->container[0]));
+	}
+	reverse_iterator rbegin(void)
+	{
+		return (reverse_iterator(this->end()));
+	}
+	const_reverse_iterator rbegin(void) const
+	{
+		return (const_reverse_iterator(this->end()));
+	}
+	iterator end(void)
+	{
+		return (iterator(&(this->container[this->size_])));
+	}
+	const_iterator end(void) const
+	{
+		return (const_iterator(&(this->container[this->size_])));
+	}
+	reverse_iterator rend(void)
+	{
+		return (reverse_iterator(this->begin()));
+	}
+	const_reverse_iterator rend(void) const
+	{
+		return (const_reverse_iterator(this->begin()));
+	}
 
-	size_type size(void) const;
-	size_type max_size(void) const;
-	void resize(size_type size, value_type val=value_type());
-	size_type capacity(void) const;
-	bool empty(void) const;
-	void reserve(size_type size);
+	size_type size(void) const
+	{
+		return (this->size_);
+	}
 
-	reference operator[](size_type idx);
-	const_reference operator[](size_type idx) const;
-	reference at(size_type idx);
-	const_reference at(size_type idx) const;
-	reference front(void);
-	const_reference front(void) const;
-	reference back(void);
-	const_reference back(void) const;
+	size_type max_size(void) const
+	{
+		return (((std::pow(2, 64) - 1) / sizeof(value_type)) - 1);
+	}
 
-	void assign(iterator first, iterator last);
-	void assign(const_iterator first, const_iterator last);
-	void assign(size_type size, const_reference val);
-	void push_back(const_reference val);
-	void pop_back(void);
-	iterator insert(iterator position, const_reference val);
-	void insert(iterator position, size_type size, const_reference val);
-	void insert(iterator position, iterator first, iterator last);
-	iterator erase(iterator position);
-	iterator erase(iterator first, iterator last);
-	void swap(Vector &other);
-	void clear(void);
+	void resize(size_type size, value_type val=value_type())
+	{
+		if (size > this->capacity_)
+			this->reserve(size);
+		if (size > this->size_)
+		{
+			for (size_type i = this->size_; i < size; i++)
+				this->container[i] = val;
+			this->size_ = size;
+		}
+		else if (size < this->size_)
+		{
+			for (size_type i = size; i < this->size_; i++)
+				this->container[i].value_type::~value_type();
+			this->size_ = size;
+		}
+	}
+
+	size_type capacity(void) const
+	{
+		return (this->capacity_);
+	}
+
+	bool empty(void) const
+	{
+		return (this->size_ == 0);
+	}
+
+	void reserve(size_type size)
+	{
+		if (size > this->capacity_)
+		{
+			value_type *tmp = static_cast<value_type*>(::operator new(sizeof(value_type) * size));
+			if (this->container)
+			{
+				std::memcpy(static_cast<void*>(tmp), static_cast<void*>(this->container), this->size_);
+				::operator delete(this->container);
+			}
+			this->container = tmp;
+			this->capacity_ = size;
+		}
+	}
+
+	reference operator[](size_type idx)
+	{
+		assert(idx < this->size_);
+		return (this->at(idx));
+	}
+	const_reference operator[](size_type idx) const
+	{
+		assert(idx < this->size_);
+		return (this->at(idx));
+	}
+	reference at(size_type idx)
+	{
+		assert(idx < this->size_);
+		return (this->container[idx]);
+	}
+	const_reference at(size_type idx) const
+	{
+		assert(idx < this->size_);
+		return (this->container[idx]);
+	}
+
+	reference front(void)
+	{
+		assert(!this->empty());
+		return (this->container[0]);
+	}
+	const_reference front(void) const
+	{
+		assert(!this->empty());
+		return (this->container[0]);
+	}
+	reference back(void)
+	{
+		assert(!this->empty());
+		return (this->container[this->size_ - 1]);
+	}
+	const_reference back(void) const
+	{
+		assert(!this->empty());
+		return (this->container[this->size_ - 1]);
+	}
+
+	void assign(iterator first, iterator last)
+	{
+		this->clear();
+		while (first != last)
+			this->push_back(*first++);
+	}
+	void assign(const_iterator first, const_iterator last)
+	{
+		this->clear();
+		while (first != last)
+			this->push_back(*first++);
+	}
+	void assign(size_type size, const_reference val)
+	{
+		this->clear();
+		if (size > this->capacity_)
+			this->reserve(size);
+		for (size_type i = 0; i < size; i++)
+			this->container[i] = val;
+		this->size_ = size;
+	}
+
+	void push_back(const_reference val)
+	{
+		if (this->size_ == this->capacity_)
+			this->reserve(this->capacity_ * 2);
+		this->container[this->size_++] = val;
+	}
+	void pop_back(void)
+	{
+		assert(this->size_ > 0);
+		this->container[--this->size_].value_type::~value_type();
+	}
+
+	iterator insert(iterator position, const_reference val)
+	{
+		this->insert(position, 1, val);
+		return (++position);
+	}
+	void insert(iterator position, size_type size, const_reference val)
+	{
+		if (this->size_ + size == this->capacity_)
+			this->reserve(this->capacity_ * 2);
+		iterator it = this->begin();
+		size_type i = 0;
+		while (it != position)
+		{
+			++it;
+			++i;
+		}
+		for (size_type j = this->size_; j >= 1 && j >= i; j--)
+			std::memmove(static_cast<void*>(this->container + j + size - 1),
+						static_cast<void*>(this->container + j - 1), 1);
+		for (size_type j = 0; j < size; j++)
+			this->container[i + j] = val;
+		this->size_ += size;
+	}
+	void insert(iterator position, iterator first, iterator last)
+	{
+		iterator cfirst = first;
+		size_type size = 0;
+		while (cfirst != last)
+		{
+			++size;
+			++cfirst;
+		}
+		if (this->size_ + size == this->capacity_)
+			this->reserve(this->capacity_ * 2);
+		iterator it = this->begin();
+		size_type i = 0;
+		while (it != position)
+		{
+			++it;
+			++i;
+		}
+		if (it == this->end())
+			return ;
+		for (size_type j = this->size_ - 1; j > i + 1; j++)
+			std::memmove(static_cast<void*>(this->container + j + size),
+						static_cast<void*>(this->container + j - 1), 1);
+		for (size_type j = 0; j < size; j++)
+			this->container[i + j] = *first++;
+		this->size_ += size;
+	}
+
+	iterator erase(iterator position)
+	{
+		iterator tmp(position);
+		++tmp;
+		return (this->erase(position, tmp));
+	}
+	iterator erase(iterator first, iterator last)
+	{
+		iterator it = this->begin();
+		size_type i = 0;
+		while (it != first)
+		{
+			++it;
+			++i;
+		}
+		if (it == this->end())
+			return (this->end());
+		size_type returnPosition = i;
+		size_type deletedElements = 0;
+		size_type stopPos = i;
+		while (first != last)
+		{
+			(*first++).value_type::~value_type();
+			deletedElements++;
+			stopPos++;
+		}
+		for ( ; stopPos < this->size_; stopPos++)
+			std::memmove(static_cast<void*>(this->container + i++),
+						static_cast<void*>(this->container + stopPos), 1);
+		this->size_ -= deletedElements;
+		return (iterator(&this->container[returnPosition]));
+	}
+
+	void swap(Vector &other)
+	{
+		// TODO: TODO
+		(void)other;
+	}
+
+	void clear(void)
+	{
+		for (size_type i = 0; i < this->size_; i++)
+			this->container[i].value_type::~value_type();
+		this->size_ = 0;
+	}
 };
 
 template <class value_type>
-bool operator==(Vector<value_type> const &lhs, Vector<value_type> const &rhs);
-template <class value_type>
-bool operator!=(Vector<value_type> const &lhs, Vector<value_type> const &rhs);
-template <class value_type>
-bool operator<(Vector<value_type> const &lhs, Vector<value_type> const &rhs);
-template <class value_type>
-bool operator<=(Vector<value_type> const &lhs, Vector<value_type> const &rhs);
-template <class value_type>
-bool operator>(Vector<value_type> const &lhs, Vector<value_type> const &rhs);
-template <class value_type>
-bool operator>=(Vector<value_type> const &lhs, Vector<value_type> const &rhs);
+bool operator==(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+{
+	if (lhs.size() != rhs.size())
+		return (false);
+	for (size_t i = 0; i < lhs.size(); i++)
+		if (lhs[i] != rhs[i])
+			return (false);
+	return (true);
 }
 
-# include "src/Vector.ipp"
+template <class value_type>
+bool operator!=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template <class value_type>
+bool operator<(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+{
+	typename Vector<value_type>::const_iterator first1 = lhs.begin();
+	typename Vector<value_type>::const_iterator last1 = lhs.end();
+	typename Vector<value_type>::const_iterator first2 = rhs.begin();
+	typename Vector<value_type>::const_iterator last2 = rhs.end();
+
+	while (first1 != last1)
+	{
+		if (first2 == last2 || *first2 < *first1)
+			return (false);
+		else if (*first1 < *first2)
+			return (true);
+		++first1;
+		++first2;
+	}
+	return (first2 != last2);
+}
+
+template <class value_type>
+bool operator<=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template <class value_type>
+bool operator>(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+{
+	return (rhs < lhs);
+}
+
+template <class value_type>
+bool operator>=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+{
+	return (!(lhs < rhs));
+}
+}
 
 #endif

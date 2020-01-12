@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 15:30:30 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 17:22:51 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,5 @@ public:
 	Pair<const_iterator, const_iterator> equal_range(key_type const &key) const;
 };
 }
-
-# include "src/Map.ipp"
 
 #endif

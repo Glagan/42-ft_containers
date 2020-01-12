@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:01 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 14:07:35 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 17:18:17 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,36 +34,91 @@ public:
 protected:
 	container_type c;
 public:
-	Queue(container_type const &container=container_type());
-	virtual ~Queue();
+	Queue(container_type const &container=container_type()): c(container) {}
+	virtual ~Queue() {}
 
-	Queue &operator=(Queue const &other);
+	Queue &operator=(Queue const &other)
+	{
+		this->c = other.c;
+		return (*this);
+	}
 
-	bool empty(void) const;
-	size_t size(void) const;
-	reference front(void);
-	const_reference front(void) const;
-	reference back(void);
-	const_reference back(void) const;
-	void push(const_reference val);
-	void pop(void);
+	bool empty(void) const
+	{
+		return (this->c.empty());
+	}
+
+	size_t size(void) const
+	{
+		return (this->c.size());
+	}
+
+	reference front(void)
+	{
+		return (this->c.front());
+	}
+
+	const_reference front(void) const
+	{
+		return (this->c.front());
+	}
+
+	reference back(void)
+	{
+		return (this->c.back());
+	}
+
+	const_reference back(void) const
+	{
+		return (this->c.back());
+	}
+
+	void push(const_reference val)
+	{
+		this->c.push_back(val);
+	}
+
+	void pop(void)
+	{
+		this->c.pop_front();
+	}
 
 	template<typename queue_type>
-	friend bool operator==(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs);
-	template<typename queue_type>
-	friend bool operator!=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs);
-	template<typename queue_type>
-	friend bool operator<(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs);
-	template<typename queue_type>
-	friend bool operator<=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs);
-	template<typename queue_type>
-	friend bool operator>(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs);
-	template<typename queue_type>
-	friend bool operator>=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs);
+	friend bool operator==(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs)
+	{
+		return (lhs.c == rhs.c);
+	}
 
+	template<typename queue_type>
+	friend bool operator!=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs)
+	{
+		return (lhs.c != rhs.c);
+	}
+
+	template<typename queue_type>
+	friend bool operator<(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs)
+	{
+		return (lhs.c < rhs.c);
+	}
+
+	template<typename queue_type>
+	friend bool operator<=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs)
+	{
+		return (lhs.c <= rhs.c);
+	}
+
+	template<typename queue_type>
+	friend bool operator>(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs)
+	{
+		return (lhs.c > rhs.c);
+	}
+
+	template<typename queue_type>
+	friend bool operator>=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs)
+	{
+		return (lhs.c >= rhs.c);
+	}
 };
 }
-
-# include "src/Queue.ipp"
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:23:17 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 13:53:32 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 17:15:44 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,62 @@ public:
 	first_type first;
 	second_type second;
 
-	Pair();
-	Pair(first_type const &first, first_type const &second);
+	Pair(): first(), second() {}
+	Pair(first_type const &first, first_type const &second): first(first), second(second) {}
 	template<class U, class V>
-	Pair(Pair<U, V> const &other);
-	virtual ~Pair();
+	Pair(Pair<U, V> const &other): first(other.first), second(other.second) {}
+	virtual ~Pair() {}
 
-	Pair &operator=(Pair const &other);
-	Pair &operator=(second_type const &second);
+	Pair &operator=(Pair const &other)
+	{
+		this->first = other.first;
+		this->second = other.second;
+		return (*this);
+	}
 };
 
 template <typename first_type, typename second_type>
-bool operator==(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs);
-template <typename first_type, typename second_type>
-bool operator!=(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs);
-template <typename first_type, typename second_type>
-bool operator<(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs);
-template <typename first_type, typename second_type>
-bool operator<=(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs);
-template <typename first_type, typename second_type>
-bool operator>(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs);
-template <typename first_type, typename second_type>
-bool operator>= (Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs);
-template <typename first_type, typename second_type>
-Pair<first_type, second_type> make_pair(first_type const &first, second_type const &second);
+bool operator==(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs)
+{
+	return (lhs.first == rhs.first && lhs.second == rhs.second);
 }
 
-# include "src/Pair.ipp"
+template <typename first_type, typename second_type>
+bool operator!=(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template <typename first_type, typename second_type>
+bool operator<(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs)
+{
+	return (lhs.first < rhs.first || (!(rhs.first < lhs.first) && lhs.second < rhs.second));
+}
+
+template <typename first_type, typename second_type>
+bool operator<=(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template <typename first_type, typename second_type>
+bool operator>(Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs)
+{
+	return (rhs < lhs);
+}
+
+template <typename first_type, typename second_type>
+bool operator>= (Pair<first_type, second_type> const &lhs, Pair<first_type, second_type> const &rhs)
+{
+	return (!(lhs < rhs));
+}
+
+template <typename first_type, typename second_type>
+Pair<first_type, second_type> make_pair(first_type const &first, second_type const &second)
+{
+	return (Pair<first_type, second_type>(first, second));
+}
+}
+
 
 #endif

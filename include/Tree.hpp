@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 13:26:15 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 14:16:30 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 17:18:36 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,5 @@ public:
 
 	Tree &operator=(Tree const &other);
 };
-
-# include "src/Tree.ipp"
 
 #endif
