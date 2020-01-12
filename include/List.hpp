@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:38:44 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 19:14:55 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <cmath>
 # include "include/Node.hpp"
 # include "include/Iterator.hpp"
+# include "include/Algorithm.hpp"
 
 namespace ft
 {
@@ -52,15 +53,6 @@ private:
 		this->begin_ = this->end_;
 		this->end_->previous() = nullptr;
 		this->end_->next() = nullptr;
-	}
-
-	static bool value_equal(value_type const &a, value_type const &b)
-	{
-		return (a == b);
-	}
-	static bool value_less(value_type const &a, value_type const &b)
-	{
-		return (a < b);
 	}
 public:
 	List():
@@ -369,7 +361,7 @@ public:
 
 	void unique(void)
 	{
-		this->unique(&List<value_type>::value_equal);
+		this->unique(&equal<value_type>);
 	}
 	template<typename BinaryPredicate>
 	void unique(BinaryPredicate binary_pred)
@@ -392,7 +384,7 @@ public:
 	{
 		if (&x == this)
 			return ;
-		this->merge(x, &List<value_type>::value_less);
+		this->merge(x, &less<value_type>);
 	}
 	template<typename Compare>
 	void merge(List &x, Compare comp)
@@ -435,7 +427,7 @@ public:
 	{
 		if (this->size_ <= 1)
 			return ;
-		this->sort(&List<value_type>::value_less);
+		this->sort(&less<value_type>);
 	}
 	template<typename Compare>
 	void sort(Compare comp)
@@ -507,21 +499,7 @@ bool operator!=(List<value_type> const &lhs, List<value_type> const &rhs)
 template<typename value_type>
 bool operator<(List<value_type> const &lhs, List<value_type> const &rhs)
 {
-	typename List<value_type>::const_iterator first1 = lhs.begin();
-	typename List<value_type>::const_iterator last1 = lhs.end();
-	typename List<value_type>::const_iterator first2 = rhs.begin();
-	typename List<value_type>::const_iterator last2 = rhs.end();
-
-	while (first1 != last1)
-	{
-		if (first2 == last2 || *first2 < *first1)
-			return (false);
-		else if (*first1 < *first2)
-			return (true);
-		++first1;
-		++first2;
-	}
-	return (first2 != last2);
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template<typename value_type>

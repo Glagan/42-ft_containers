@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:58:37 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 19:07:54 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <cstddef>
 # include <cmath>
 # include "include/Iterator.hpp"
+# include "include/Algorithm.hpp"
 
 namespace ft
 {
@@ -356,21 +357,7 @@ bool operator!=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 template <class value_type>
 bool operator<(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 {
-	typename Vector<value_type>::const_iterator first1 = lhs.begin();
-	typename Vector<value_type>::const_iterator last1 = lhs.end();
-	typename Vector<value_type>::const_iterator first2 = rhs.begin();
-	typename Vector<value_type>::const_iterator last2 = rhs.end();
-
-	while (first1 != last1)
-	{
-		if (first2 == last2 || *first2 < *first1)
-			return (false);
-		else if (*first1 < *first2)
-			return (true);
-		++first1;
-		++first2;
-	}
-	return (first2 != last2);
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template <class value_type>
