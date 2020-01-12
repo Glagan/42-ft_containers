@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:16:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 20:47:01 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 21:18:17 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ public:
 	Iterator():
 		p(nullptr) {}
 	Iterator(pointer p):
-		p(p) { std::cout << "pointer: " << p << std::endl; }
+		p(p) {}
 	Iterator(Iterator const &other):
 		p(other.p) {}
 	virtual ~Iterator() {}

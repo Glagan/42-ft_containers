@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:22:51 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 21:18:04 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <cstddef>
 # include <cmath>
 # include "include/Pair.hpp"
-# include "include/Tree.hpp"
+# include "include/TreeNode.hpp"
 
 namespace ft
 {
@@ -35,6 +35,12 @@ public:
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
 	typedef Compare key_compare;
+	typedef TreeNode<value_type, key_compare> node_type;
+	typedef node_type* node_pointer;
+	typedef MapIterator<value_type, node_type> iterator;
+	typedef MapIterator<value_type const, node_type const> const_iterator;
+	typedef ReverseMapIterator<value_type, node_type> reverse_iterator;
+	typedef ReverseMapIterator<value_type const, node_type const> const_reverse_iterator;
 
     class value_compare
     {
@@ -52,102 +58,9 @@ public:
 		}
     };
 private:
-	Tree<value_type, key_compare> tree;
+	TreeNode<value_type, key_compare> root;
 	size_type size_;
 public:
-	class iterator
-	{
-	protected:
-		value_type *pointer;
-	public:
-		iterator();
-		iterator(value_type *vec);
-		iterator(iterator const &other);
-		virtual ~iterator();
-
-		iterator &operator=(iterator const &other);
-
-		mapped_type &operator*() const;
-		mapped_type *operator->() const;
-		bool operator==(iterator const &other) const;
-		bool operator!=(iterator const &other) const;
-		bool operator<(iterator const &other) const;
-		bool operator<=(iterator const &other) const;
-		bool operator>(iterator const &other) const;
-		bool operator>=(iterator const &other) const;
-
-		iterator operator++(int);
-		iterator &operator++();
-		iterator operator--(int);
-		iterator &operator--();
-		iterator &operator+=(int value);
-		iterator operator+(int value) const;
-		iterator &operator-=(int value);
-		iterator operator-(int value) const;
-	};
-	class const_iterator
-	{
-	protected:
-		value_type const *pointer;
-	public:
-		const_iterator();
-		const_iterator(value_type const *vec);
-		const_iterator(const_iterator const &other);
-		const_iterator(iterator const &other);
-		virtual ~const_iterator();
-
-		const_iterator &operator=(const_iterator const &other);
-
-		mapped_type const &operator*() const;
-		mapped_type const *operator->() const;
-		bool operator==(const_iterator const &other) const;
-		bool operator!=(const_iterator const &other) const;
-		bool operator<(const_iterator const &other) const;
-		bool operator<=(const_iterator const &other) const;
-		bool operator>(const_iterator const &other) const;
-		bool operator>=(const_iterator const &other) const;
-		const_iterator &operator+=(int value);
-		const_iterator operator+(int value) const;
-		const_iterator &operator-=(int value);
-		const_iterator operator-(int value) const;
-
-		const_iterator operator++(int);
-		const_iterator &operator++();
-		const_iterator operator--(int);
-		const_iterator &operator--();
-	};
-	class reverse_iterator: virtual public iterator
-	{
-	public:
-		reverse_iterator();
-		reverse_iterator(value_type *vec);
-		reverse_iterator(reverse_iterator const &other);
-		reverse_iterator(iterator const &other);
-		virtual ~reverse_iterator();
-
-		reverse_iterator &operator=(reverse_iterator const &other);
-
-		value_type &operator*() const;
-		value_type *operator->() const;
-		reverse_iterator operator++(int);
-		reverse_iterator &operator++();
-		reverse_iterator operator--(int);
-		reverse_iterator &operator--();
-	};
-	class const_reverse_iterator: public const_iterator, public reverse_iterator
-	{
-	public:
-		const_reverse_iterator();
-		const_reverse_iterator(value_type const *vec);
-		const_reverse_iterator(const_reverse_iterator const &other);
-		const_reverse_iterator(reverse_iterator const &other);
-		virtual ~const_reverse_iterator();
-
-		value_type const &operator*() const;
-		value_type const *operator->() const;
-		const_reverse_iterator &operator=(const_reverse_iterator const &other);
-	};
-
 	Map();
 	Map(size_type size, const_reference val=value_type());
 	Map(iterator first, iterator last);
@@ -165,9 +78,18 @@ public:
 	reverse_iterator rend(void);
 	const_reverse_iterator rend(void) const;
 
-	bool empty(void) const;
-	size_type size(void) const;
-	size_type max_size(void) const;
+	bool empty(void) const
+	{
+		return (this->size_ > 0);
+	}
+	size_type size(void) const
+	{
+		return (this->size_);
+	}
+	size_type max_size(void) const
+	{
+		return (((std::pow(2, 64) - 1) / sizeof(TreeNode<value_type, key_compare>)) - 1);
+	}
 
 	mapped_type& operator[](key_type const &k);
 
