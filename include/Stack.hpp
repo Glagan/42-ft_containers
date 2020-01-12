@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:05 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 16:30:48 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 14:07:29 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ namespace ft
 template<typename T>
 class Stack
 {
-protected:
+public:
 	typedef size_t size_type;
 	typedef T value_type;
 	typedef List<value_type> container_type;
@@ -31,7 +31,7 @@ protected:
 	typedef T const * const_pointer;
 	typedef T& reference;
 	typedef T const & const_reference;
-
+protected:
 	container_type c;
 public:
 	Stack(container_type const &container=container_type());

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:45:40 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 13:20:15 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void test(std::string const &what)
 {
-	std::cout << "#################### START TEST " << what << std::endl;
+	std::cout << "######################################## START TEST " << what << std::endl;
 }
 
 void end_test(std::string const &what)
 {
-	std::cout << "#################### END TEST " << what << '\n' << std::endl;
+	std::cout << "######################################## END TEST " << what << '\n' << std::endl;
 }
 
 int main(void)

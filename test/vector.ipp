@@ -6,14 +6,13 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 19:03:03 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 13:20:40 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 template<typename test_type>
 void test_Vector(void)
 {
-
 	std::cout << "---basic\n" << '\n';
 
 	ft::Vector<test_type> empty_vector;

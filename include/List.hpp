@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:27:41 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 14:06:57 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ namespace ft
 template<typename T>
 class List
 {
-protected:
-	typedef ptrdiff_t difference_type;
+public:
 	typedef size_t size_type;
 	typedef T value_type;
 	typedef value_type *pointer;

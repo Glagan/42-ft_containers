@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:41:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 14:45:00 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,43 @@
 # include <cstddef>
 # include <cmath>
 # include "include/Pair.hpp"
+# include "include/Tree.hpp"
 
 namespace ft
 {
 template<typename K, typename T, typename Compare>
 class Map
 {
-protected:
+public:
 	typedef ptrdiff_t difference_type;
 	typedef size_t size_type;
-	typedef K key_type;
+	typedef K const key_type;
 	typedef T mapped_type;
 	typedef Pair<key_type, mapped_type> value_type;
-	typedef Pair<key_type, mapped_type> *pointer;
-	typedef Pair<key_type, mapped_type> const * const_pointer;
-	typedef Pair<key_type, mapped_type> &reference;
-	typedef Pair<key_type, mapped_type> const & const_reference;
+	typedef value_type* pointer;
+	typedef value_type const * const_pointer;
+	typedef value_type& reference;
+	typedef value_type const & const_reference;
 	typedef Compare key_compare;
+
+    class value_compare
+    {
+    protected:
+        key_compare comp;
+
+        value_compare(key_compare c):
+			comp(c)
+		{
+		}
+    public:
+        bool operator()(const value_type& x, const value_type& y) const
+		{
+			return (comp(x.first, y.first));
+		}
+    };
 private:
+	Tree tree;
+	size_type size_;
 public:
 	class iterator
 	{
@@ -127,12 +146,6 @@ public:
 		value_type const &operator*() const;
 		value_type const *operator->() const;
 		const_reverse_iterator &operator=(const_reverse_iterator const &other);
-	};
-
-	class value_compare
-	{
-		value_compare();
-		virtual ~value_compare();
 	};
 
 	Map();

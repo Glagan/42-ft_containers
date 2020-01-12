@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 18:28:10 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/12 14:07:43 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ namespace ft
 template<typename T>
 class Vector
 {
-protected:
-	typedef ptrdiff_t difference_type;
+public:
 	typedef size_t size_type;
 	typedef T value_type;
 	typedef T* pointer;
