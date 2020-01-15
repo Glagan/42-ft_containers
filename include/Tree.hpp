@@ -24,33 +24,33 @@ public:
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
 	typedef Compare value_compare;
-private:
-	class TreeNode
+
+	class Node
 	{
 	public:
 		value_type value;
-		TreeNode *parent;
-		TreeNode *left;
-		TreeNode *right;
+		Node *parent;
+		Node *left;
+		Node *right;
 		bool color;
 
-		TreeNode():
+		Node():
 			value(), parent(nullptr), left(nullptr), right(nullptr), color(0)
 		{
 		}
-		TreeNode(value_type const &value, bool color=1):
+		Node(value_type const &value, bool color=1):
 			value(value), parent(nullptr), left(nullptr), right(nullptr), color(color)
 		{
 		}
-		TreeNode(TreeNode const &other):
-			value(other.value), parent(other.nullptr), left(other.nullptr), right(other.nullptr), color(other.color)
+		Node(Node const &other):
+			value(other.value), parent(other.parent), left(other.left), right(other.right), color(other.color)
 		{
 		}
-		virtual ~TreeNode()
+		virtual ~Node()
 		{
 		}
 
-		TreeNode &operator=(TreeNode const &other)
+		Node &operator=(Node const &other)
 		{
 			this->value = other.value;
 			this->parent = other.parent;
@@ -61,25 +61,25 @@ private:
 		}
 	};
 protected:
-	TreeNode *root;
+	Node *root;
 
-	TreeNode *minimum_node(TreeNode *node)
+	Node *minimum_node(Node *node)
 	{
 		while (node->left != nullptr)
 			node = node->left;
 		return (node);
 	}
 
-	TreeNode *maximum_node(TreeNode *node)
+	Node *maximum_node(Node *node)
 	{
 		while (node->right != nullptr)
 			node = node->right;
 		return (node);
 	}
 
-	void left_rotate(TreeNode *x)
+	void left_rotate(Node *x)
 	{
-		TreeNode *y = x->right;
+		Node *y = x->right;
 		x->right = y->left;
 		if (y->left != nullptr)
 			y->left->parent = x;
@@ -94,9 +94,9 @@ protected:
 		x->parent = y;
 	}
 
-	void right_rotate(TreeNode *x)
+	void right_rotate(Node *x)
 	{
-		TreeNode *y = x->left;
+		Node *y = x->left;
 		x->left = y->right;
 		if (y->right != nullptr)
 			y->right->parent = x;
@@ -111,9 +111,9 @@ protected:
 		x->parent = y;
 	}
 
-	void fix_insert(TreeNode *k)
+	void fix_insert(Node *k)
 	{
-		TreeNode *u;
+		Node *u;
 		while (k->parent->color == 1)
 		{
 			if (k->parent == k->parent->parent->right)
@@ -167,7 +167,7 @@ protected:
 		root->color = 0;
 	}
 
-	TreeNode *search(TreeNode *node, value_type const &val)
+	Node *search(Node *node, value_type const &val)
 	{
 		if (node == nullptr || val == node->value)
 			return (node);
@@ -179,7 +179,7 @@ public:
 	Tree():
 		root(nullptr)
 	{
-		this->root = new TreeNode();
+		this->root = new Node();
 	}
 	Tree(Tree const &other):
 		root(other.root)
@@ -193,11 +193,11 @@ public:
 		return (*this);
 	}
 
-	TreeNode *insert(const_reference val)
+	Node *insert(const_reference val)
 	{
-		TreeNode *node = new TreeNode(val);
-		TreeNode *y = nullptr;
-		TreeNode *x = this->root;
+		Node *node = new Node(val);
+		Node *y = nullptr;
+		Node *x = this->root;
 
 		while (x != nullptr)
 		{
@@ -225,9 +225,9 @@ public:
 		return (node);
 	}
 
-	TreeNode *find(value_type const &val)
+	Node *find(value_type const &val)
 	{
-		return (this->search(this->root));
+		return (this->search(this->root, val));
 	}
 };
 

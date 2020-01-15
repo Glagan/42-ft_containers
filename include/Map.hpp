@@ -17,11 +17,11 @@
 # include <cstddef>
 # include <cmath>
 # include "include/Pair.hpp"
-# include "include/TreeNode.hpp"
+# include "include/Tree.hpp"
 
 namespace ft
 {
-template<typename K, typename T, typename Compare>
+template<typename K, typename T>
 class Map
 {
 public:
@@ -34,13 +34,13 @@ public:
 	typedef value_type const * const_pointer;
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
-	typedef Compare key_compare;
-	typedef TreeNode<value_type, key_compare> node_type;
+	typedef typename std::less<key_type> key_compare;
+	typedef typename Tree<value_type, key_compare>::Node node_type;
 	typedef node_type* node_pointer;
-	typedef MapIterator<value_type, node_type> iterator;
-	typedef MapIterator<value_type const, node_type const> const_iterator;
-	typedef ReverseMapIterator<value_type, node_type> reverse_iterator;
-	typedef ReverseMapIterator<value_type const, node_type const> const_reverse_iterator;
+	typedef MapIterator<value_type> iterator;
+	typedef MapIterator<value_type const> const_iterator;
+	typedef ReverseMapIterator<value_type> reverse_iterator;
+	typedef ReverseMapIterator<value_type const> const_reverse_iterator;
 
     class value_compare
     {
@@ -58,7 +58,7 @@ public:
 		}
     };
 private:
-	TreeNode<value_type, value_compare> tree;
+	Tree<value_type, value_compare> tree;
 	size_type size_;
 public:
 	Map():
@@ -67,12 +67,15 @@ public:
 	}
 	Map(iterator first, iterator last)
 	{
-		this->assign(first, last);
+		(void)first;
+		(void)last;
+		//this->assign(first, last);
 	}
 	Map(Map const &other):
 		tree(), size_(0)
 	{
-		this->insert(other.begin(), other.end());
+		(void)other;
+		//this->insert(other.begin(), other.end());
 	}
 	virtual ~Map()
 	{
@@ -81,8 +84,9 @@ public:
 
 	Map &operator=(Map const &other)
 	{
+		(void)other;
 		this->clear();
-		this->insert(other.begin(), other.end());
+		//this->insert(other.begin(), other.end());
 	}
 
 	iterator begin(void)
@@ -128,7 +132,7 @@ public:
 	}
 	size_type max_size(void) const
 	{
-		return (((std::pow(2, 64) - 1) / sizeof(TreeNode<value_type, key_compare>)) - 1);
+		return (((std::pow(2, 64) - 1) / sizeof(node_type)) - 1);
 	}
 
 	mapped_type& operator[](key_type const &k)
@@ -137,7 +141,7 @@ public:
 		if (it != this->end())
 			return (*it);
 		++this->size_;
-		return (this->tree.insert(k)->value)
+		return (this->tree.insert(k)->value);
 	}
 
 	Pair<iterator, bool> insert(const_reference val)
@@ -145,7 +149,7 @@ public:
 		iterator it = this->find(val.first);
 		if (it != this->end())
 			return (make_pair(it, false));
-		TreeNode *inserted = this->tree.insert(val.first, val.second);
+		node_pointer inserted = this->tree.insert(val.first, val.second);
 		return (make_pair(iterator(inserted, true)));
 	}
 	iterator insert(iterator position, const_reference val);
@@ -158,34 +162,30 @@ public:
 	void clear(void)
 	{
 		if (this->size_)
-			this->tree.clear_all();
+		{
+			//this->tree.clear_all();
+		}
 		this->size_ = 0;
 	}
 
-	key_compare key_comp(void) const
-	{
-		return (key_compare);
-	}
-	value_compare value_comp(void) const
-	{
-		return (value_compare);
-	}
+	key_compare key_comp(void) const;
+	value_compare value_comp(void) const;
 
 	iterator find(key_type const &key)
 	{
-		TreeNode *node = this->find(key);
+		node_pointer node = this->find(key);
 		if (node)
 			return (iterator(node));
 		return (this->end());
 	}
 	const_iterator find(key_type const &key) const
 	{
-		TreeNode *node = this->find(key);
+		node_pointer node = this->find(key);
 		if (node)
 			return (iterator(node));
 		return (this->end());
 	}
-	size_type count(key_type const &k) const
+	size_type count(key_type const &k) const;
 	iterator lower_bound(key_type const &key);
 	const_iterator lower_bound(key_type const &key) const;
 	iterator upper_bound(key_type const &key);

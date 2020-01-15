@@ -13,6 +13,7 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <cstring>
 # include <cassert>
 # include <cstddef>
 # include <cmath>

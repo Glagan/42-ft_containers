@@ -389,13 +389,13 @@ public:
 	}
 };
 
-template<typename T, typename N>
-class MapIterator: public Iterator<N>
+template<typename T>
+class MapIterator: public Iterator<T>
 {
 };
 
-template<typename T, typename N>
-class ReverseMapIterator: public MapIterator<T, N>
+template<typename T>
+class ReverseMapIterator: public MapIterator<T>
 {
 };
 }
