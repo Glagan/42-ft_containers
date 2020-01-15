@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 21:08:44 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 15:22:52 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,7 +384,7 @@ public:
 	{
 		if (&x == this)
 			return ;
-		this->merge(x, &less<value_type>);
+		this->merge(x, &less_than<value_type>);
 	}
 	template<typename Compare>
 	void merge(List &x, Compare comp)
@@ -427,7 +427,7 @@ public:
 	{
 		if (this->size_ <= 1)
 			return ;
-		this->sort(&less<value_type>);
+		this->sort(&less_than<value_type>);
 	}
 	template<typename Compare>
 	void sort(Compare comp)

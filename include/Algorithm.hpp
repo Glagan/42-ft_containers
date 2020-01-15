@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 19:01:39 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 19:51:23 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 15:22:37 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,23 @@ return (a == b);
 }
 
 template<class value_type>
-bool less(value_type const &a, value_type const &b)
+class less
+{
+public:
+    bool operator()(value_type const &a, value_type const &b) const
+	{
+		return (a < b);
+	}
+};
+
+template<class value_type>
+bool less_than(value_type const &a, value_type const &b)
 {
 return (a < b);
 }
 
 template<class value_type>
-bool more(value_type const &a, value_type const &b)
+bool more_than(value_type const &a, value_type const &b)
 {
 return (a > b);
 }

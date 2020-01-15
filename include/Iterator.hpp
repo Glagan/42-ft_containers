@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:16:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 21:18:17 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:35:46 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,12 +390,38 @@ public:
 };
 
 template<typename T>
-class MapIterator: public Iterator<T>
+class MapIterator:
+	public Iterator<T>
 {
+public:
+	using typename Iterator<T>::value_type;
+    using typename Iterator<T>::pointer;
+    using typename Iterator<T>::const_pointer;
+    using typename Iterator<T>::reference;
+    using typename Iterator<T>::const_reference;
+    using typename Iterator<T>::difference_type;
+public:
+	MapIterator():
+		Iterator<T>(nullptr)
+	{
+	}
+	MapIterator<T>(T *p):
+		Iterator<T>(p)
+	{
+	}
+	MapIterator(MapIterator const &other):
+		Iterator<T>(other.p)
+	{
+	}
+	MapIterator(Iterator<T> const &other):
+		Iterator<T>(other)
+	{
+	}
 };
 
 template<typename T>
-class ReverseMapIterator: public MapIterator<T>
+class ReverseMapIterator:
+	public MapIterator<T>
 {
 };
 }
