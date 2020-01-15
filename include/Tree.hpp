@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 23:10:11 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/15 18:59:45 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 20:15:14 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,39 +38,39 @@ public:
 		Node *right;
 		bool color;
 
-		static Node* get_parent(Node* n) {
+		static Node* get_parent(Node* n)
+		{
 			// Note that parent is set to null for the root node.
-			return n == nullptr ? nullptr : n->parent;
+			return (n == nullptr ? nullptr : n->parent);
 		}
 
-		static Node* get_grand_parent(Node* n) {
+		static Node* get_grand_parent(Node* n)
+		{
 			// Note that it will return nullptr if this is root or child of root
-			return get_parent(get_parent(n));
+			return (get_parent(get_parent(n)));
 		}
 
-		static Node* get_sibling(Node* n) {
+		static Node* get_sibling(Node* n)
+		{
 			Node* p = get_parent(n);
-
 			// No parent means no sibling.
-			if (p == nullptr) {
-				return nullptr;
-			}
-
-			if (n == p->left) {
-				return p->right;
-			} else {
-				return p->left;
-			}
+			if (p == nullptr)
+				return (nullptr);
+			if (n == p->left)
+				return (p->right);
+			return (p->left);
 		}
 
-		static Node* get_uncle(Node* n) {
+		static Node* get_uncle(Node* n)
+		{
 			Node* p = get_parent(n);
 
 			// No parent means no uncle
 			return get_sibling(p);
 		}
 
-		static void rotate_left(Node* n) {
+		static void rotate_left(Node* n)
+		{
 			Node* nnew = n->right;
 			Node* p = get_parent(n);
 			assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
@@ -94,7 +94,8 @@ public:
 			nnew->parent = p;
 		}
 
-		static void rotate_right(Node* n) {
+		static void rotate_right(Node* n)
+		{
 			Node* nnew = n->left;
 			Node* p = get_parent(n);
 			assert(nnew != nullptr);  // Since the leaves of a red-black tree are empty,
@@ -120,7 +121,8 @@ public:
 			nnew->parent = p;
 		}
 
-		static void insert_repair(Node* n) {
+		static void insert_repair(Node* n)
+		{
 			if (get_parent(n) == nullptr) {
 				n->color = 0;
 			} else if (get_parent(n)->color == 0) {
@@ -131,6 +133,7 @@ public:
 				get_grand_parent(n)->color = 1;
 				insert_repair(get_grand_parent(n));
 			} else {
+				// Step 1
 				Node* p = get_parent(n);
 				Node* g = get_grand_parent(n);
 
@@ -142,6 +145,7 @@ public:
 					n = n->right;
 				}
 
+				// Step 2
 				p = get_parent(n);
 				g = get_grand_parent(n);
 
@@ -155,7 +159,8 @@ public:
 			}
 		}
 
-		void ReplaceNode(Node* n, Node* child) {
+		/*void ReplaceNode(Node* n, Node* child)
+		{
 			child->parent = n->parent;
 			if (n == n->parent->left) {
 				n->parent->left = child;
@@ -164,7 +169,8 @@ public:
 			}
 		}
 
-		void DeleteCase6(Node* n) {
+		void DeleteCase6(Node* n)
+		{
 			Node* s = get_sibling(n);
 
 			s->color = n->parent->color;
@@ -179,7 +185,8 @@ public:
 			}
 		}
 
-		void DeleteCase5(Node* n) {
+		void DeleteCase5(Node* n)
+		{
 			Node* s = get_sibling(n);
 
 			// This if statement is trivial, due to case 2 (even though case 2 changed
@@ -206,7 +213,8 @@ public:
 			DeleteCase6(n);
 		}
 
-		void DeleteCase4(Node* n) {
+		void DeleteCase4(Node* n)
+		{
 			Node* s = get_sibling(n);
 
 			if ((n->parent->color == 1) && (s->color == 0) &&
@@ -218,7 +226,8 @@ public:
 			}
 		}
 
-		void DeleteCase3(Node* n) {
+		void DeleteCase3(Node* n)
+		{
 			Node* s = get_sibling(n);
 
 			if ((n->parent->color == 0) && (s->color == 0) &&
@@ -230,7 +239,8 @@ public:
 			}
 		}
 
-		void DeleteCase2(Node* n) {
+		void DeleteCase2(Node* n)
+		{
 			Node* s = get_sibling(n);
 
 			if (s->color == 1) {
@@ -245,13 +255,15 @@ public:
 			DeleteCase3(n);
 		}
 
-		void DeleteCase1(Node* n) {
+		void DeleteCase1(Node* n)
+		{
 			if (n->parent != nullptr) {
 				DeleteCase2(n);
 			}
 		}
 
-		void DeleteOneChild(Node* n) {
+		void DeleteOneChild(Node* n)
+		{
 			// Precondition: n has at most one non-leaf child.
 			Node* child = (n->right == nullptr) ? n->left : n->right;
 			assert(child);
@@ -265,7 +277,7 @@ public:
 				}
 			}
 			free(n);
-		}
+		}*/
 	public:
 		Node():
 			value(), parent(nullptr), left(nullptr), right(nullptr), color(0)
@@ -297,58 +309,23 @@ public:
 		{
 			return (this->value);
 		}
-	};
-private:
-	void insert_recurse(Node* root, Node* n) {
-		// Recursively descend the tree until a leaf is found.
-		if (root != nullptr)
+
+		Node *get_parent(void) const
 		{
-			if (n->value < root->value) {
-				if (root->left != nullptr) {
-					this->insert_recurse(root->left, n);
-					return;
-				} else {
-					root->left = n;
-					this->begin_ = n;
-				}
-			} else { // n->key >= root->key
-				if (root->right == this->end_)
-				{
-					root->right = n;
-					this->end_->parent = n;
-					n->right = this->end_;
-					return ;
-				}
-				else if (root->right != nullptr) {
-					this->insert_recurse(root->right, n);
-					return;
-				} else {
-					root->right = n;
-				}
-			}
+			return (this->parent);
 		}
 
-		// Insert new Node n.
-		n->parent = root;
-		n->left = nullptr;
-		n->right = nullptr;
-		n->color = 1;
-	}
+		Node *get_left(void) const
+		{
+			return (this->left);
+		}
 
-	void insert_at_root(Node* n) {
-		this->end_->parent->right = nullptr;
-		// Insert new Node into the current tree.
-		this->insert_recurse(this->root, n);
-		// Repair the tree in case any of the red-black properties have been violated.
-		Node::insert_repair(n);
-		this->repair_bounds();
-	}
-protected:
-	Node *root;
-	Node *begin_;
-	Node *end_;
-	value_compare comp;
-
+		Node *get_right(void) const
+		{
+			return (this->right);
+		}
+	};
+private:
 	void make_bounds(void)
 	{
 		this->begin_ = new Node;
@@ -362,12 +339,55 @@ protected:
 		while (tmp->left)
 			tmp = tmp->left;
 		this->begin_ = tmp;
-		tmp = this->root;
-		while (tmp->right)
-			tmp = tmp->right;
-		tmp->right = this->end_;
-		this->end_->parent = tmp;
+		this->root->parent = this->end_;
 	}
+
+	void insert_recurse(Node* root, Node* n) {
+		// Recursively descend the tree until a leaf is found.
+		if (root != nullptr)
+		{
+			if (n->value < root->value)
+			{ // TODO: comp()
+				if (root->left != nullptr)
+				{
+					this->insert_recurse(root->left, n);
+					return;
+				}
+				else
+					root->left = n;
+			}
+			else
+			{ // n->key >= root->key
+				if (root->right != nullptr)
+				{
+					this->insert_recurse(root->right, n);
+					return;
+				}
+				else
+					root->right = n;
+			}
+		}
+		// Insert new Node n.
+		n->parent = root;
+	}
+
+	void insert_at_root(Node* n) {
+		this->root->parent = nullptr;
+		// Insert new Node into the current tree.
+		this->insert_recurse(this->root, n);
+		// Repair the tree in case any of the red-black properties have been violated.
+		Node::insert_repair(n);
+		this->root = n;
+		while (Node::get_parent(this->root) != nullptr)
+			this->root = Node::get_parent(this->root);
+		this->root = n;
+		this->repair_bounds();
+	}
+protected:
+	Node *root;
+	Node *begin_;
+	Node *end_;
+	value_compare comp;
 public:
 	Tree():
 		root(nullptr), comp()
@@ -404,11 +424,8 @@ public:
 		{
 			this->root = new_node;
 			this->root->color = 0;
-			// Begin
 			this->begin_ = this->root;
-			// End
-			this->end_->parent = this->root;
-			this->root->right = this->end_;
+			this->root->parent = this->end_;
 		}
 		else
 			this->insert_at_root(new_node);

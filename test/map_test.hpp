@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/15 18:53:05 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 19:59:19 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,23 @@ void test_Map(void)
 	std::cout << "43 => " << map[5] << std::endl;
 	map[10] = 42;
 	std::cout << "42 => " << map[10] << std::endl;
+
+	map[6] = 44;
+	map[7] = 45;
+	map[8] = 46;
+	map[9] = 47;
+	map[11] = 48;
+	map[12] = 49;
+
+	std::cout << "iter:\n";
+
+	ft::Map<int, int>::iterator it = map.begin();
+	ft::Map<int, int>::iterator ite = map.end();
+	while (it != ite)
+	{
+		std::cout << "it.first " << it->first << " it.second " << it->second << '\n';
+		++it;
+	}
 }
 
 #endif

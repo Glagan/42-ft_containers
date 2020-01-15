@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/15 19:00:42 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 19:52:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ public:
 	typedef MapCompare<key_type, value_type, key_compare> map_compare;
 	typedef typename Tree<value_type, map_compare>::Node node_type;
 	typedef node_type* node_pointer;
-	typedef MapIterator<node_type> iterator;
-	typedef MapIterator<node_type const> const_iterator;
-	typedef ReverseMapIterator<node_type> reverse_iterator;
-	typedef ReverseMapIterator<node_type const> const_reverse_iterator;
+	typedef MapIterator<value_type, node_type> iterator;
+	typedef MapIterator<value_type const, node_type const> const_iterator;
+	typedef ReverseMapIterator<value_type, node_type> reverse_iterator;
+	typedef ReverseMapIterator<value_type const, node_type const> const_reverse_iterator;
 
     class value_compare
     {
@@ -125,11 +125,11 @@ public:
 
 	iterator begin(void)
 	{
-		return (iterator(this->tree->begin_bound()));
+		return (iterator(this->tree.begin_bound()));
 	}
 	const_iterator begin(void) const
 	{
-		return (const_iterator(this->tree->begin_bound()));
+		return (const_iterator(this->tree.begin_bound()));
 	}
 	reverse_iterator rbegin(void)
 	{
@@ -141,11 +141,11 @@ public:
 	}
 	iterator end(void)
 	{
-		return (iterator(this->tree->end_bound()));
+		return (iterator(this->tree.end_bound()));
 	}
 	const_iterator end(void) const
 	{
-		return (const_iterator(this->tree->end_bound()));
+		return (const_iterator(this->tree.end_bound()));
 	}
 	reverse_iterator rend(void)
 	{
