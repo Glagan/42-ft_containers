@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:23:17 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 19:44:13 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:48:46 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ public:
 	second_type second;
 
 	Pair(): first(), second() {}
-	Pair(first_type const &first, first_type const &second): first(first), second(second) {}
+	Pair(first_type const &first, second_type const &second): first(first), second(second) {}
 	template<class U, class V>
 	Pair(Pair<U, V> const &other): first(other.first), second(other.second) {}
 	virtual ~Pair() {}

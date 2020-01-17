@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:16:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 21:18:17 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 19:51:40 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,14 +389,224 @@ public:
 	}
 };
 
-template<typename T>
-class MapIterator: public Iterator<T>
+template<typename T, typename N>
+class MapIterator:
+	public Iterator<N>
 {
+public:
+	typedef T value_type;
+    typedef value_type* pointer;
+    typedef value_type const * const_pointer;
+    typedef value_type& reference;
+    typedef value_type const & const_reference;
+	typedef N node_type;
+	typedef node_type* node_pointer;
+    typedef std::ptrdiff_t difference_type;
+protected:
+	/**
+	 * 				*
+	 * 			   / \
+	 * 			  *   *
+	 *           / \ / \
+	 * 			*  * * *
+	 * 		   /    /   \
+	 *        *    *    *
+	 * 				     \
+	 *  				 #
+	 **/
+	void previous()
+	{
+		if (this->p->get_left())
+		{
+			this->p = this->p->get_left();
+			while (this->p->get_right())
+				this->p = this->p->get_right();
+		}
+		else if (this->p->get_parent() && this->p->get_parent()->get_left() == this->p)
+		{
+			while (this->p->get_parent())
+				this->p = this->p->get_parent();
+		}
+		else
+			this->p = this->p->get_parent();
+	}
+	void next()
+	{
+		if (this->p->get_right())
+		{
+			this->p = this->p->get_right();
+			while (this->p->get_left())
+				this->p = this->p->get_left();
+		}
+		else if (this->p->get_parent() && this->p->get_parent()->get_right() == this->p)
+		{
+			while (this->p->get_parent())
+				this->p = this->p->get_parent();
+		}
+		else
+			this->p = this->p->get_parent();
+	}
+public:
+	MapIterator():
+		Iterator<node_type>(nullptr) {}
+	MapIterator(node_pointer p):
+		Iterator<node_type>(p) {}
+	MapIterator(MapIterator const &other):
+		Iterator<node_type>(other.p) {}
+	MapIterator(Iterator<node_type> const &other):
+		Iterator<node_type>(other) {}
+	virtual ~MapIterator() {}
+
+	MapIterator &operator=(MapIterator const &other)
+	{
+		this->p = other.p;
+		return (*this);
+	}
+
+	reference operator*()
+	{
+		return (this->p->get_value());
+	}
+	const_reference operator*() const
+	{
+		return (this->p->get_value());
+	}
+	pointer operator->()
+	{
+		return (&this->p->get_value());
+	}
+	const_pointer operator->() const
+	{
+		return (&this->p->get_value());
+	}
+
+	MapIterator operator++(int)
+	{
+		MapIterator tmp(*this);
+		this->next();
+		return (tmp);
+	}
+	MapIterator &operator++()
+	{
+		this->next();
+		return (*this);
+	}
+	MapIterator operator--(int)
+	{
+		MapIterator tmp(*this);
+		this->previous();
+		return (tmp);
+	}
+	MapIterator &operator--()
+	{
+		this->previous();
+		return (*this);
+	}
+
+	MapIterator &operator+=(int value)
+	{
+		if (value > 0)
+		{
+			for (int i = 0; i < value; i++)
+				this->next();
+		}
+		else
+		{
+			for (int i = value; i > 0; i--)
+				this->previous();
+		}
+		return (*this);
+	}
+	MapIterator operator+(int value) const
+	{
+		MapIterator tmp(*this);
+		return (tmp += value);
+	}
+	MapIterator &operator-=(int value)
+	{
+		operator+=(-value);
+		return (*this);
+	}
+	MapIterator operator-(int value) const
+	{
+		MapIterator tmp(*this);
+		return (tmp -= value);
+	}
 };
 
-template<typename T>
-class ReverseMapIterator: public MapIterator<T>
+template<typename T, typename N>
+class ReverseMapIterator:
+	virtual public MapIterator<T, N>,
+	virtual public ReverseIterator<N>
 {
+public:
+	using typename MapIterator<T, N>::value_type;
+    using typename MapIterator<T, N>::pointer;
+    using typename MapIterator<T, N>::const_pointer;
+    using typename MapIterator<T, N>::reference;
+    using typename MapIterator<T, N>::const_reference;
+    using typename MapIterator<T, N>::node_type;
+    using typename MapIterator<T, N>::node_pointer;
+    using typename MapIterator<T, N>::difference_type;
+public:
+	ReverseMapIterator():
+		Iterator<node_type>(nullptr), MapIterator<value_type, node_type>(nullptr), ReverseIterator<node_type>(nullptr) {}
+	ReverseMapIterator(pointer p):
+		Iterator<node_type>(p), MapIterator<value_type, node_type>(p), ReverseIterator<node_type>(p) {}
+	ReverseMapIterator(Iterator<node_type> const &other):
+		Iterator<node_type>(other), MapIterator<value_type, node_type>(other), ReverseIterator<node_type>(other) {}
+	ReverseMapIterator(ReverseMapIterator<value_type, node_type> const &other):
+		Iterator<node_type>(other.p), MapIterator<value_type, node_type>(other.p), ReverseIterator<node_type>(other.p) {}
+	virtual ~ReverseMapIterator() {}
+
+	ReverseMapIterator &operator=(ReverseMapIterator const &other)
+	{
+		this->p = other.p;
+		return (*this);
+	}
+
+	reference operator*()
+	{
+		MapIterator<value_type, node_type> tmp(*this);
+		return (*--tmp);
+	}
+	const_reference operator*() const
+	{
+		MapIterator<value_type, node_type> tmp(*this);
+		return (*--tmp);
+	}
+	pointer operator->()
+	{
+		MapIterator<value_type, node_type> tmp(*this);
+		return (&*--tmp);
+	}
+	const_pointer operator->() const
+	{
+		MapIterator<value_type, node_type> tmp(*this);
+		return (&*--tmp);
+	}
+	ReverseMapIterator operator++(int)
+	{
+		ReverseMapIterator tmp(*this);
+		operator++();
+		return (tmp);
+	}
+	ReverseMapIterator &operator++()
+	{
+		this->previous();
+		return (*this);
+	}
+	ReverseMapIterator operator--(int)
+	{
+		ReverseMapIterator tmp(*this);
+		operator--();
+		return (tmp);
+	}
+	ReverseMapIterator &operator--()
+	{
+		this->next();
+		return (*this);
+	}
 };
 }
 

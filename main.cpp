@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 13:20:15 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/15 16:50:47 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int main(void)
 	end_test("Queue");
 	test("Map");
 	test_Map<char, int>();
-	test_Map<char, Number>();
-	test_Map<Number, int>();
-	test_Map<Number, Number>();
+	//test_Map<char, Number>();
+	//test_Map<Number, int>();
+	//test_Map<Number, Number>();
 	end_test("Map");
 
 	// Check Number count
