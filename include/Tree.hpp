@@ -339,7 +339,11 @@ private:
 		while (tmp->left)
 			tmp = tmp->left;
 		this->begin_ = tmp;
-		this->root->parent = this->end_;
+		tmp = this->root;
+		while (tmp->right)
+			tmp = tmp->right;
+		tmp->right = this->end_;
+		this->end_->parent = tmp;
 	}
 
 	void insert_recurse(Node* root, Node* n) {
@@ -372,7 +376,7 @@ private:
 	}
 
 	void insert_at_root(Node* n) {
-		this->root->parent = nullptr;
+		this->end_->parent->right = nullptr;
 		// Insert new Node into the current tree.
 		this->insert_recurse(this->root, n);
 		// Repair the tree in case any of the red-black properties have been violated.
@@ -380,7 +384,6 @@ private:
 		this->root = n;
 		while (Node::get_parent(this->root) != nullptr)
 			this->root = Node::get_parent(this->root);
-		this->root = n;
 		this->repair_bounds();
 	}
 protected:
@@ -425,7 +428,8 @@ public:
 			this->root = new_node;
 			this->root->color = 0;
 			this->begin_ = this->root;
-			this->root->parent = this->end_;
+			this->root->right = this->end_;
+			this->end_->parent = this->root;
 		}
 		else
 			this->insert_at_root(new_node);

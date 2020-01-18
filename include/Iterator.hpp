@@ -403,48 +403,45 @@ public:
 	typedef node_type* node_pointer;
     typedef std::ptrdiff_t difference_type;
 protected:
-	/**
-	 * 				*
-	 * 			   / \
-	 * 			  *   *
-	 *           / \ / \
-	 * 			*  * * *
-	 * 		   /    /   \
-	 *        *    *    *
-	 * 				     \
-	 *  				 #
-	 **/
 	void previous()
 	{
+		//std::cout << "node " << this->p << ", parent " << this->p->get_parent() << ", left " << this->p->get_left() << ", right " << this->p->get_right() << std::endl;
 		if (this->p->get_left())
 		{
 			this->p = this->p->get_left();
 			while (this->p->get_right())
 				this->p = this->p->get_right();
 		}
-		else if (this->p->get_parent() && this->p->get_parent()->get_left() == this->p)
-		{
-			while (this->p->get_parent())
-				this->p = this->p->get_parent();
-		}
 		else
+		{
+			node_pointer tmp = this->p;
 			this->p = this->p->get_parent();
+			while (this->p->get_right() != tmp)
+			{
+				tmp = this->p;
+				this->p = this->p->get_parent();
+			}
+		}
 	}
 	void next()
 	{
+		//std::cout << "node " << this->p << ", parent " << this->p->get_parent() << ", left " << this->p->get_left() << ", right " << this->p->get_right() << std::endl;
 		if (this->p->get_right())
 		{
 			this->p = this->p->get_right();
 			while (this->p->get_left())
 				this->p = this->p->get_left();
 		}
-		else if (this->p->get_parent() && this->p->get_parent()->get_right() == this->p)
-		{
-			while (this->p->get_parent())
-				this->p = this->p->get_parent();
-		}
 		else
+		{
+			node_pointer tmp = this->p;
 			this->p = this->p->get_parent();
+			while (this->p->get_left() != tmp)
+			{
+				tmp = this->p;
+				this->p = this->p->get_parent();
+			}
+		}
 	}
 public:
 	MapIterator():
