@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/15 19:52:59 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/18 18:47:42 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ public:
 	}
 	const_reverse_iterator rbegin(void) const
 	{
-		return (reverse_iterator(this->end()));
+		return (const_reverse_iterator(this->end()));
 	}
 	iterator end(void)
 	{
@@ -153,7 +153,7 @@ public:
 	}
 	const_reverse_iterator rend(void) const
 	{
-		return (reverse_iterator(this->begin()));
+		return (const_reverse_iterator(this->begin()));
 	}
 
 	bool empty(void) const
@@ -178,7 +178,7 @@ public:
 		return (this->tree.insert(std::make_pair(k, mapped_type()))->get_value().second);
 	}
 
-	typename std::pair<iterator, bool> insert(const_reference val);/*
+	typename std::pair<iterator, bool> insert(const_reference val)
 	{
 		node_pointer node = this->tree.find(val);
 		if (node)
@@ -186,7 +186,7 @@ public:
 		node_pointer inserted = this->tree.insert(val);
 		++this->size_;
 		return (std::make_pair(iterator(inserted), true));
-	}*/
+	}
 	iterator insert(iterator position, const_reference val);
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last);
@@ -202,13 +202,73 @@ public:
 		return (this->tree.value_comp().comp);
 	}
 
-	iterator find(key_type const &key);
-	const_iterator find(key_type const &key) const;
+	iterator find(key_type const &key)
+	{
+		node_pointer node = this->tree.find(key);
+		if (node)
+			return (iterator(node));
+		return (this->end());
+	}
+	const_iterator find(key_type const &key) const
+	{
+		node_pointer node = this->tree.find(key);
+		if (node)
+			return (const_iterator(node));
+		return (this->end());
+	}
 	size_type count(key_type const &k) const;
-	iterator lower_bound(key_type const &key);
-	const_iterator lower_bound(key_type const &key) const;
-	iterator upper_bound(key_type const &key);
-	const_iterator upper_bound(key_type const &key) const;
+	iterator lower_bound(key_type const &key)
+	{
+		iterator it = this->begin();
+		iterator ite = this->end();
+
+		while (it != ite)
+		{
+			if (!((*it).first < key))
+				return (iterator(it));
+			++it;
+		}
+		return (this->end());
+	}
+	const_iterator lower_bound(key_type const &key) const
+	{
+		iterator it = this->begin();
+		iterator ite = this->end();
+
+		while (it != ite)
+		{
+			if (!((*it).first < key))
+				return (const_iterator(it));
+			++it;
+		}
+		return (this->end());
+	}
+	iterator upper_bound(key_type const &key)
+	{
+		iterator it = this->begin();
+		iterator ite = this->end();
+
+		while (it != ite)
+		{
+			if ((*it).first > key)
+				return (iterator(it));
+			++it;
+		}
+		return (this->end());
+	}
+	const_iterator upper_bound(key_type const &key) const
+	{
+		const_iterator it = this->begin();
+		const_iterator ite = this->end();
+
+		while (it != ite)
+		{
+			if ((*it).first > key)
+				return (const_iterator(it));
+			++it;
+		}
+		return (this->end());
+	}
 	typename std::pair<iterator, iterator> equal_range(key_type const &key);
 	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const;
 };

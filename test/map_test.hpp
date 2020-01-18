@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/15 19:59:19 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/18 18:48:33 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,20 @@ void test_Map(void)
 		std::cout << "it.first " << it->first << " it.second " << it->second << '\n';
 		++it;
 	}
+
+	it = map.lower_bound(6);
+	std::cout << "lower_bound(6)[44]: " << (*it).second << std::endl;
+	it = map.lower_bound(2);
+	std::cout << "lower_bound(2)[43]: " << (*it).second << std::endl;
+	it = map.lower_bound(99);
+	std::cout << "lower_bound(99)[end]: " << ((it == map.end()) ? "== end()" : "!!! != end() !!!") << std::endl;
+
+	it = map.upper_bound(6);
+	std::cout << "upper_bound(6)[45]: " << (*it).second << std::endl;
+	it = map.upper_bound(2);
+	std::cout << "upper_bound(2)[43]: " << (*it).second << std::endl;
+	it = map.upper_bound(99);
+	std::cout << "upper_bound(99)[end]: " << ((it == map.end()) ? "== end()" : "!!! != end() !!!") << std::endl;
 }
 
 #endif

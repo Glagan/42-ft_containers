@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:16:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/15 19:51:40 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/18 18:26:38 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,7 +391,7 @@ public:
 
 template<typename T, typename N>
 class MapIterator:
-	public Iterator<N>
+	virtual public Iterator<N>
 {
 public:
 	typedef T value_type;
