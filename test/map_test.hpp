@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/18 18:48:33 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/19 18:55:52 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,37 @@
 
 template<typename key_type, typename value_type>
 void test_Map(void)
+{
+	std::cout << "---basic\n" << '\n';
+
+	ft::Map<key_type, value_type> empty_map;
+	if (empty_map.begin() == empty_map.end())
+		std::cout << "[begin] == [end] on empty map" << '\n';
+	else
+		std::cout << "!!! [begin] != [end] on empty map !!!" << '\n';
+	std::cout << "max_size = " << empty_map.max_size() << '\n';
+	std::cout << "empty? " << empty_map.empty() << '\n';
+	std::cout << "empty map size = " << empty_map.size() << '\n';
+
+	ft::Map<key_type, value_type> mp;
+	mp[5] = 42;
+	mp[7] = 28;
+
+	std::cout << "map [5:42, 7:28].size() = " << mp.size() << '\n';
+	typename ft::Map<key_type, value_type>::iterator it = mp.begin();
+	std::cout << "[5:42, 7:28].[5] = " << mp[5] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+	it = --mp.end();
+	std::cout << "[5:42, 7:28].[7] = " << mp[7] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+
+	display_container("map [5:42, 7:28]:", mp);
+
+	mp.erase(5);
+
+	display_container("map [5:42, 7:28]:", mp);
+}
+
+template<typename key_type, typename value_type>
+void ah(void)
 {
 	/*std::map<int, int> mapp;
 	mapp.insert(std::make_pair(5, 42));

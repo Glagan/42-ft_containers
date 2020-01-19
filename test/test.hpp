@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 18:42:34 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/19 18:37:53 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,22 @@ void display_container(std::string const &header, Container const &ctn)
 	while (it != ite)
 	{
 		std::cout << *it;
+		if (++it == ite)
+			std::cout << '\n';
+		else
+			std::cout <<  ", ";
+	}
+}
+
+template<typename key_type, typename value_type>
+void display_container(std::string const &header, ft::Map<key_type, value_type> const &ctn)
+{
+	typename ft::Map<key_type, value_type>::const_iterator it = ctn.begin();
+	typename ft::Map<key_type, value_type>::const_iterator ite = ctn.end();
+	std::cout << header << '\n';
+	while (it != ite)
+	{
+		std::cout << (*it).first << " => " << (*it).second;
 		if (++it == ite)
 			std::cout << '\n';
 		else

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/18 18:47:42 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/19 18:53:50 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,14 @@ public:
 		tree(), size_(0)
 	{
 	}
-	Map(iterator first, iterator last)
-	{
-		(void)first;
-		(void)last;
-		//this->insert(first, last);
-	}
-	Map(Map const &other):
+	Map(iterator first, iterator last):
 		tree(), size_(0)
 	{
-		(void)other;
+		this->insert(first, last);
+	}
+	Map(Map const &other):
+		tree(other.tree), size_(other.size_)
+	{
 	}
 	virtual ~Map()
 	{
@@ -120,7 +118,8 @@ public:
 
 	Map &operator=(Map const &other)
 	{
-		(void)other;
+		this->clear();
+		this->insert(other.begin(), other.end());
 	}
 
 	iterator begin(void)
@@ -187,17 +186,41 @@ public:
 		++this->size_;
 		return (std::make_pair(iterator(inserted), true));
 	}
-	iterator insert(iterator position, const_reference val);
+	iterator insert(iterator position, const_reference val) // TODO: TODO Insert with *position* hint
+	{
+		(void)position;
+		return (this->insert(val).first);
+	}
 	template<class InputIterator>
-	void insert(InputIterator first, InputIterator last);
-	void erase(iterator position);
-	size_type erase(key_type const &key);
-	void erase(iterator first, iterator last);
-	void swap(Map &x);
-	void clear(void);
+	void insert(InputIterator first, InputIterator last) // TODO: TODO Optimized mass insert
+	{
+		while (first != last)
+			this->insert(*first++);
+	}
+	void erase(iterator position); // TODO: TODO
+	size_type erase(key_type const &key)  // TODO: erase with key_comp so more than 1 maybe
+	{
+		if (this->tree.erase(key))
+			return (1);
+		return (0);
+	}
+	void erase(iterator first, iterator last); // TODO: TODO
+	void swap(Map &other)
+	{
+		(void)other;
+		// TODO: TODO
+	}
+	void clear(void)
+	{
+		if (!this->size_ > 0)
+		{
+			this->tree.make_empty();
+			this->size_ = 0;
+		}
+	}
 
-	key_compare key_comp(void) const;
-	value_compare value_comp(void) const
+	key_compare key_comp(void) const; // TODO: TODO
+	value_compare value_comp(void) const // TODO: TODO
 	{
 		return (this->tree.value_comp().comp);
 	}
@@ -216,7 +239,7 @@ public:
 			return (const_iterator(node));
 		return (this->end());
 	}
-	size_type count(key_type const &k) const;
+	size_type count(key_type const &k) const; // TODO: TODO
 	iterator lower_bound(key_type const &key)
 	{
 		iterator it = this->begin();
@@ -269,8 +292,8 @@ public:
 		}
 		return (this->end());
 	}
-	typename std::pair<iterator, iterator> equal_range(key_type const &key);
-	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const;
+	typename std::pair<iterator, iterator> equal_range(key_type const &key); // TODO: TODO
+	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const; // TODO: TODO
 };
 }
 
