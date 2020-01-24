@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/19 18:53:50 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/24 19:56:28 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ public:
 	}
 };
 
-template<typename K, typename T>
+template<typename K, typename T, typename Compare = std::less<K> >
 class Map
 {
 public:
@@ -71,8 +71,8 @@ public:
 	typedef value_type const * const_pointer;
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
-	typedef typename std::less<key_type> key_compare;
-	typedef MapCompare<key_type, value_type, key_compare> map_compare;
+	typedef Compare key_compare;
+	typedef MapCompare<key_type, value_type, Compare> map_compare;
 	typedef typename Tree<value_type, map_compare>::Node node_type;
 	typedef node_type* node_pointer;
 	typedef MapIterator<value_type, node_type> iterator;
