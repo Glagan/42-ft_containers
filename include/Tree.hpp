@@ -116,30 +116,44 @@ protected:
 		new_node->parent = node;
 	}
 
-	// TODO: HERE
-	void erase_node(node_pointer node)
+	// TOOD: Update begin_ pointer
+	// TODO: Update end_ pointer
+	node_pointer erase_node(node_pointer node)
 	{
+		if (!node)
+			return (node);
 		// No children
-		if (!root->left && !root->right)
+		if (!node->left && !node->right)
 			delete node;
 		// case 2: one child (right)
-		else if (!root->left) {
-			struct Node *temp = root; // save current node as a backup
-			root = root->right;
-			delete temp;
+		else if (!node->left)
+		{
+			if (node->parent)
+				node->parent->right = node->right;
+			node->right->parent = node->parent;
+			delete node;
 		}
 		// case 3: one child (left)
-		else if (!root->right) {
-			struct Node *temp = root; // save current node as a backup
-			root = root->left;
-			delete temp;
+		else if (!node->right)
+		{
+			if (node->parent)
+				node->parent->left = node->left;
+			node->left->parent = node->parent;
+			delete node;
 		}
 		// case 4: two children
-		else {
-			struct Node *temp = FindMin(root->right); // find minimal value of right sub tree
-			root->data = temp->data; // duplicate the node
-			root->right = Delete(root->right, temp->data); // delete the duplicate node
+		else
+		{
+			node_pointer tmp = node->right; // find minimal value of right sub tree
+			while (tmp && tmp->right != NULL)
+				tmp = tmp->right;
+			if (node->parent)
+				node->parent->right = tmp;
+			tmp->parent = node->parent;
+			std::memmove(&node->value, &tmp->value, sizeof(value_type));
+			node->right = erase_node(node->right); // delete the duplicate node
 		}
+		return (node);
 	}
 
 	void delete_recurse(node_pointer node)
@@ -183,6 +197,7 @@ public:
 		return (*this);
 	}
 
+	// TODO: Check erase root
 	node_pointer insert(const_reference val)
 	{
 		node_pointer new_node = new Node(val);
@@ -235,6 +250,16 @@ public:
 			return (true);
 		}
 		return (false);
+	}
+
+	node_pointer begin_bound(void) const
+	{
+		return (this->begin_);
+	}
+
+	node_pointer end_bound(void) const
+	{
+		return (this->end_);
 	}
 
 	void make_empty(void)
