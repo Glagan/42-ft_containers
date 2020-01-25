@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 23:10:11 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/24 20:37:43 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/25 20:42:31 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,19 @@ private:
 		this->end_ = this->begin_;
 		this->root = this->end_;
 	}
+
+	void repair_bounds(void)
+	{
+		node_pointer tmp = this->root;
+		while (tmp->left)
+			tmp = tmp->left;
+		this->begin_ = tmp;
+		tmp = this->root;
+		while (tmp->right)
+			tmp = tmp->right;
+		tmp->right = this->end_;
+		this->end_->parent = tmp;
+	}
 protected:
 	node_pointer root;
 	node_pointer begin_;
@@ -102,22 +115,26 @@ protected:
 		if (comp(new_node->value, node->value))
 		{
 			if (node->left)
+			{
 				this->insert_recurse(node->left, new_node);
+				return ;
+			}
 			else
 				node->left = new_node;
 		}
 		else
 		{
 			if (node->right)
+			{
 				this->insert_recurse(node->right, new_node);
+				return ;
+			}
 			else
 				node->right = new_node;
 		}
 		new_node->parent = node;
 	}
 
-	// TOOD: Update begin_ pointer
-	// TODO: Update end_ pointer
 	node_pointer erase_node(node_pointer node)
 	{
 		if (!node)
@@ -189,35 +206,25 @@ public:
 
 	Tree &operator=(Tree const &other)
 	{
-		this->root = other.root;
-		this->begin_ = other.begin_;
-		this->end_ = other.end_;
+		if (this->root != this->end_)
+			this->make_empty();
 		this->comp = other.comp;
 		// TODO; Copy
 		return (*this);
 	}
 
-	// TODO: Check erase root
 	node_pointer insert(const_reference val)
 	{
 		node_pointer new_node = new Node(val);
 		if (this->root == this->end_)
-		{
 			this->root = new_node;
-			this->begin_ = this->root;
-			this->root->right = this->end_;
-			this->end_->parent = this->root;
-		}
 		else
 		{
-			this->end_->parent->right = nullptr;
+			if (this->end_->parent)
+				this->end_->parent->right = nullptr;
 			this->insert_recurse(this->root, new_node);
-			node_pointer tmp = this->root;
-			while (tmp->right)
-				tmp = tmp->right;
-			tmp->right = this->end_;
-			this->end_->parent = tmp;
 		}
+		this->repair_bounds();
 		return (new_node);
 	}
 
@@ -233,20 +240,24 @@ public:
 		if (node == this->end_ || !node)
 			return (nullptr);
 		bool comp_left = comp(val, node->value);
-		if (comp_left && !comp(node->value, val))
+		if (!comp(node->value, val))
 			return (node);
 		if (comp_left)
 			return (this->find(val, node->left));
 		return (this->find(val, node->right));
 	}
 
+	// TODO: Check erase root
 	template<typename Tp>
 	bool erase(Tp const &key)
 	{
 		node_pointer node = this->find(key);
 		if (node)
 		{
+			if (this->end_->parent)
+				this->end_->parent->right = nullptr;
 			this->erase_node(node);
+			this->repair_bounds();
 			return (true);
 		}
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/24 19:56:47 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/25 20:44:33 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void test_Map(void)
 
 	mp.erase(5);
 
-	display_container("map [5:42, 7:28]:", mp);
+	display_container("map [7:28]:", mp);
 }
 
 template<typename key_type, typename value_type>
