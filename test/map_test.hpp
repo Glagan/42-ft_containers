@@ -21,7 +21,7 @@
 template<typename key_type, typename value_type>
 void test_Map(void)
 {
-	std::cout << "---basic\n" << '\n';
+	std::cout << "---basic\n\n";
 
 	ft::Map<key_type, value_type> empty_map;
 	if (empty_map.begin() == empty_map.end())
@@ -56,6 +56,29 @@ void test_Map(void)
 	display_container("map [9:44]:", mp);
 	mp.erase(9);
 	display_container("map []:", mp);
+
+	std::cout << "\n---basic (bigger map)\n\n";
+	{
+		ft::Map<key_type, value_type> mp;
+		mp.insert(std::make_pair(5, 5));
+		mp.insert(std::make_pair(6, 6));
+		mp.insert(std::make_pair(7, 7));
+		mp.insert(std::make_pair(8, 8));
+		mp.insert(std::make_pair(9, 9));
+		mp.insert(std::make_pair(10, 10));
+		mp.insert(std::make_pair(11, 11));
+
+		display_container("map [5:5, ..., 11:11]:", mp);
+		mp.erase(7);
+		display_container("map no 7 [5:5, ..., 11:11]:", mp);
+		mp.erase(5);
+		display_container("map no 7, 5 [5:5, ..., 11:11]:", mp);
+		mp.erase(++mp.begin(), --mp.end());
+		display_container("map [6:6, 11:11]:", mp);
+
+		mp.key_comp();
+		mp.value_comp();
+	}
 }
 
 template<typename key_type, typename value_type>

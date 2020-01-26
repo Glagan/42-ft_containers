@@ -28,7 +28,6 @@ public:
 	typedef value_type const * const_pointer;
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
-	typedef Compare value_compare;
 	struct Node
 	{
 		value_type value;
@@ -46,7 +45,7 @@ protected:
 	node_pointer root;
 	node_pointer begin_;
 	node_pointer end_;
-	value_compare comp;
+	Compare comp;
 
 	void unbound_node(node_pointer node)
 	{
@@ -82,8 +81,8 @@ protected:
 	{
 		if (node == this->end_ || !node)
 			return (nullptr);
-		bool comp_left = comp(val, node->value);
-		if (!comp_left && !comp(node->value, val))
+		bool comp_left = this->comp(val, node->value);
+		if (!comp_left && !this->comp(node->value, val))
 			return (node);
 		if (comp_left)
 			return (this->find_node(val, node->left));
@@ -92,7 +91,7 @@ protected:
 
 	void insert_node_at(node_pointer node, node_pointer new_node)
 	{
-		if (comp(new_node->value, node->value))
+		if (this->comp(new_node->value, node->value))
 		{
 			if (node->left)
 			{
@@ -197,7 +196,7 @@ public:
 		this->make_bounds();
 	}
 	Tree(Tree const &other):
-		root(other.root), begin_(other.begin_), end_(other.end_)
+		root(other.root), comp(other.comp)
 	{
 		this->make_bounds();
 		this->copy(other);
@@ -247,10 +246,8 @@ public:
 
 	node_pointer insert(node_pointer hint, const_reference val)
 	{
-		if (!hint || this->root == this->end_)
-			return (this->insert(val));
-		// TODO: Test
-		if (hint->parent && (!comp(val, hint->parent->value) || comp(hint->parent->value, val)))
+		if (!hint || this->root == this->end_
+			|| (hint->parent && (!comp(val, hint->parent->value) || comp(hint->parent->value, val))))
 			return (this->insert(val));
 		node_pointer new_node = new Node(val);
 		if (this->end_->parent)
@@ -271,7 +268,17 @@ public:
 	{
 		if (!hint)
 			return (this->find_node(val, this->root));
+		if (!comp(hint->value, val) && !comp(val, hint->value))
+			return (hint);
 		return (this->find_node(val, hint));
+	}
+
+	void erase(node_pointer node)
+	{
+		if (this->end_->parent)
+			this->end_->parent->right = nullptr;
+		this->erase_node(node);
+		this->repair_bounds();
 	}
 
 	template<typename Tp>
@@ -280,15 +287,20 @@ public:
 		node_pointer node = nullptr;
 		size_type total = 0;
 
+		if (this->end_->parent)
+			this->end_->parent->right = nullptr;
 		while ((node = this->find(key)))
 		{
-			if (this->end_->parent)
-				this->end_->parent->right = nullptr;
 			this->erase_node(node);
-			this->repair_bounds();
 			total++;
 		}
+		this->repair_bounds();
 		return (total);
+	}
+
+	Compare key_compare(void) const
+	{
+		return (this->comp);
 	}
 
 	node_pointer begin(void) const

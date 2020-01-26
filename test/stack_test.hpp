@@ -18,7 +18,7 @@
 template<typename test_type>
 void test_Stack(void)
 {
-	std::cout << "---basic\n" << '\n';
+	std::cout << "---basic\n\n";
 
 	ft::Stack<test_type> empty_stack;
 	std::cout << "empty? " << empty_stack.empty() << '\n';
@@ -40,7 +40,7 @@ void test_Stack(void)
 	stk.pop();
 	std::cout << "[] (size: " << stk.size() << ")\n";
 
-	std::cout << "\n---with container\n" << '\n';
+	std::cout << "\n---with container\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -66,7 +66,7 @@ void test_Stack(void)
 		display_container("[5, 42, 43, 99] {ft::List after, no change}:", lst);
 	}
 
-	std::cout << "\n---comparison\n" << '\n';
+	std::cout << "\n---comparison\n\n";
 	{
 		ft::Stack<test_type> stk;
 		stk.push(5);
@@ -86,7 +86,7 @@ void test_Stack(void)
 		stk4.push(5);
 		stk4.push(42);
 
-		std::cout << "same stack:" << '\n'
+		std::cout << "same stack:\n"
 			<< "comparison == " << (stk == stk2) << '\n'
 			<< "comparison != " << (stk != stk2) << '\n'
 			<< "comparison <  " << (stk < stk2) << '\n'
@@ -94,7 +94,7 @@ void test_Stack(void)
 			<< "comparison <= " << (stk <= stk2) << '\n'
 			<< "comparison >= " << (stk >= stk2) << '\n';
 
-		std::cout << "lesser stack:" << '\n'
+		std::cout << "lesser stack:\n"
 			<< "comparison == " << (stk == stk3) << '\n'
 			<< "comparison != " << (stk != stk3) << '\n'
 			<< "comparison <  " << (stk < stk3) << '\n'
@@ -102,7 +102,7 @@ void test_Stack(void)
 			<< "comparison <= " << (stk <= stk3) << '\n'
 			<< "comparison >= " << (stk >= stk3) << '\n';
 
-		std::cout << "upper stack:" << '\n'
+		std::cout << "upper stack:\n"
 			<< "comparison == " << (stk4 == stk) << '\n'
 			<< "comparison != " << (stk4 != stk) << '\n'
 			<< "comparison <  " << (stk4 < stk) << '\n'

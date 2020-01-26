@@ -18,7 +18,7 @@
 template<typename test_type>
 void test_Queue(void)
 {
-	std::cout << "---basic\n" << '\n';
+	std::cout << "---basic\n\n";
 
 	ft::Queue<test_type> empty_queue;
 	std::cout << "empty? " << empty_queue.empty() << '\n';
@@ -40,7 +40,7 @@ void test_Queue(void)
 	que.pop();
 	std::cout << "[] (size: " << que.size() << ")\n";
 
-	std::cout << "\n---with container\n" << '\n';
+	std::cout << "\n---with container\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -66,7 +66,7 @@ void test_Queue(void)
 		display_container("[5, 42, 43, 99] {ft::List after, no change}:", lst);
 	}
 
-	std::cout << "\n---comparison\n" << '\n';
+	std::cout << "\n---comparison\n\n";
 	{
 		ft::Queue<test_type> que;
 		que.push(5);

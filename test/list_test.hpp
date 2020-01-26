@@ -53,7 +53,7 @@ bool same_integral_part(double first, double second)
 template<typename test_type>
 void test_List(void)
 {
-	std::cout << "---basic\n" << '\n';
+	std::cout << "---basic\n\n";
 
 	ft::List<test_type> empty_list;
 	if (empty_list.begin() == empty_list.end())
@@ -72,7 +72,7 @@ void test_List(void)
 	std::cout << "[5, 42].front() = " << lst.front() << " (it:" << *lst.begin() << ")" << '\n';
 	std::cout << "[5, 42].back()  = " << lst.back() << " (it:" << *--lst.end() << ")" << '\n';
 
-	std::cout << "\n---push_back\n" << '\n';
+	std::cout << "\n---push_back\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -112,7 +112,7 @@ void test_List(void)
 		}
 	}
 
-	std::cout << "\n---push_front\n" << '\n';
+	std::cout << "\n---push_front\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_front(3);
@@ -152,7 +152,7 @@ void test_List(void)
 		}
 	}
 
-	std::cout << "\n---clear\n" << '\n';
+	std::cout << "\n---clear\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -184,7 +184,7 @@ void test_List(void)
 			std::cout << i++ << " -> " << *it++ << '\n';
 	}
 
-	std::cout << "\n---erase\n" << '\n';
+	std::cout << "\n---erase\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -210,7 +210,7 @@ void test_List(void)
 			std::cout << "!!! didn't return [begin] and [end] !!!" << '\n';
 	}
 
-	std::cout << "\n---assign\n" << '\n';
+	std::cout << "\n---assign\n\n";
 	{
 		ft::List<test_type> lst;
 
@@ -228,7 +228,7 @@ void test_List(void)
 		display_container("lst2[44, 44, 44, 44, 44]:", lst2);
 	}
 
-	std::cout << "\n---insert\n" << '\n';
+	std::cout << "\n---insert\n\n";
 	{
 		ft::List<test_type> lst;
 
@@ -247,7 +247,7 @@ void test_List(void)
 		display_container("lst to lst2[42, 42, 5, 42, 42, 5]:", lst2);
 	}
 
-	std::cout << "\n---remove\n" << '\n';
+	std::cout << "\n---remove\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -279,7 +279,7 @@ void test_List(void)
 		display_container("[42, 43, 42, 44] delete {44}:", lst);
 	}
 
-	std::cout << "\n---remove_if\n" << '\n';
+	std::cout << "\n---remove_if\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -302,7 +302,7 @@ void test_List(void)
 		display_container("[] delete {<99}:", lst);
 	}
 
-	std::cout << "\n---unique\n" << '\n';
+	std::cout << "\n---unique\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -331,7 +331,7 @@ void test_List(void)
 		display_container("[5, 42, 44, 5, 45] {unique}:", lst);
 	}
 
-	std::cout << "\n---unique (binary pred)\n" << '\n';
+	std::cout << "\n---unique (binary pred)\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -372,7 +372,7 @@ void test_List(void)
 		}
 	}
 
-	std::cout << "\n---merge\n" << '\n';
+	std::cout << "\n---merge\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -399,7 +399,7 @@ void test_List(void)
 		display_container("empty lst2 after merge []:", lst2);
 	}
 
-	std::cout << "\n---merge (comp)\n" << '\n';
+	std::cout << "\n---merge (comp)\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -427,7 +427,7 @@ void test_List(void)
 		display_container("empty lst2 after merge []:", lst2);
 	}
 
-	std::cout << "\n---sort\n" << '\n';
+	std::cout << "\n---sort\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(44);
@@ -447,7 +447,7 @@ void test_List(void)
 		display_container("[5, 42, 42, 43, 43, 44, 58] {sorted: no change}:", lst);
 	}
 
-	std::cout << "\n---sort (comp)\n" << '\n';
+	std::cout << "\n---sort (comp)\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -467,7 +467,7 @@ void test_List(void)
 		display_container("[58, 44, 43, 43, 42, 42, 5] {sorted desc: no change}:", lst);
 	}
 
-	std::cout << "\n---reverse\n" << '\n';
+	std::cout << "\n---reverse\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -497,7 +497,7 @@ void test_List(void)
 		display_container("[5, 42] {reversed twice}:", lst2);
 	}
 
-	std::cout << "\n---resize\n" << '\n';
+	std::cout << "\n---resize\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -518,7 +518,7 @@ void test_List(void)
 		display_container("[0, 0, 0, 0, 0]:", lst);
 	}
 
-	std::cout << "\n---splice\n" << '\n';
+	std::cout << "\n---splice\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);
@@ -545,7 +545,7 @@ void test_List(void)
 		display_container("[43, 5, 42, 45, 58] {spliced content of lst}:", lst2);
 	}
 
-	std::cout << "\n---comparison\n" << '\n';
+	std::cout << "\n---comparison\n\n";
 	{
 		ft::List<test_type> lst;
 		lst.push_back(5);

@@ -22,42 +22,6 @@
 
 namespace ft
 {
-template<typename K, typename T, typename Compare>
-class MapCompare
-{
-private:
-    Compare comp;
-public:
-	MapCompare(): comp() {}
-	MapCompare(Compare const &comp): comp(comp) {}
-	MapCompare(MapCompare const &other): comp(other.comp) {}
-	virtual ~MapCompare() {}
-
-	MapCompare &operator=(MapCompare const &other)
-	{
-		this->comp = other.comp;
-		return (*this);
-	}
-
-	Compare const &key_comp() const
-	{
-		return (this->comp);
-	}
-
-    bool operator()(const T& a, const T& b) const
-	{
-		return (comp(a.first, b.first));
-	}
-    bool operator()(const T& a, const K& b) const
-	{
-		return (comp(a.first, b));
-	}
-    bool operator()(const K& a, const T& b) const
-	{
-		return (comp(a, b.first));
-	}
-};
-
 template<typename K, typename T, typename Compare = std::less<K> >
 class Map
 {
@@ -72,31 +36,38 @@ public:
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
 	typedef Compare key_compare;
-	typedef MapCompare<key_type, value_type, Compare> map_compare;
-	typedef typename Tree<value_type, map_compare>::Node node_type;
+	class value_compare:
+		std::binary_function<value_type, value_type, bool>
+	{
+	friend class Map<K, T, Compare>;
+	private:
+		Compare comp;
+	public:
+		value_compare(Compare const &comp=Compare()): comp(comp) {}
+		virtual ~value_compare() {}
+
+		bool operator()(const_reference a, const_reference b) const
+		{
+			return (comp(a.first, b.first));
+		}
+		bool operator()(const_reference a, const K& b) const
+		{
+			return (comp(a.first, b));
+		}
+		bool operator()(const K& a, const_reference b) const
+		{
+			return (comp(a, b.first));
+		}
+	};
+	typedef Tree<value_type, value_compare> tree_type;
+	typedef typename tree_type::Node node_type;
 	typedef node_type* node_pointer;
 	typedef MapIterator<value_type, node_type> iterator;
 	typedef MapIterator<value_type const, node_type const> const_iterator;
 	typedef ReverseMapIterator<value_type, node_type> reverse_iterator;
 	typedef ReverseMapIterator<value_type const, node_type const> const_reverse_iterator;
-
-    class value_compare
-    {
-    protected:
-        key_compare comp;
-
-        value_compare(key_compare c):
-			comp(c)
-		{
-		}
-    public:
-        bool operator()(const value_type& x, const value_type& y) const
-		{
-			return (comp(x.first, y.first));
-		}
-    };
 private:
-	Tree<value_type, map_compare> tree;
+	tree_type tree;
 	size_type size_;
 public:
 	Map():
@@ -119,7 +90,7 @@ public:
 	Map &operator=(Map const &other)
 	{
 		this->clear();
-		this->insert(other.begin(), other.end());
+		this->tree = other.tree;
 	}
 
 	iterator begin(void)
@@ -195,7 +166,7 @@ public:
 		return (iterator(this->tree.insert(position.as_node(), val)));
 	}
 	template<class InputIterator>
-	void insert(InputIterator first, InputIterator last) // TODO: TODO Optimized mass insert
+	void insert(InputIterator first, InputIterator last)
 	{
 		while (first != last)
 			this->insert(*first++);
@@ -209,7 +180,11 @@ public:
 	{
 		return (this->tree.erase(key));
 	}
-	void erase(iterator first, iterator last); // TODO: TODO
+	void erase(iterator first, iterator last)
+	{
+		while (first != last)
+			this->erase(first++);
+	}
 
 	void swap(Map &other)
 	{
@@ -220,19 +195,17 @@ public:
 	void clear(void)
 	{
 		if (this->size_ > 0)
-		{
 			this->tree.make_empty();
-			this->size_ = 0;
-		}
+		this->size_ = 0;
 	}
 
-	key_compare key_comp(void) const // TODO:
+	value_compare key_comp(void) const
 	{
-		return (key_comp());
+		return (this->tree.key_compare());
 	}
-	value_compare value_comp(void) const // TODO:
+	value_compare value_comp(void) const
 	{
-		return (this->tree.value_comp().comp);
+		return (this->tree.key_compare());
 	}
 
 	iterator find(key_type const &key)
@@ -318,8 +291,14 @@ public:
 		return (this->end());
 	}
 
-	typename std::pair<iterator, iterator> equal_range(key_type const &key); // TODO: TODO
-	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const; // TODO: TODO
+	typename std::pair<iterator, iterator> equal_range(key_type const &key)
+	{
+		return (std::pair<iterator, iterator>(this->lower_bound(key), this->upper_bound(key)));
+	}
+	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const
+	{
+		return (std::pair<const_iterator, const_iterator>(this->lower_bound(key), this->upper_bound(key)));
+	}
 };
 }
 

@@ -18,7 +18,7 @@
 template<typename test_type>
 void test_Vector(void)
 {
-	std::cout << "---basic\n" << '\n';
+	std::cout << "---basic\n\n";
 
 	ft::Vector<test_type> empty_vector;
 	if (empty_vector.begin() == empty_vector.end())
@@ -56,7 +56,7 @@ void test_Vector(void)
 		}
 	}
 
-	std::cout << "\n---reserve\n" << '\n';
+	std::cout << "\n---reserve\n\n";
 	{
 		ft::Vector<test_type> vec;
 		std::cout << "empty vector capacity " << vec.capacity() << '\n';
@@ -66,7 +66,7 @@ void test_Vector(void)
 		std::cout << "empty vector{reserved 64, no change} capacity " << vec.capacity() << '\n';
 	}
 
-	std::cout << "\n---push_back\n" << '\n';
+	std::cout << "\n---push_back\n\n";
 	{
 		ft::Vector<test_type> vec;
 		vec.push_back(5);
@@ -106,7 +106,7 @@ void test_Vector(void)
 		}
 	}
 
-	std::cout << "\n---clear\n" << '\n';
+	std::cout << "\n---clear\n\n";
 	{
 		ft::Vector<test_type> vec;
 		vec.push_back(5);
@@ -139,7 +139,7 @@ void test_Vector(void)
 			std::cout << i++ << " -> " << *it++ << '\n';
 	}
 
-	std::cout << "\n---erase\n" << '\n';
+	std::cout << "\n---erase\n\n";
 	{
 		ft::Vector<test_type> vec;
 		vec.push_back(5);
@@ -165,7 +165,7 @@ void test_Vector(void)
 			std::cout << "!!! didn't return [begin] and [end] !!!" << '\n';
 	}
 
-	std::cout << "\n---assign\n" << '\n';
+	std::cout << "\n---assign\n\n";
 	{
 		ft::Vector<test_type> vec;
 
@@ -183,7 +183,7 @@ void test_Vector(void)
 		display_container("vec2[44, 44, 44, 44, 44]:", vec2);
 	}
 
-	std::cout << "\n---insert\n" << '\n';
+	std::cout << "\n---insert\n\n";
 	{
 		ft::Vector<test_type> vec;
 
@@ -202,7 +202,7 @@ void test_Vector(void)
 		display_container("vec to vec2[42, 42, 5, 42, 42, 5]:", vec2);
 	}
 
-	std::cout << "\n---resize\n" << '\n';
+	std::cout << "\n---resize\n\n";
 	{
 		ft::Vector<test_type> vec;
 		vec.push_back(5);
@@ -223,7 +223,7 @@ void test_Vector(void)
 		display_container("[0, 0, 0, 0, 0]:", vec);
 	}
 
-	std::cout << "\n---comparison\n" << '\n';
+	std::cout << "\n---comparison\n\n";
 	{
 		ft::Vector<test_type> vec;
 		vec.push_back(5);
