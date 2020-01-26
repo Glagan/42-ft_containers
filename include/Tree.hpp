@@ -29,65 +29,35 @@ public:
 	typedef value_type& reference;
 	typedef value_type const & const_reference;
 	typedef Compare value_compare;
-
-	class Node
+	struct Node
 	{
-	private:
-		friend class Tree;
-	protected:
 		value_type value;
 		Node *parent;
 		Node *left;
 		Node *right;
-	public:
-		Node():
-			value(), parent(nullptr), left(nullptr), right(nullptr) {}
-		Node(value_type const &value):
-			value(value), parent(nullptr), left(nullptr), right(nullptr) {}
-		Node(Node const &other):
-			value(other.value), parent(other.parent), left(other.left), right(other.right) {}
-		virtual ~Node() {}
 
-		Node &operator=(Node const &other)
-		{
-			this->value = other.value;
-			this->parent = other.parent;
-			this->left = other.left;
-			this->right = other.right;
-			return (*this);
-		}
-
-		value_type &get_value(void)
-		{
-			return (this->value);
-		}
-
-		value_type const &get_value(void) const
-		{
-			return (this->value);
-		}
-
-		Node *get_parent(void) const
-		{
-			return (this->parent);
-		}
-
-		Node *get_left(void) const
-		{
-			return (this->left);
-		}
-
-		Node *get_right(void) const
-		{
-			return (this->right);
-		}
+		Node(const_reference val=value_type()):
+			value(val), parent(nullptr), left(nullptr), right(nullptr) {}
 	};
-
 	typedef Node* node_pointer;
-private:
+protected:
+	node_pointer root;
+	node_pointer begin_;
+	node_pointer end_;
+	value_compare comp;
+
+	void unbound_node(node_pointer node)
+	{
+		if (!node)
+			return ;
+		node->parent = nullptr;
+		node->left = nullptr;
+		node->right = nullptr;
+	}
+
 	void make_bounds(void)
 	{
-		this->begin_ = new Node;
+		this->begin_ = new Node();
 		this->end_ = this->begin_;
 		this->root = this->end_;
 	}
@@ -104,19 +74,27 @@ private:
 		tmp->right = this->end_;
 		this->end_->parent = tmp;
 	}
-protected:
-	node_pointer root;
-	node_pointer begin_;
-	node_pointer end_;
-	value_compare comp;
 
-	void insert_recurse(node_pointer node, node_pointer new_node)
+	template<typename Tp>
+	node_pointer find(Tp const &val, node_pointer node)
+	{
+		if (node == this->end_ || !node)
+			return (nullptr);
+		bool comp_left = comp(val, node->value);
+		if (!comp_left && !comp(node->value, val))
+			return (node);
+		if (comp_left)
+			return (this->find(val, node->left));
+		return (this->find(val, node->right));
+	}
+
+	void insert(node_pointer node, node_pointer new_node)
 	{
 		if (comp(new_node->value, node->value))
 		{
 			if (node->left)
 			{
-				this->insert_recurse(node->left, new_node);
+				this->insert(node->left, new_node);
 				return ;
 			}
 			else
@@ -126,7 +104,7 @@ protected:
 		{
 			if (node->right)
 			{
-				this->insert_recurse(node->right, new_node);
+				this->insert(node->right, new_node);
 				return ;
 			}
 			else
@@ -135,19 +113,28 @@ protected:
 		new_node->parent = node;
 	}
 
-	node_pointer erase_node(node_pointer node)
+	node_pointer erase(node_pointer node)
 	{
 		if (!node)
 			return (node);
 		// No children
 		if (!node->left && !node->right)
+		{
+			if (node == this->root)
+			{
+				this->root = this->begin_ = this->end_;
+				this->unbound_node(this->end_);
+			}
 			delete node;
+		}
 		// case 2: one child (right)
 		else if (!node->left)
 		{
 			if (node->parent)
 				node->parent->right = node->right;
 			node->right->parent = node->parent;
+			if (node == this->root)
+				this->root = node->right;
 			delete node;
 		}
 		// case 3: one child (left)
@@ -156,19 +143,23 @@ protected:
 			if (node->parent)
 				node->parent->left = node->left;
 			node->left->parent = node->parent;
+			if (node == this->root)
+				this->root = node->left;
 			delete node;
 		}
 		// case 4: two children
 		else
 		{
 			node_pointer tmp = node->right; // find minimal value of right sub tree
-			while (tmp && tmp->right != NULL)
-				tmp = tmp->right;
+			while (tmp && tmp->left != NULL)
+				tmp = tmp->left;
 			if (node->parent)
 				node->parent->right = tmp;
 			tmp->parent = node->parent;
 			std::memmove(&node->value, &tmp->value, sizeof(value_type));
-			node->right = erase_node(node->right); // delete the duplicate node
+			if (node == this->root)
+				this->root = node;
+			node->right = erase(node->right); // delete the duplicate node
 		}
 		return (node);
 	}
@@ -222,8 +213,21 @@ public:
 		{
 			if (this->end_->parent)
 				this->end_->parent->right = nullptr;
-			this->insert_recurse(this->root, new_node);
+			this->insert(this->root, new_node);
 		}
+		this->repair_bounds();
+		return (new_node);
+	}
+
+	node_pointer insert(node_pointer hint, const_reference val)
+	{
+		if (!hint || this->root == this->end_)
+			return (this->insert(val));
+		node_pointer new_node = new Node(val);
+		if (this->end_->parent)
+			this->end_->parent->right = nullptr;
+		// TODO: Check if hint is not good
+		this->insert(hint, new_node);
 		this->repair_bounds();
 		return (new_node);
 	}
@@ -235,40 +239,37 @@ public:
 	}
 
 	template<typename Tp>
-	node_pointer find(Tp const &val, node_pointer node)
+	node_pointer find(node_pointer hint, Tp const &val)
 	{
-		if (node == this->end_ || !node)
-			return (nullptr);
-		bool comp_left = comp(val, node->value);
-		if (!comp(node->value, val))
-			return (node);
-		if (comp_left)
-			return (this->find(val, node->left));
-		return (this->find(val, node->right));
+		// TODO: Check if hint is not good
+		if (!hint)
+			return (this->find(val, this->root));
+		return (this->find(val, hint));
 	}
 
-	// TODO: Check erase root
 	template<typename Tp>
-	bool erase(Tp const &key)
+	size_type erase(Tp const &key)
 	{
-		node_pointer node = this->find(key);
-		if (node)
+		node_pointer node = nullptr;
+		size_type total = 0;
+
+		while ((node = this->find(key)))
 		{
 			if (this->end_->parent)
 				this->end_->parent->right = nullptr;
-			this->erase_node(node);
+			this->erase(node);
 			this->repair_bounds();
-			return (true);
+			total++;
 		}
-		return (false);
+		return (total);
 	}
 
-	node_pointer begin_bound(void) const
+	node_pointer begin(void) const
 	{
 		return (this->begin_);
 	}
 
-	node_pointer end_bound(void) const
+	node_pointer end(void) const
 	{
 		return (this->end_);
 	}

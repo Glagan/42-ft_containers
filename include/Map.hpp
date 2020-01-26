@@ -124,11 +124,11 @@ public:
 
 	iterator begin(void)
 	{
-		return (iterator(this->tree.begin_bound()));
+		return (iterator(this->tree.begin()));
 	}
 	const_iterator begin(void) const
 	{
-		return (const_iterator(this->tree.begin_bound()));
+		return (const_iterator(this->tree.begin()));
 	}
 	reverse_iterator rbegin(void)
 	{
@@ -140,11 +140,11 @@ public:
 	}
 	iterator end(void)
 	{
-		return (iterator(this->tree.end_bound()));
+		return (iterator(this->tree.end()));
 	}
 	const_iterator end(void) const
 	{
-		return (const_iterator(this->tree.end_bound()));
+		return (const_iterator(this->tree.end()));
 	}
 	reverse_iterator rend(void)
 	{
@@ -172,9 +172,9 @@ public:
 	{
 		node_pointer found = this->tree.find(k);
 		if (found)
-			return (found->get_value().second);
+			return (found->value.second);
 		++this->size_;
-		return (this->tree.insert(std::make_pair(k, mapped_type()))->get_value().second);
+		return (this->tree.insert(std::make_pair(k, mapped_type()))->value.second);
 	}
 
 	typename std::pair<iterator, bool> insert(const_reference val)
@@ -186,10 +186,14 @@ public:
 		++this->size_;
 		return (std::make_pair(iterator(inserted), true));
 	}
-	iterator insert(iterator position, const_reference val) // TODO: TODO Insert with *position* hint
+	// TODO: Test
+	iterator insert(iterator position, const_reference val)
 	{
-		(void)position;
-		return (this->insert(val).first);
+		node_pointer node = this->tree.find(position.as_node(), val);
+		if (node)
+			return (iterator(node));
+		++this->size_;
+		return (iterator(this->tree.insert(position.as_node(), val)));
 	}
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last) // TODO: TODO Optimized mass insert
@@ -197,19 +201,22 @@ public:
 		while (first != last)
 			this->insert(*first++);
 	}
-	void erase(iterator position); // TODO: TODO
-	size_type erase(key_type const &key)  // TODO: erase with key_comp so more than 1 maybe
+
+	void erase(iterator position)
 	{
-		if (this->tree.erase(key))
-			return (1);
-		return (0);
+		this->tree.erase(position.as_node());
+	}
+	size_type erase(key_type const &key)
+	{
+		return (this->tree.erase(key));
 	}
 	void erase(iterator first, iterator last); // TODO: TODO
-	void swap(Map &other)
+
+	void swap(Map &other) // TODO: TODO
 	{
 		(void)other;
-		// TODO: TODO
 	}
+
 	void clear(void)
 	{
 		if (!this->size_ > 0)
@@ -239,7 +246,22 @@ public:
 			return (const_iterator(node));
 		return (this->end());
 	}
-	size_type count(key_type const &k) const; // TODO: TODO
+
+	size_type count(key_type const &k) const
+	{
+		iterator it = this->begin();
+		iterator ite = this->end();
+		size_type total = 0;
+
+		while (it != ite)
+		{
+			if (!key_compare(*it, k) && !key_compare(k, *it))
+				++total;
+			++it;
+		}
+		return (total);
+	}
+
 	iterator lower_bound(key_type const &key)
 	{
 		iterator it = this->begin();
@@ -292,6 +314,7 @@ public:
 		}
 		return (this->end());
 	}
+
 	typename std::pair<iterator, iterator> equal_range(key_type const &key); // TODO: TODO
 	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const; // TODO: TODO
 };

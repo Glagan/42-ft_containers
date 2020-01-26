@@ -35,18 +35,21 @@ void test_Map(void)
 	ft::Map<key_type, value_type> mp;
 	mp[5] = 42;
 	mp[7] = 28;
+	mp[9] = 44;
 
-	std::cout << "map [5:42, 7:28].size() = " << mp.size() << '\n';
+	std::cout << "map [5:42, 7:28, 9:44].size() = " << mp.size() << '\n';
 	typename ft::Map<key_type, value_type>::iterator it = mp.begin();
-	std::cout << "[5:42, 7:28].[5] = " << mp[5] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+	std::cout << "[5:42, 7:28, 9:44].[5] = " << mp[5] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
 	it = --mp.end();
-	std::cout << "[5:42, 7:28].[7] = " << mp[7] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+	std::cout << "[5:42, 7:28, 9:44].[9] = " << mp[9] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
 
-	display_container("map [5:42, 7:28]:", mp);
-
+	display_container("map [5:42, 7:28, 9:44]:", mp);
+	mp.erase(7);
+	display_container("map [5:42, 9:44]:", mp);
 	mp.erase(5);
-
-	display_container("map [7:28]:", mp);
+	display_container("map [9:44]:", mp);
+	mp.erase(9);
+	display_container("map []:", mp);
 }
 
 template<typename key_type, typename value_type>

@@ -405,41 +405,41 @@ public:
 protected:
 	void previous()
 	{
-		//std::cout << "node " << this->p << ", parent " << this->p->get_parent() << ", left " << this->p->get_left() << ", right " << this->p->get_right() << std::endl;
-		if (this->p->get_left())
+		//std::cout << "node " << this->p << ", parent " << this->p->parent << ", left " << this->p->left << ", right " << this->p->right << std::endl;
+		if (this->p->left)
 		{
-			this->p = this->p->get_left();
-			while (this->p->get_right())
-				this->p = this->p->get_right();
+			this->p = this->p->left;
+			while (this->p->right)
+				this->p = this->p->right;
 		}
 		else
 		{
 			node_pointer tmp = this->p;
-			this->p = this->p->get_parent();
-			while (this->p->get_right() != tmp)
+			this->p = this->p->parent;
+			while (this->p->right != tmp)
 			{
 				tmp = this->p;
-				this->p = this->p->get_parent();
+				this->p = this->p->parent;
 			}
 		}
 	}
 	void next()
 	{
-		//std::cout << "node " << this->p << ", parent " << this->p->get_parent() << ", left " << this->p->get_left() << ", right " << this->p->get_right() << std::endl;
-		if (this->p->get_right())
+		//std::cout << "node " << this->p << ", parent " << this->p->parent << ", left " << this->p->left << ", right " << this->p->right << std::endl;
+		if (this->p->right)
 		{
-			this->p = this->p->get_right();
-			while (this->p->get_left())
-				this->p = this->p->get_left();
+			this->p = this->p->right;
+			while (this->p->left)
+				this->p = this->p->left;
 		}
 		else
 		{
 			node_pointer tmp = this->p;
-			this->p = this->p->get_parent();
-			while (this->p->get_left() != tmp)
+			this->p = this->p->parent;
+			while (this->p->left != tmp)
 			{
 				tmp = this->p;
-				this->p = this->p->get_parent();
+				this->p = this->p->parent;
 			}
 		}
 	}
@@ -454,6 +454,11 @@ public:
 		Iterator<node_type>(other) {}
 	virtual ~MapIterator() {}
 
+	node_pointer as_node(void) const
+	{
+		return (this->p);
+	}
+
 	MapIterator &operator=(MapIterator const &other)
 	{
 		this->p = other.p;
@@ -462,19 +467,19 @@ public:
 
 	reference operator*()
 	{
-		return (this->p->get_value());
+		return (this->p->value);
 	}
 	const_reference operator*() const
 	{
-		return (this->p->get_value());
+		return (this->p->value);
 	}
 	pointer operator->()
 	{
-		return (&this->p->get_value());
+		return (&this->p->value);
 	}
 	const_pointer operator->() const
 	{
-		return (&this->p->get_value());
+		return (&this->p->value);
 	}
 
 	MapIterator operator++(int)

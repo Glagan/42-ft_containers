@@ -26,7 +26,10 @@ void display_container(std::string const &header, Container const &ctn)
 {
 	typename Container::const_iterator it = ctn.begin();
 	typename Container::const_iterator ite = ctn.end();
-	std::cout << header << '\n';
+	std::cout << header;
+	if (it == ite)
+		std::cout << " empty !";
+	std::cout << '\n';
 	while (it != ite)
 	{
 		std::cout << *it;
@@ -42,7 +45,10 @@ void display_container(std::string const &header, ft::Map<key_type, value_type> 
 {
 	typename ft::Map<key_type, value_type>::const_iterator it = ctn.begin();
 	typename ft::Map<key_type, value_type>::const_iterator ite = ctn.end();
-	std::cout << header << '\n';
+	std::cout << header;
+	if (it == ite)
+		std::cout << " empty !";
+	std::cout << '\n';
 	while (it != ite)
 	{
 		std::cout << (*it).first << " => " << (*it).second;
