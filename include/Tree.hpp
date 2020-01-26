@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 23:10:11 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/25 20:42:31 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/26 18:48:36 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ public:
 
 		Node(const_reference val=value_type()):
 			value(val), parent(nullptr), left(nullptr), right(nullptr) {}
+		Node(Node const &other):
+			value(other.value), parent(nullptr), left(nullptr), right(nullptr) {}
 	};
 	typedef Node* node_pointer;
 protected:
@@ -76,7 +78,7 @@ protected:
 	}
 
 	template<typename Tp>
-	node_pointer find(Tp const &val, node_pointer node)
+	node_pointer find_node(Tp const &val, node_pointer node)
 	{
 		if (node == this->end_ || !node)
 			return (nullptr);
@@ -84,17 +86,17 @@ protected:
 		if (!comp_left && !comp(node->value, val))
 			return (node);
 		if (comp_left)
-			return (this->find(val, node->left));
-		return (this->find(val, node->right));
+			return (this->find_node(val, node->left));
+		return (this->find_node(val, node->right));
 	}
 
-	void insert(node_pointer node, node_pointer new_node)
+	void insert_node_at(node_pointer node, node_pointer new_node)
 	{
 		if (comp(new_node->value, node->value))
 		{
 			if (node->left)
 			{
-				this->insert(node->left, new_node);
+				this->insert_node_at(node->left, new_node);
 				return ;
 			}
 			else
@@ -104,7 +106,7 @@ protected:
 		{
 			if (node->right)
 			{
-				this->insert(node->right, new_node);
+				this->insert_node_at(node->right, new_node);
 				return ;
 			}
 			else
@@ -113,11 +115,22 @@ protected:
 		new_node->parent = node;
 	}
 
-	node_pointer erase(node_pointer node)
+	void copy_node_recurse(node_pointer *destination, node_pointer source, node_pointer end)
+	{
+		if (!source)
+			return ;
+		*destination = new Node(*source);
+		if (source->left)
+			copy_node_recurse(&(*destination)->left, source->left, end);
+		if (source->right && source->right != end)
+			copy_node_recurse(&(*destination)->right, source->right, end);
+	}
+
+	node_pointer erase_node(node_pointer node)
 	{
 		if (!node)
 			return (node);
-		// No children
+		// no children
 		if (!node->left && !node->right)
 		{
 			if (node == this->root)
@@ -127,7 +140,7 @@ protected:
 			}
 			delete node;
 		}
-		// case 2: one child (right)
+		// one child (right)
 		else if (!node->left)
 		{
 			if (node->parent)
@@ -137,7 +150,7 @@ protected:
 				this->root = node->right;
 			delete node;
 		}
-		// case 3: one child (left)
+		// one child (left)
 		else if (!node->right)
 		{
 			if (node->parent)
@@ -147,7 +160,7 @@ protected:
 				this->root = node->left;
 			delete node;
 		}
-		// case 4: two children
+		// two children
 		else
 		{
 			node_pointer tmp = node->right; // find minimal value of right sub tree
@@ -159,7 +172,7 @@ protected:
 			std::memmove(&node->value, &tmp->value, sizeof(value_type));
 			if (node == this->root)
 				this->root = node;
-			node->right = erase(node->right); // delete the duplicate node
+			node->right = erase_node(node->right); // delete the duplicate node
 		}
 		return (node);
 	}
@@ -186,8 +199,8 @@ public:
 	Tree(Tree const &other):
 		root(other.root), begin_(other.begin_), end_(other.end_)
 	{
-		this->create_empty_node();
-		// TODO; Copy
+		this->make_bounds();
+		this->copy(other);
 	}
 	virtual ~Tree()
 	{
@@ -200,8 +213,21 @@ public:
 		if (this->root != this->end_)
 			this->make_empty();
 		this->comp = other.comp;
-		// TODO; Copy
+		this->repair_bounds();
+		this->copy(other);
 		return (*this);
+	}
+
+	void copy(Tree const &other)
+	{
+		if (other.root == other.end_)
+			return ;
+		this->root = new Node(*other.root);
+		if (other.root->left)
+			copy_node_recurse(&this->root->left, other.root->left, other.end_);
+		if (other.root->right)
+			copy_node_recurse(&this->root->right, other.root->right, other.end_);
+		this->repair_bounds();
 	}
 
 	node_pointer insert(const_reference val)
@@ -213,7 +239,7 @@ public:
 		{
 			if (this->end_->parent)
 				this->end_->parent->right = nullptr;
-			this->insert(this->root, new_node);
+			this->insert_node_at(this->root, new_node);
 		}
 		this->repair_bounds();
 		return (new_node);
@@ -223,11 +249,13 @@ public:
 	{
 		if (!hint || this->root == this->end_)
 			return (this->insert(val));
+		// TODO: Test
+		if (hint->parent && (!comp(val, hint->parent->value) || comp(hint->parent->value, val)))
+			return (this->insert(val));
 		node_pointer new_node = new Node(val);
 		if (this->end_->parent)
 			this->end_->parent->right = nullptr;
-		// TODO: Check if hint is not good
-		this->insert(hint, new_node);
+		this->insert_node_at(hint, new_node);
 		this->repair_bounds();
 		return (new_node);
 	}
@@ -235,16 +263,15 @@ public:
 	template<typename Tp>
 	node_pointer find(Tp const &val)
 	{
-		return (this->find(val, this->root));
+		return (this->find_node(val, this->root));
 	}
 
 	template<typename Tp>
 	node_pointer find(node_pointer hint, Tp const &val)
 	{
-		// TODO: Check if hint is not good
 		if (!hint)
-			return (this->find(val, this->root));
-		return (this->find(val, hint));
+			return (this->find_node(val, this->root));
+		return (this->find_node(val, hint));
 	}
 
 	template<typename Tp>
@@ -257,7 +284,7 @@ public:
 		{
 			if (this->end_->parent)
 				this->end_->parent->right = nullptr;
-			this->erase(node);
+			this->erase_node(node);
 			this->repair_bounds();
 			total++;
 		}

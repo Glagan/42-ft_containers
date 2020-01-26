@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/25 20:44:33 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/26 18:39:00 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ void test_Map(void)
 	std::cout << "[5:42, 7:28, 9:44].[5] = " << mp[5] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
 	it = --mp.end();
 	std::cout << "[5:42, 7:28, 9:44].[9] = " << mp[9] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+
+	ft::Map<key_type, value_type> mp2 = mp;
+
+	display_container("copied map2 [5:42, 7:28, 9:44]:", mp2);
+	mp2.clear();
+	display_container("cleared map2 []:", mp2);
 
 	display_container("map [5:42, 7:28, 9:44]:", mp);
 	mp.erase(7);

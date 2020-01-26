@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/25 20:31:39 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/26 18:50:23 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,6 @@ public:
 		++this->size_;
 		return (std::make_pair(iterator(inserted), true));
 	}
-	// TODO: Test
 	iterator insert(iterator position, const_reference val)
 	{
 		node_pointer node = this->tree.find(position.as_node(), val);
@@ -212,22 +211,26 @@ public:
 	}
 	void erase(iterator first, iterator last); // TODO: TODO
 
-	void swap(Map &other) // TODO: TODO
+	void swap(Map &other)
 	{
+		// TODO: TODO
 		(void)other;
 	}
 
 	void clear(void)
 	{
-		if (!this->size_ > 0)
+		if (this->size_ > 0)
 		{
 			this->tree.make_empty();
 			this->size_ = 0;
 		}
 	}
 
-	key_compare key_comp(void) const; // TODO: TODO
-	value_compare value_comp(void) const // TODO: TODO
+	key_compare key_comp(void) const // TODO:
+	{
+		return (key_comp());
+	}
+	value_compare value_comp(void) const // TODO:
 	{
 		return (this->tree.value_comp().comp);
 	}
