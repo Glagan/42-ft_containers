@@ -38,16 +38,6 @@ return (a == b);
 }
 
 template<class value_type>
-class less
-{
-public:
-    bool operator()(value_type const &a, value_type const &b) const
-	{
-		return (a < b);
-	}
-};
-
-template<class value_type>
 bool less_than(value_type const &a, value_type const &b)
 {
 return (a < b);

@@ -42,21 +42,15 @@ int main(void)
 	end_test("Queue");
 	test("Map");
 	test_Map<int, int>();
-	//test_Map<char, int>();
-	//test_Map<char, Number>();
-	//test_Map<Number, int>();
-	//test_Map<Number, Number>();
+	// test_Map<char, int>();
+	// test_Map<char, Number>();
+	// test_Map<Number, int>();
+	// test_Map<Number, Number>();
 	end_test("Map");
 
 	// Check Number count
 	std::cout << "Total Number created: " << Number::getCreated() << '\n'
 			<< "Total Number destructed: " << Number::getDestructed() << '\n';
 
-	// Leaks
-	/*
-	std::cout << "\n#####" << '\n';
-	system("leaks ft_containers");
-	std::cout << "#####" << std::endl;
-	//*/
 	return (0);
 }

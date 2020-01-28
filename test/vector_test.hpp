@@ -133,8 +133,7 @@ void test_Vector(void)
 		it = vec2.begin();
 		ite = vec2.end();
 		i = 1;
-		// TODO: Fix this test
-		std::cout << "copied vector before clear [5, 2, 3]:" << '\n';
+		std::cout << "copied vector before clear [5, 42, 3]:" << '\n';
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << '\n';
 	}
@@ -196,10 +195,10 @@ void test_Vector(void)
 		ft::Vector<test_type> vec2;
 
 		vec2.insert(vec2.begin(), vec.begin(), vec.end());
-		display_container("vec to vec2[42, 42, 5]:", vec2);
+		display_container("vec2[42, 42, 5]:", vec2);
 
 		vec2.insert(vec2.end(), vec.begin(), vec.end());
-		display_container("vec to vec2[42, 42, 5, 42, 42, 5]:", vec2);
+		display_container("vec + vec2[42, 42, 5, 42, 42, 5]:", vec2);
 	}
 
 	std::cout << "\n---resize\n\n";

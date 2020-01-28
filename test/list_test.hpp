@@ -179,7 +179,7 @@ void test_List(void)
 		it = lst2.begin();
 		ite = lst2.end();
 		i = 1;
-		std::cout << "copied vector before clear [5, 2, 3]:" << '\n';
+		std::cout << "copied vector before clear [5, 42, 3]:" << '\n';
 		while (it != ite)
 			std::cout << i++ << " -> " << *it++ << '\n';
 	}
