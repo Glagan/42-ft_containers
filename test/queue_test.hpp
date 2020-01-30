@@ -18,7 +18,7 @@
 template<typename test_type>
 void test_Queue(void)
 {
-	std::cout << "---basic\n\n";
+	std::cout << "\n---basic\n\n";
 
 	ft::Queue<test_type> empty_queue;
 	std::cout << "empty? " << empty_queue.empty() << '\n';
@@ -110,6 +110,8 @@ void test_Queue(void)
 			<< "comparison <= " << (que4 <= que) << '\n'
 			<< "comparison >= " << (que4 >= que) << '\n';
 	}
+
+	std::cout << '\n';
 }
 
 #endif

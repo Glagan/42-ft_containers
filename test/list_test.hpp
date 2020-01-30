@@ -53,7 +53,7 @@ bool same_integral_part(double first, double second)
 template<typename test_type>
 void test_List(void)
 {
-	std::cout << "---basic\n\n";
+	std::cout << "\n---basic\n\n";
 
 	ft::List<test_type> empty_list;
 	if (empty_list.begin() == empty_list.end())
@@ -589,6 +589,8 @@ void test_List(void)
 			<< "comparison <= " << (lst4 <= lst) << '\n'
 			<< "comparison >= " << (lst4 >= lst) << '\n';
 	}
+
+	std::cout << '\n';
 }
 
 #endif

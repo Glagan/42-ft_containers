@@ -403,6 +403,7 @@ public:
 	typedef node_type* node_pointer;
     typedef std::ptrdiff_t difference_type;
 protected:
+	// TODO: Fix previous on end()
 	void previous()
 	{
 		//std::cout << "node " << this->p << ", parent " << this->p->parent << ", left " << this->p->left << ", right " << this->p->right << std::endl;

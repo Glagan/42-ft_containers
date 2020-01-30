@@ -42,8 +42,8 @@ int main(void)
 	end_test("Queue");
 	test("Map");
 	test_Map<int, int>();
-	// test_Map<char, int>();
-	// test_Map<char, Number>();
+	// test_Map<char, int>(48);
+	// test_Map<char, Number>(48);
 	// test_Map<Number, int>();
 	// test_Map<Number, Number>();
 	end_test("Map");

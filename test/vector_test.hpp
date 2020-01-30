@@ -18,7 +18,7 @@
 template<typename test_type>
 void test_Vector(void)
 {
-	std::cout << "---basic\n\n";
+	std::cout << "\n---basic\n\n";
 
 	ft::Vector<test_type> empty_vector;
 	if (empty_vector.begin() == empty_vector.end())
@@ -266,6 +266,8 @@ void test_Vector(void)
 			<< "comparison <= " << (vec4 <= vec) << '\n'
 			<< "comparison >= " << (vec4 >= vec) << '\n';
 	}
+
+	std::cout << '\n';
 }
 
 #endif

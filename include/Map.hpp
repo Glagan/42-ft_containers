@@ -91,6 +91,8 @@ public:
 	{
 		this->clear();
 		this->tree = other.tree;
+		this->size_ = other.size_;
+		return (*this);
 	}
 
 	iterator begin(void)
@@ -128,7 +130,7 @@ public:
 
 	bool empty(void) const
 	{
-		return (this->size_ > 0);
+		return (this->size_ == 0);
 	}
 	size_type size(void) const
 	{
@@ -175,15 +177,27 @@ public:
 	void erase(iterator position)
 	{
 		this->tree.erase(position.as_node());
+		--this->size_;
 	}
 	size_type erase(key_type const &key)
 	{
-		return (this->tree.erase(key));
+		size_type count = this->tree.erase(key);
+		this->size_ -= count;
+		return (count);
 	}
 	void erase(iterator first, iterator last)
 	{
-		while (first != last)
-			this->erase(first++);
+		if (first == this->begin() && last == this->end())
+			this->clear();
+		else
+		{
+			iterator next;
+			while (first != last)
+			{
+				first = this->tree.erase(first.as_node());
+				--this->size_;
+			}
+		}
 	}
 
 	void swap(Map &other)

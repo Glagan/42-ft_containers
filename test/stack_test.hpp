@@ -18,7 +18,7 @@
 template<typename test_type>
 void test_Stack(void)
 {
-	std::cout << "---basic\n\n";
+	std::cout << "\n---basic\n\n";
 
 	ft::Stack<test_type> empty_stack;
 	std::cout << "empty? " << empty_stack.empty() << '\n';
@@ -110,6 +110,8 @@ void test_Stack(void)
 			<< "comparison <= " << (stk4 <= stk) << '\n'
 			<< "comparison >= " << (stk4 >= stk) << '\n';
 	}
+
+	std::cout << '\n';
 }
 
 #endif

@@ -120,15 +120,22 @@ protected:
 			return ;
 		*destination = new Node(*source);
 		if (source->left)
+		{
 			copy_node_recurse(&(*destination)->left, source->left, end);
+			(*destination)->left->parent = *destination;
+		}
 		if (source->right && source->right != end)
+		{
 			copy_node_recurse(&(*destination)->right, source->right, end);
+			(*destination)->right->parent = *destination;
+		}
 	}
 
 	node_pointer erase_node(node_pointer node)
 	{
 		if (!node)
 			return (node);
+		node_pointer ret = node;
 		// no children
 		if (!node->left && !node->right)
 		{
@@ -137,43 +144,70 @@ protected:
 				this->root = this->begin_ = this->end_;
 				this->unbound_node(this->end_);
 			}
+			if (node->parent)
+			{
+				if (node->parent->left == node)
+					node->parent->left = nullptr;
+				else
+					node->parent->right = nullptr;
+			}
+			ret = node->parent;
 			delete node;
 		}
 		// one child (right)
 		else if (!node->left)
 		{
 			if (node->parent)
-				node->parent->right = node->right;
+			{
+				if (node->parent->left == node)
+					node->parent->left = node->right;
+				else
+					node->parent->right = node->right;
+			}
 			node->right->parent = node->parent;
 			if (node == this->root)
 				this->root = node->right;
+			ret = node->right;
 			delete node;
 		}
 		// one child (left)
 		else if (!node->right)
 		{
 			if (node->parent)
-				node->parent->left = node->left;
+			{
+				if (node->parent->left == node)
+					node->parent->left = node->left;
+				else
+					node->parent->right = node->left;
+			}
 			node->left->parent = node->parent;
 			if (node == this->root)
 				this->root = node->left;
+			ret = node->parent;
 			delete node;
 		}
 		// two children
 		else
 		{
 			node_pointer tmp = node->right; // find minimal value of right sub tree
-			while (tmp && tmp->left != NULL)
+			while (tmp && tmp->left != nullptr)
 				tmp = tmp->left;
 			if (node->parent)
-				node->parent->right = tmp;
+			{
+				if (node->parent->left == node)
+					node->parent->left = tmp;
+				else
+					node->parent->right = tmp;
+			}
 			tmp->parent = node->parent;
-			std::memmove(&node->value, &tmp->value, sizeof(value_type));
+			node->value.value_type::~value_type();
+			new(&node->value) value_type(tmp->value);
 			if (node == this->root)
 				this->root = node;
 			node->right = erase_node(node->right); // delete the duplicate node
+			ret = node;
 		}
-		return (node);
+		return (ret);
 	}
 
 	void delete_recurse(node_pointer node)
@@ -212,7 +246,6 @@ public:
 		if (this->root != this->end_)
 			this->make_empty();
 		this->comp = other.comp;
-		this->repair_bounds();
 		this->copy(other);
 		return (*this);
 	}
@@ -223,9 +256,15 @@ public:
 			return ;
 		this->root = new Node(*other.root);
 		if (other.root->left)
+		{
 			copy_node_recurse(&this->root->left, other.root->left, other.end_);
+			this->root->left->parent = this->root;
+		}
 		if (other.root->right)
+		{
 			copy_node_recurse(&this->root->right, other.root->right, other.end_);
+			this->root->right->parent = this->root;
+		}
 		this->repair_bounds();
 	}
 
@@ -247,7 +286,7 @@ public:
 	node_pointer insert(node_pointer hint, const_reference val)
 	{
 		if (!hint || this->root == this->end_
-			|| (hint->parent && (!comp(val, hint->parent->value) || comp(hint->parent->value, val))))
+			|| (hint->parent && (comp(val, hint->parent->value) || comp(hint->parent->value, val))))
 			return (this->insert(val));
 		node_pointer new_node = new Node(val);
 		if (this->end_->parent)
@@ -273,12 +312,13 @@ public:
 		return (this->find_node(val, hint));
 	}
 
-	void erase(node_pointer node)
+	node_pointer erase(node_pointer node)
 	{
 		if (this->end_->parent)
 			this->end_->parent->right = nullptr;
-		this->erase_node(node);
+		node_pointer next = this->erase_node(node);
 		this->repair_bounds();
+		return (next);
 	}
 
 	template<typename Tp>
