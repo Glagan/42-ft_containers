@@ -13,8 +13,6 @@
 #ifndef STACK_TEST_HPP
 # define STACK_TEST_HPP
 
-# include "test/test.hpp"
-
 template<typename test_type>
 void test_Stack(void)
 {

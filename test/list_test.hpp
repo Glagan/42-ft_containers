@@ -13,8 +13,6 @@
 #ifndef LIST_TEST_HPP
 # define LIST_TEST_HPP
 
-# include "test/test.hpp"
-
 template<typename T>
 bool less_than_99(T const &nbr)
 {

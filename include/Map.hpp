@@ -239,13 +239,13 @@ public:
 
 	size_type count(key_type const &k) const
 	{
-		iterator it = this->begin();
-		iterator ite = this->end();
+		const_iterator it = this->begin();
+		const_iterator ite = this->end();
 		size_type total = 0;
 
 		while (it != ite)
 		{
-			if (!key_compare(*it, k) && !key_compare(k, *it))
+			if (!this->key_comp()(*it, k) && !this->key_comp()(k, *it))
 				++total;
 			++it;
 		}
@@ -259,7 +259,7 @@ public:
 
 		while (it != ite)
 		{
-			if (!((*it).first < key))
+			if (!this->key_comp()(*it, key))
 				return (iterator(it));
 			++it;
 		}
@@ -267,12 +267,12 @@ public:
 	}
 	const_iterator lower_bound(key_type const &key) const
 	{
-		iterator it = this->begin();
-		iterator ite = this->end();
+		const_iterator it = this->begin();
+		const_iterator ite = this->end();
 
 		while (it != ite)
 		{
-			if (!((*it).first < key))
+			if (!this->key_comp()(*it, key))
 				return (const_iterator(it));
 			++it;
 		}
@@ -285,7 +285,7 @@ public:
 
 		while (it != ite)
 		{
-			if ((*it).first > key)
+			if (this->key_comp()(key, *it))
 				return (iterator(it));
 			++it;
 		}
@@ -298,7 +298,7 @@ public:
 
 		while (it != ite)
 		{
-			if ((*it).first > key)
+			if (this->key_comp()(key, *it))
 				return (const_iterator(it));
 			++it;
 		}

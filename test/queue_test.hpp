@@ -13,8 +13,6 @@
 #ifndef QUEUE_TEST_HPP
 # define QUEUE_TEST_HPP
 
-# include "test/test.hpp"
-
 template<typename test_type>
 void test_Queue(void)
 {

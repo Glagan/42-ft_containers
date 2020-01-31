@@ -19,32 +19,42 @@ Number::Number():
 	n(0)
 {
 	Number::created++;
+	#ifdef DEBUG
 	std::cout << "default constructor of Number" << std::endl;
+	#endif
 }
 
 Number::Number(int const &n):
 	n(n)
 {
 	Number::created++;
+	#ifdef DEBUG
 	std::cout << "assignation constructor of Number" << std::endl;
+	#endif
 }
 
 Number::Number(Number const &other):
 	n(other.n)
 {
 	Number::created++;
+	#ifdef DEBUG
 	std::cout << "copy constructor of Number" << std::endl;
+	#endif
 }
 
 Number::~Number()
 {
 	Number::destructed++;
+	#ifdef DEBUG
 	std::cout << "destructor of Number" << std::endl;
+	#endif
 }
 
 Number &Number::operator=(Number const &other)
 {
+	#ifdef DEBUG
 	std::cout << "operator= of Number" << std::endl;
+	#endif
 	this->n = other.n;
 	return (*this);
 }

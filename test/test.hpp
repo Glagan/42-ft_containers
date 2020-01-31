@@ -13,6 +13,10 @@
 #ifndef TEST_HPP
 # define TEST_HPP
 
+# ifdef def_test_full
+#  define FULL
+# endif
+
 # include <iostream>
 # include "test/Number.hpp"
 # include "include/Vector.hpp"
@@ -20,6 +24,16 @@
 # include "include/Stack.hpp"
 # include "include/Queue.hpp"
 # include "include/Map.hpp"
+
+void test(std::string const &what)
+{
+	std::cout << "######################################## START TEST " << what << std::endl;
+}
+
+void end_test(std::string const &what)
+{
+	std::cout << "######################################## END TEST " << what << '\n' << std::endl;
+}
 
 template<typename Container>
 void display_container(std::string const &header, Container const &ctn)

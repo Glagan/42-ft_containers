@@ -17,13 +17,17 @@ OBJS			= $(SRCS:.cpp=.o)
 CXX				= clang++
 RM				= rm -f
 CXXFLAGS		= -g -Wall -Wextra -Werror -I.
+DEBUG 			= $(addprefix def_, $(MAKECMDGOALS))
 
 NAME			= ft_containers
 
 all:			$(NAME)
 
+.cpp.o:
+			    $(CXX) $(CXXFLAGS) -D $(DEBUG) -o $@ -c $<
+
 $(NAME):		$(OBJS)
-				$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
+				$(CXX) $(CXXFLAGS) -D $(DEBUG) -o $(NAME) $(OBJS)
 
 clean:
 				$(RM) $(OBJS)
@@ -33,7 +37,10 @@ fclean:			clean
 
 re:				fclean $(NAME)
 
-test:			$(NAME)
+test:			fclean $(NAME)
+				./ft_containers
+
+test_full:		fclean $(NAME)
 				./ft_containers
 
 .PHONY:			test all clean fclean re

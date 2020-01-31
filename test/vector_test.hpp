@@ -13,8 +13,6 @@
 #ifndef VECTOR_TEST_HPP
 # define VECTOR_TEST_HPP
 
-# include "test/test.hpp"
-
 template<typename test_type>
 void test_Vector(void)
 {

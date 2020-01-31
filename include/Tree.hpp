@@ -257,12 +257,12 @@ public:
 		this->root = new Node(*other.root);
 		if (other.root->left)
 		{
-			copy_node_recurse(&this->root->left, other.root->left, other.end_);
+			this->copy_node_recurse(&this->root->left, other.root->left, other.end_);
 			this->root->left->parent = this->root;
 		}
 		if (other.root->right)
 		{
-			copy_node_recurse(&this->root->right, other.root->right, other.end_);
+			this->copy_node_recurse(&this->root->right, other.root->right, other.end_);
 			this->root->right->parent = this->root;
 		}
 		this->repair_bounds();
