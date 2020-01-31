@@ -13,7 +13,6 @@
 #ifndef LIST_HPP
 # define LIST_HPP
 
-# include <cassert>
 # include <cstddef>
 # include <cmath>
 # include "include/Node.hpp"
@@ -485,7 +484,16 @@ public:
 template<typename value_type>
 bool operator==(List<value_type> const &lhs, List<value_type> const &rhs)
 {
-	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	if (lhs.size() != rhs.size())
+		return (false);
+	typename List<value_type>::const_iterator first1 = lhs.begin();
+	typename List<value_type>::const_iterator last1 = lhs.end();
+	typename List<value_type>::const_iterator first2 = rhs.begin();
+	typename List<value_type>::const_iterator last2 = rhs.end();
+	while (first1 != last1)
+		if (*first1++ != *first2++)
+			return (false);
+	return (true);
 }
 
 template<typename T>

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/19 18:34:34 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/31 02:19:15 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ int main(void)
 	test_Map<Number, Number>();
 #endif
 	end_test("Map");
+
+	test("Set");
+	test_Set<int>();
+#ifdef FULL
+	test_Set<Number>();
+#endif
+	end_test("Set");
 
 	// Check Number count
 	std::cout << "Total Number created: " << Number::getCreated() << '\n'

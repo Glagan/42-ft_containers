@@ -6,16 +6,13 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/26 18:39:00 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/31 02:37:08 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_TEST_HPP
 # define MAP_TEST_HPP
 
-/**
- * offset is used to display '0' instead of char 0
- **/
 template<typename key_type, typename value_type>
 void test_Map(int offset=0)
 {

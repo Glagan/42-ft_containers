@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Multimap.hpp                                       :+:      :+:    :+:   */
+/*   deque_test.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/02 15:56:53 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:48:13 by ncolomer         ###   ########.fr       */
+/*   Created: 2020/01/31 02:35:17 by ncolomer          #+#    #+#             */
+/*   Updated: 2020/01/31 02:35:40 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MULTIMAP_HPP
-# define MULTIMAP_HPP
+#ifndef DEQUE_TEST_HPP
+# define DEQUE_TEST_HPP
 
-# include <cstddef>
-# include <cmath>
-# include "include/Node.hpp"
-# include "include/Iterator.hpp"
-# include "include/Algorithm.hpp"
-
-namespace ft
+template<typename value_type>
+void test_Deque(void)
 {
-template<typename K, typename T, typename Compare = ft::less<K> >
-class Multimap
-{
-};
 }
-
 
 #endif

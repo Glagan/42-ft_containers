@@ -13,7 +13,6 @@
 #ifndef QUEUE_HPP
 # define QUEUE_HPP
 
-# include <cassert>
 # include <cstddef>
 # include <cmath>
 # include "include/List.hpp"

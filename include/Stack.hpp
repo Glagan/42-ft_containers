@@ -13,7 +13,6 @@
 #ifndef STACK_HPP
 # define STACK_HPP
 
-# include <cassert>
 # include <cstddef>
 # include <cmath>
 # include "include/List.hpp"

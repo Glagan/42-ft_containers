@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Multimap.hpp                                       :+:      :+:    :+:   */
+/*   multimap_test.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/02 15:56:53 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:48:13 by ncolomer         ###   ########.fr       */
+/*   Created: 2020/01/31 02:34:56 by ncolomer          #+#    #+#             */
+/*   Updated: 2020/01/31 02:37:35 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MULTIMAP_HPP
-# define MULTIMAP_HPP
+#ifndef MAP_TEST_HPP
+# define MAP_TEST_HPP
 
-# include <cstddef>
-# include <cmath>
-# include "include/Node.hpp"
-# include "include/Iterator.hpp"
-# include "include/Algorithm.hpp"
-
-namespace ft
+template<typename key_type, typename value_type>
+void test_Multimap(int offset=0)
 {
-template<typename K, typename T, typename Compare = ft::less<K> >
-class Multimap
-{
-};
 }
-
 
 #endif

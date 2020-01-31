@@ -390,7 +390,7 @@ public:
 };
 
 template<typename T, typename N>
-class MapIterator:
+class TreeIterator:
 	virtual public Iterator<N>
 {
 public:
@@ -436,22 +436,22 @@ protected:
 		}
 	}
 public:
-	MapIterator():
+	TreeIterator():
 		Iterator<node_type>(nullptr) {}
-	MapIterator(node_pointer p):
+	TreeIterator(node_pointer p):
 		Iterator<node_type>(p) {}
-	MapIterator(MapIterator const &other):
+	TreeIterator(TreeIterator const &other):
 		Iterator<node_type>(other.p) {}
-	MapIterator(Iterator<node_type> const &other):
+	TreeIterator(Iterator<node_type> const &other):
 		Iterator<node_type>(other) {}
-	virtual ~MapIterator() {}
+	virtual ~TreeIterator() {}
 
 	node_pointer as_node(void) const
 	{
 		return (this->p);
 	}
 
-	MapIterator &operator=(MapIterator const &other)
+	TreeIterator &operator=(TreeIterator const &other)
 	{
 		this->p = other.p;
 		return (*this);
@@ -474,30 +474,30 @@ public:
 		return (&this->p->value);
 	}
 
-	MapIterator operator++(int)
+	TreeIterator operator++(int)
 	{
-		MapIterator tmp(*this);
+		TreeIterator tmp(*this);
 		this->next();
 		return (tmp);
 	}
-	MapIterator &operator++()
+	TreeIterator &operator++()
 	{
 		this->next();
 		return (*this);
 	}
-	MapIterator operator--(int)
+	TreeIterator operator--(int)
 	{
-		MapIterator tmp(*this);
+		TreeIterator tmp(*this);
 		this->previous();
 		return (tmp);
 	}
-	MapIterator &operator--()
+	TreeIterator &operator--()
 	{
 		this->previous();
 		return (*this);
 	}
 
-	MapIterator &operator+=(int value)
+	TreeIterator &operator+=(int value)
 	{
 		if (value > 0)
 		{
@@ -511,49 +511,49 @@ public:
 		}
 		return (*this);
 	}
-	MapIterator operator+(int value) const
+	TreeIterator operator+(int value) const
 	{
-		MapIterator tmp(*this);
+		TreeIterator tmp(*this);
 		return (tmp += value);
 	}
-	MapIterator &operator-=(int value)
+	TreeIterator &operator-=(int value)
 	{
 		operator+=(-value);
 		return (*this);
 	}
-	MapIterator operator-(int value) const
+	TreeIterator operator-(int value) const
 	{
-		MapIterator tmp(*this);
+		TreeIterator tmp(*this);
 		return (tmp -= value);
 	}
 };
 
 template<typename T, typename N>
-class ReverseMapIterator:
-	virtual public MapIterator<T, N>,
+class ReverseTreeIterator:
+	virtual public TreeIterator<T, N>,
 	virtual public ReverseIterator<N>
 {
 public:
-	using typename MapIterator<T, N>::value_type;
-    using typename MapIterator<T, N>::pointer;
-    using typename MapIterator<T, N>::const_pointer;
-    using typename MapIterator<T, N>::reference;
-    using typename MapIterator<T, N>::const_reference;
-    using typename MapIterator<T, N>::node_type;
-    using typename MapIterator<T, N>::node_pointer;
-    using typename MapIterator<T, N>::difference_type;
+	using typename TreeIterator<T, N>::value_type;
+    using typename TreeIterator<T, N>::pointer;
+    using typename TreeIterator<T, N>::const_pointer;
+    using typename TreeIterator<T, N>::reference;
+    using typename TreeIterator<T, N>::const_reference;
+    using typename TreeIterator<T, N>::node_type;
+    using typename TreeIterator<T, N>::node_pointer;
+    using typename TreeIterator<T, N>::difference_type;
 public:
-	ReverseMapIterator():
-		Iterator<node_type>(nullptr), MapIterator<value_type, node_type>(nullptr), ReverseIterator<node_type>(nullptr) {}
-	ReverseMapIterator(pointer p):
-		Iterator<node_type>(p), MapIterator<value_type, node_type>(p), ReverseIterator<node_type>(p) {}
-	ReverseMapIterator(Iterator<node_type> const &other):
-		Iterator<node_type>(other), MapIterator<value_type, node_type>(other), ReverseIterator<node_type>(other) {}
-	ReverseMapIterator(ReverseMapIterator<value_type, node_type> const &other):
-		Iterator<node_type>(other.p), MapIterator<value_type, node_type>(other.p), ReverseIterator<node_type>(other.p) {}
-	virtual ~ReverseMapIterator() {}
+	ReverseTreeIterator():
+		Iterator<node_type>(nullptr), TreeIterator<value_type, node_type>(nullptr), ReverseIterator<node_type>(nullptr) {}
+	ReverseTreeIterator(pointer p):
+		Iterator<node_type>(p), TreeIterator<value_type, node_type>(p), ReverseIterator<node_type>(p) {}
+	ReverseTreeIterator(Iterator<node_type> const &other):
+		Iterator<node_type>(other), TreeIterator<value_type, node_type>(other), ReverseIterator<node_type>(other) {}
+	ReverseTreeIterator(ReverseTreeIterator<value_type, node_type> const &other):
+		Iterator<node_type>(other.p), TreeIterator<value_type, node_type>(other.p), ReverseIterator<node_type>(other.p) {}
+	virtual ~ReverseTreeIterator() {}
 
-	ReverseMapIterator &operator=(ReverseMapIterator const &other)
+	ReverseTreeIterator &operator=(ReverseTreeIterator const &other)
 	{
 		this->p = other.p;
 		return (*this);
@@ -561,42 +561,42 @@ public:
 
 	reference operator*()
 	{
-		MapIterator<value_type, node_type> tmp(*this);
+		TreeIterator<value_type, node_type> tmp(*this);
 		return (*--tmp);
 	}
 	const_reference operator*() const
 	{
-		MapIterator<value_type, node_type> tmp(*this);
+		TreeIterator<value_type, node_type> tmp(*this);
 		return (*--tmp);
 	}
 	pointer operator->()
 	{
-		MapIterator<value_type, node_type> tmp(*this);
+		TreeIterator<value_type, node_type> tmp(*this);
 		return (&*--tmp);
 	}
 	const_pointer operator->() const
 	{
-		MapIterator<value_type, node_type> tmp(*this);
+		TreeIterator<value_type, node_type> tmp(*this);
 		return (&*--tmp);
 	}
-	ReverseMapIterator operator++(int)
+	ReverseTreeIterator operator++(int)
 	{
-		ReverseMapIterator tmp(*this);
+		ReverseTreeIterator tmp(*this);
 		operator++();
 		return (tmp);
 	}
-	ReverseMapIterator &operator++()
+	ReverseTreeIterator &operator++()
 	{
 		this->previous();
 		return (*this);
 	}
-	ReverseMapIterator operator--(int)
+	ReverseTreeIterator operator--(int)
 	{
-		ReverseMapIterator tmp(*this);
+		ReverseTreeIterator tmp(*this);
 		operator--();
 		return (tmp);
 	}
-	ReverseMapIterator &operator--()
+	ReverseTreeIterator &operator--()
 	{
 		this->next();
 		return (*this);

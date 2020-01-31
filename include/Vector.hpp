@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 19:07:54 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/31 02:31:19 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define VECTOR_HPP
 
 # include <cstring>
-# include <cassert>
+# include <cassert> // TODO: Remove OR add asserts
 # include <cstddef>
 # include <cmath>
 # include "include/Iterator.hpp"

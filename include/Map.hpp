@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/26 18:50:23 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/31 02:39:48 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ public:
 	typedef Tree<value_type, value_compare> tree_type;
 	typedef typename tree_type::Node node_type;
 	typedef node_type* node_pointer;
-	typedef MapIterator<value_type, node_type> iterator;
-	typedef MapIterator<value_type const, node_type const> const_iterator;
-	typedef ReverseMapIterator<value_type, node_type> reverse_iterator;
-	typedef ReverseMapIterator<value_type const, node_type const> const_reverse_iterator;
+	typedef TreeIterator<value_type, node_type> iterator;
+	typedef TreeIterator<value_type const, node_type const> const_iterator;
+	typedef ReverseTreeIterator<value_type, node_type> reverse_iterator;
+	typedef ReverseTreeIterator<value_type const, node_type const> const_reverse_iterator;
 private:
 	tree_type tree;
 	size_type size_;
@@ -214,10 +214,12 @@ public:
 		this->size_ = 0;
 	}
 
+	// TODO:
 	value_compare key_comp(void) const
 	{
 		return (this->tree.key_compare());
 	}
+	// TODO:
 	value_compare value_comp(void) const
 	{
 		return (this->tree.key_compare());

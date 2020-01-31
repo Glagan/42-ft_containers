@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/19 18:37:53 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/01/31 02:54:31 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "include/Stack.hpp"
 # include "include/Queue.hpp"
 # include "include/Map.hpp"
+# include "include/Set.hpp"
 
 void test(std::string const &what)
 {
@@ -73,10 +74,11 @@ void display_container(std::string const &header, ft::Map<key_type, value_type> 
 	}
 }
 
-# include "test/vector_test.hpp"
-# include "test/list_test.hpp"
-# include "test/stack_test.hpp"
-# include "test/queue_test.hpp"
-# include "test/map_test.hpp"
+# include "vector_test.hpp"
+# include "list_test.hpp"
+# include "stack_test.hpp"
+# include "queue_test.hpp"
+# include "map_test.hpp"
+# include "set_test.hpp"
 
 #endif
