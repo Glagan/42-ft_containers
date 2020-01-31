@@ -367,8 +367,15 @@ public:
 
 	void swap(Vector &other)
 	{
-		// TODO: TODO
-		(void)other;
+		pointer tmp = this->container;
+		this->container = other.container;
+		other.container = tmp;
+		size_type stmp = this->size_;
+		this->size_ = other.size_;
+		other.size_ = stmp;
+		stmp = this->capacity_;
+		this->capacity_ = other.capacity_;
+		other.capacity_ = stmp;
 	}
 
 	void clear(void)
@@ -379,8 +386,8 @@ public:
 	}
 };
 
-template <class value_type>
-bool operator==(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+template<typename T>
+bool operator==(Vector<T> const &lhs, Vector<T> const &rhs)
 {
 	if (lhs.size() != rhs.size())
 		return (false);
@@ -390,34 +397,40 @@ bool operator==(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
 	return (true);
 }
 
-template <class value_type>
-bool operator!=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+template<typename T>
+bool operator!=(Vector<T> const &lhs, Vector<T> const &rhs)
 {
 	return (!(lhs == rhs));
 }
 
-template <class value_type>
-bool operator<(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+template<typename T>
+bool operator<(Vector<T> const &lhs, Vector<T> const &rhs)
 {
 	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
-template <class value_type>
-bool operator<=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+template<typename T>
+bool operator<=(Vector<T> const &lhs, Vector<T> const &rhs)
 {
 	return (!(rhs < lhs));
 }
 
-template <class value_type>
-bool operator>(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+template<typename T>
+bool operator>(Vector<T> const &lhs, Vector<T> const &rhs)
 {
 	return (rhs < lhs);
 }
 
-template <class value_type>
-bool operator>=(Vector<value_type> const &lhs, Vector<value_type> const &rhs)
+template<typename T>
+bool operator>=(Vector<T> const &lhs, Vector<T> const &rhs)
 {
 	return (!(lhs < rhs));
+}
+
+template<typename T>
+void swap(Vector<T> &x, Vector<T> &y)
+{
+	x.swap(y);
 }
 }
 

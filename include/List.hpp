@@ -275,8 +275,15 @@ public:
 
 	void swap(List &other)
 	{
-		(void)other;
-		// TODO: TODO
+		node_pointer tmp = this->begin_;
+		this->begin_ = other.begin_;
+		other.begin_ = tmp;
+		tmp = this->end_;
+		this->end_ = other.end_;
+		other.end_ = tmp;
+		size_type stmp = this->size_;
+		this->size_ = other.size_;
+		other.size_ = stmp;
 	}
 
 	void resize(size_type n, value_type val=value_type())
@@ -478,46 +485,43 @@ public:
 template<typename value_type>
 bool operator==(List<value_type> const &lhs, List<value_type> const &rhs)
 {
-	if (lhs.size() != rhs.size())
-		return (false);
-	typename List<value_type>::const_iterator first1 = lhs.begin();
-	typename List<value_type>::const_iterator last1 = lhs.end();
-	typename List<value_type>::const_iterator first2 = rhs.begin();
-	typename List<value_type>::const_iterator last2 = rhs.end();
-	while (first1 != last1)
-		if (*first1++ != *first2++)
-			return (false);
-	return (true);
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
-template<typename value_type>
-bool operator!=(List<value_type> const &lhs, List<value_type> const &rhs)
+template<typename T>
+bool operator!=(List<T> const &lhs, List<T> const &rhs)
 {
 	return (!(lhs == rhs));
 }
 
-template<typename value_type>
-bool operator<(List<value_type> const &lhs, List<value_type> const &rhs)
+template<typename T>
+bool operator<(List<T> const &lhs, List<T> const &rhs)
 {
 	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
-template<typename value_type>
-bool operator<=(List<value_type> const &lhs, List<value_type> const &rhs)
+template<typename T>
+bool operator<=(List<T> const &lhs, List<T> const &rhs)
 {
 	return (!(rhs < lhs));
 }
 
-template<typename value_type>
-bool operator>(List<value_type> const &lhs, List<value_type> const &rhs)
+template<typename T>
+bool operator>(List<T> const &lhs, List<T> const &rhs)
 {
 	return (rhs < lhs);
 }
 
-template<typename value_type>
-bool operator>=(List<value_type> const &lhs, List<value_type> const &rhs)
+template<typename T>
+bool operator>=(List<T> const &lhs, List<T> const &rhs)
 {
 	return (!(lhs < rhs));
+}
+
+template<typename T>
+void swap(List<T> &x, List<T> &y)
+{
+	x.swap(y);
 }
 }
 

@@ -265,6 +265,30 @@ void test_Vector(void)
 			<< "comparison >= " << (vec4 >= vec) << '\n';
 	}
 
+	std::cout << "\n---swap\n\n";
+	{
+		ft::Vector<test_type> vec;
+		vec.push_back(5);
+		vec.push_back(42);
+		vec.push_back(43);
+
+		ft::Vector<test_type> vec2;
+		vec2.push_back(12);
+		vec2.push_back(30);
+		vec2.push_back(60);
+
+		display_container("vec [5, 42, 43]:", vec);
+		display_container("vec2 [12, 30, 60]:", vec2);
+		vec.swap(vec2);
+		std::cout << "---swapped\n";
+		display_container("vec [12, 30, 60]:", vec);
+		display_container("vec2 [5, 42, 43]:", vec2);
+		ft::swap(vec, vec2);
+		std::cout << "---swapped\n";
+		display_container("vec [5, 42, 43]:", vec);
+		display_container("vec2 [12, 30, 60]:", vec2);
+	}
+
 	std::cout << '\n';
 }
 

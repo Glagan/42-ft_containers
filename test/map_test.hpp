@@ -203,6 +203,30 @@ void test_Map(int offset=0)
 		std::cout << "equal_range(-99) " << (mp.equal_range(-99)).first->first << "," << (mp.equal_range(-99)).second->first << " (-1,-1)\n";
 	}
 
+	std::cout << "\n---swap\n\n";
+	{
+		ft::Map<key_type, value_type> mp;
+		mp.insert(std::make_pair(5+offset, 42));
+		mp.insert(std::make_pair(7+offset, 43));
+		mp.insert(std::make_pair(9+offset, 44));
+
+		ft::Map<key_type, value_type> mp2;
+		mp2.insert(std::make_pair(11+offset, 84));
+		mp2.insert(std::make_pair(12+offset, 85));
+		mp2.insert(std::make_pair(13+offset, 86));
+
+		display_container("map [5:42, 7:43, 9:44]:", mp);
+		display_container("map2 [11:84, 12:85, 13:86]:", mp2);
+		mp.swap(mp2);
+		std::cout << "---swapped\n";
+		display_container("map [11:84, 12:85, 13:86]:", mp);
+		display_container("map2 [5:42, 7:43, 9:44]:", mp2);
+		ft::swap(mp, mp2);
+		std::cout << "---swapped\n";
+		display_container("map [5:42, 7:43, 9:44]:", mp);
+		display_container("map2 [11:84, 12:85, 13:86]:", mp2);
+	}
+
 	std::cout << '\n';
 }
 

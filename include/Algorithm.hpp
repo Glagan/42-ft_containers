@@ -31,6 +31,15 @@ bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1,
 	return (first2 != last2);
 }
 
+template<typename T>
+struct less: public std::binary_function<T, T, bool>
+{
+	bool operator()(const T& x, const T& y) const
+	{
+		return (x < y);
+	}
+};
+
 template<class value_type>
 bool equal(value_type const &a, value_type const &b)
 {

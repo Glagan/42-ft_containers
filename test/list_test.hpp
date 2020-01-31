@@ -588,6 +588,30 @@ void test_List(void)
 			<< "comparison >= " << (lst4 >= lst) << '\n';
 	}
 
+	std::cout << "\n---swap\n\n";
+	{
+		ft::List<test_type> lst;
+		lst.push_back(5);
+		lst.push_back(42);
+		lst.push_back(43);
+
+		ft::List<test_type> lst2;
+		lst2.push_back(12);
+		lst2.push_back(30);
+		lst2.push_back(60);
+
+		display_container("[5, 42, 43]:", lst);
+		display_container("[12, 30, 60]:", lst2);
+		lst.swap(lst2);
+		std::cout << "---swapped\n";
+		display_container("[12, 30, 60]:", lst);
+		display_container("[5, 42, 43]:", lst2);
+		ft::swap(lst, lst2);
+		std::cout << "---swapped\n";
+		display_container("[5, 42, 43]:", lst);
+		display_container("[12, 30, 60]:", lst2);
+	}
+
 	std::cout << '\n';
 }
 

@@ -13,7 +13,6 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-# include <cassert>
 # include <cstddef>
 # include <cmath>
 # include <utility>
@@ -22,7 +21,7 @@
 
 namespace ft
 {
-template<typename K, typename T, typename Compare = std::less<K> >
+template<typename K, typename T, typename Compare = ft::less<K> >
 class Map
 {
 public:
@@ -202,8 +201,10 @@ public:
 
 	void swap(Map &other)
 	{
-		// TODO: TODO
-		(void)other;
+		this->tree.swap(other.tree);
+		size_type tmp = this->size_;
+		this->size_ = other.size_;
+		other.size_ = tmp;
 	}
 
 	void clear(void)
@@ -314,6 +315,12 @@ public:
 		return (std::pair<const_iterator, const_iterator>(this->lower_bound(key), this->upper_bound(key)));
 	}
 };
+
+template<typename K, typename T, typename Compare>
+void swap(Map<K, T, Compare> &x, Map<K, T, Compare> &y)
+{
+	x.swap(y);
+}
 }
 
 #endif

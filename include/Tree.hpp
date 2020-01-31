@@ -361,6 +361,22 @@ public:
 		this->end_->right = nullptr;
 		this->begin_ = this->root = this->end_;
 	}
+
+	void swap(Tree &other)
+	{
+		node_pointer tmp = this->root;
+		this->root = other.root;
+		other.root = tmp;
+		tmp = this->begin_;
+		this->begin_ = other.begin_;
+		other.begin_ = tmp;
+		tmp = this->end_;
+		this->end_ = other.end_;
+		other.end_ = tmp;
+		Compare compTmp = this->comp;
+		this->comp = other.comp;
+		other.comp = compTmp;
+	}
 };
 
 #endif
