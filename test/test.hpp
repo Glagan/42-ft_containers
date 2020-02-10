@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:54:31 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/02 00:09:38 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@
 # include "include/Stack.hpp"
 # include "include/Queue.hpp"
 # include "include/Map.hpp"
+# include "include/Deque.hpp"
 # include "include/Set.hpp"
+# include "include/Multiset.hpp"
+# include "include/Multimap.hpp"
 
 void test(std::string const &what)
 {
@@ -79,6 +82,9 @@ void display_container(std::string const &header, ft::Map<key_type, value_type> 
 # include "stack_test.hpp"
 # include "queue_test.hpp"
 # include "map_test.hpp"
+# include "deque_test.hpp"
 # include "set_test.hpp"
+# include "multimap_test.hpp"
+# include "multiset_test.hpp"
 
 #endif

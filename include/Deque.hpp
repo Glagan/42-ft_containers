@@ -6,42 +6,88 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:46 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:41:32 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/10 02:31:28 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEQUE_HPP
 # define DEQUE_HPP
 
-# include <cstddef>
-# include <cmath>
+# include <limits>
 # include "include/Node.hpp"
 # include "include/Iterator.hpp"
 # include "include/Algorithm.hpp"
 
 namespace ft
 {
+template<typename T, size_t chunk_size>
+class DequeIterator
+{
+public:
+	typedef T value_type;
+	typedef value_type* pointer;
+	typedef pointer* chunk;
+	typedef const pointer const_pointer;
+	typedef value_type& reference;
+	typedef const reference const_reference;
+	typedef ptrdiff_t difference_type;
+private:
+	pointer current;
+	pointer first;
+	pointer last;
+	chunk node;
+	friend class Deque;
+public:
+	reference operator[](difference_type index) const
+	{
+    	return (*(*this + index));
+	}
+};
+/**
+ * deque is an array of chunks
+ * attributes:
+ * 	map
+ * 	size
+ * 	start (iterator)
+ * 	end (iterator)
+ * a chunk is an array of T with an iterator
+ * iterator:
+ * 	current
+ * 	first
+ * 	last
+ * 	node
+ **/
 template<typename T>
 class Deque
 {
 public:
+	typedef 10 chunk_size;
 	typedef size_t size_type;
 	typedef T value_type;
-	// typedef Node<value_type> node_type;
-	// typedef node_type* node_pointer;
 	typedef value_type* pointer;
-	typedef value_type const *const_pointer;
+	typedef pointer* chunk;
+	typedef const pointer const_pointer;
 	typedef value_type& reference;
-	typedef value_type const &const_reference;
-	// typedef ListIterator<value_type, node_type> iterator;
-	// typedef ListIterator<value_type const, node_type const> const_iterator;
-	// typedef ReverseListIterator<value_type, node_type> reverse_iterator;
-	// typedef ReverseListIterator<value_type const, node_type const> const_reverse_iterator;
+	typedef const reference const_reference;
+	typedef ptrdiff_t difference_type;
+	typedef DequeIterator<value_type, chunk_size> iterator;
+	typedef DequeIterator<value_type const, chunk_size> const_iterator;
+	typedef ReverseDequeIterator<value_type, chunk_size> reverse_iterator;
+	typedef ReverseDequeIterator<value_type const, chunk_size> const_reverse_iterator;
 private:
-	// TODO: Attributes
+	iterator m_first;
+	iterator m_last;
+	chunk m_container;
+	size_type m_size;
 public:
-	Deque();
-	Deque(size_type n, const_reference val=value_type());
+	Deque():
+		m_first(nullptr), m_last(nullptr),
+		m_container(nullptr), m_size(0) {}
+	Deque(size_type n, const_reference val=value_type()):
+		m_first(nullptr), m_last(nullptr),
+		m_container(nullptr), m_size(0) {
+		this->assign(n, val);
+	}
 	Deque(iterator first, iterator last);
 	Deque(Deque const &other);
 	virtual ~Deque();
@@ -50,11 +96,11 @@ public:
 
 	iterator begin(void)
 	{
-		return (iterator(this->begin_));
+		return (iterator(this->m_first));
 	}
 	const_iterator begin(void) const
 	{
-		return (const_iterator(this->begin_));
+		return (const_iterator(this->m_first));
 	}
 	reverse_iterator rbegin(void)
 	{
@@ -66,11 +112,11 @@ public:
 	}
 	iterator end(void)
 	{
-		return (iterator(this->end_));
+		return (iterator(this->m_last));
 	}
 	const_iterator end(void) const
 	{
-		return (const_iterator(this->end_));
+		return (const_iterator(this->m_last));
 	}
 	reverse_iterator rend(void)
 	{
@@ -83,15 +129,15 @@ public:
 
 	bool empty(void) const
 	{
-		return (this->size_ == 0);
+		return (this->m_size == 0);
 	}
 	size_type size(void) const
 	{
-		return (this->size_);
+		return (this->m_size);
 	}
 	size_type max_size(void) const
 	{
-		return (((std::pow(2, 64) - 1) / sizeof(Node<value_type>)) - 1);
+		return (std::numeric_limits<value_type>::max() - 1);
 	}
     void resize(size_type n, value_type val=value_type());
 
@@ -101,11 +147,26 @@ public:
     reference at(size_type n);
     const_reference at(size_type n) const;
 
-    reference front(void);
-    const_reference front(void) const;
-
-    reference back(void);
-    const_reference back(void) const;
+    reference front(void)
+	{
+		return (*this->m_first);
+	}
+    const_reference front(void) const
+	{
+		return (*this->m_first);
+	}
+    reference back(void)
+	{
+		iterator tmp = m_last;
+    	--tmp;
+		return (*--tmp);
+	}
+    const_reference back(void) const
+	{
+		iterator tmp = m_last;
+    	--tmp;
+		return (*--tmp);
+	}
 
     template <typename InputIterator>
 	void assign(InputIterator first, InputIterator last);

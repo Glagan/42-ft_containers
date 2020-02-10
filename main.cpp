@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:19:15 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/02 00:08:56 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,13 @@ int main(void)
 	test_Map<Number, Number>();
 #endif
 	end_test("Map");
+
+	test("Deque");
+	test_Deque<int>();
+#ifdef FULL
+	test_Deque<Number>();
+#endif
+	end_test("Deque");
 
 	test("Set");
 	test_Set<int>();
