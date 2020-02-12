@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 18:41:00 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 18:03:39 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,34 @@ template<typename test_type>
 void test_List(void)
 {
 	std::cout << "\n---basic\n\n";
+	{
+		ft::List<test_type> empty_list;
+		{
+			assert(empty_list.begin() == empty_list.end());
+			assert(empty_list.empty());
+			assert(empty_list.size() == 0);
 
-	ft::List<test_type> empty_list;
-	if (empty_list.begin() == empty_list.end())
-		std::cout << "[begin] == [end] on empty list" << '\n';
-	else
-		std::cout << "!!! [begin] != [end] on empty list !!!" << '\n';
-	std::cout << "max_size = " << empty_list.max_size() << '\n';
-	std::cout << "empty? " << empty_list.empty() << '\n';
-	std::cout << "empty list size = " << empty_list.size() << '\n';
+			std::cout << "[begin] == [end] on empty list" << '\n';
+			std::cout << "max_size = " << empty_list.max_size() << '\n';
+			std::cout << "empty? " << empty_list.empty() << '\n';
+			std::cout << "empty list size = " << empty_list.size() << '\n';
+		}
 
-	ft::List<test_type> lst;
-	lst.push_back(5);
-	lst.push_back(42);
+		ft::List<test_type> lst;
+		lst.push_back(5);
+		lst.push_back(42);
+		{
+			assert(lst.size() == 2);
+			assert(lst.front() == 5);
+			assert(*lst.begin() == 5);
+			assert(lst.back() == 42);
+			assert(*--lst.end() == 42);
 
-	std::cout << "list [5, 42].size() = " << lst.size() << '\n';
-	std::cout << "[5, 42].front() = " << lst.front() << " (it:" << *lst.begin() << ")" << '\n';
-	std::cout << "[5, 42].back()  = " << lst.back() << " (it:" << *--lst.end() << ")" << '\n';
+			std::cout << "list [5, 42].size() = " << lst.size() << '\n';
+			std::cout << "[5, 42].front() = " << lst.front() << " (it:" << *lst.begin() << ")" << '\n';
+			std::cout << "[5, 42].back()  = " << lst.back() << " (it:" << *--lst.end() << ")" << '\n';
+		}
+	}
 
 	std::cout << "\n---push_back\n\n";
 	{

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:55 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:48:51 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:21:43 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include <cstddef>
 # include <cmath>
 # include <utility>
-# include "include/Algorithm.hpp"
-# include "include/Tree.hpp"
+# include "Algorithm.hpp"
+# include "Tree.hpp"
 
 namespace ft
 {

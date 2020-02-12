@@ -3,16 +3,13 @@
 ## TODO
 
 * ``Deque``
-* ``List``
-    * Move ``ListIterator`` to the class
-* ``Tree``
-    * Move ``TreeIterator`` to the ``Tree`` implementation
 * ``Set``
     * With a ``Tree``, like ``Map``
 * ``MultiSet``
     * With a ``Tree``, like ``Map``
 * ``MultiMap``
     * With a ``Tree``, like ``Map``
+* Fix ``max_size``
 
 ## Ressources
 

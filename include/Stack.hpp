@@ -6,16 +6,14 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:05 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 17:16:51 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 18:11:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_HPP
 # define STACK_HPP
 
-# include <cstddef>
-# include <cmath>
-# include "include/List.hpp"
+# include "List.hpp"
 
 namespace ft
 {
@@ -36,75 +34,59 @@ public:
 	Stack(container_type const &container=container_type()): c(container) {}
 	virtual ~Stack() {}
 
-	Stack &operator=(Stack const &other)
-	{
+	Stack &operator=(Stack const &other) {
 		this->c = other.c;
 		return (*this);
 	}
 
-	bool empty(void) const
-	{
+	bool empty(void) const {
 		return (this->c.empty());
 	}
-
-	size_t size(void) const
-	{
+	size_t size(void) const {
 		return (this->c.size());
 	}
 
-	reference top(void)
-	{
+	reference top(void) {
+		return (this->c.back());
+	}
+	const_reference top(void) const {
 		return (this->c.back());
 	}
 
-	const_reference top(void) const
-	{
-		return (this->c.back());
-	}
-
-	void push(const_reference val)
-	{
+	void push(const_reference val) {
 		this->c.push_back(val);
 	}
-
-	void pop(void)
-	{
+	void pop(void) {
 		this->c.pop_back();
 	}
 
 	template<typename stack_type>
-	friend bool operator==(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs)
-	{
+	friend bool operator==(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
 		return (lhs.c == rhs.c);
 	}
 
 	template<typename stack_type>
-	friend bool operator!=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs)
-	{
+	friend bool operator!=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
 		return (lhs.c != rhs.c);
 	}
 
 	template<typename stack_type>
-	friend bool operator<(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs)
-	{
+	friend bool operator<(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
 		return (lhs.c < rhs.c);
 	}
 
 	template<typename stack_type>
-	friend bool operator<=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs)
-	{
+	friend bool operator<=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
 		return (lhs.c <= rhs.c);
 	}
 
 	template<typename stack_type>
-	friend bool operator>(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs)
-	{
+	friend bool operator>(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
 		return (lhs.c > rhs.c);
 	}
 
 	template<typename stack_type>
-	friend bool operator>=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs)
-	{
+	friend bool operator>=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
 		return (lhs.c >= rhs.c);
 	}
 };

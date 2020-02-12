@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:37:08 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:46:36 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,44 @@ void test_Map(int offset=0)
 	std::cout << "\n---basic\n\n";
 	{
 		ft::Map<key_type, value_type> empty_map;
-		if (empty_map.begin() == empty_map.end())
+		{
+			assert(empty_map.begin() == empty_map.end());
+			assert(empty_map.empty());
+			assert(empty_map.size() == 0);
+
 			std::cout << "[begin] == [end] on empty map" << '\n';
-		else
-			std::cout << "!!! [begin] != [end] on empty map !!!" << '\n';
-		std::cout << "max_size = " << empty_map.max_size() << '\n';
-		std::cout << "size: " << empty_map.size() << " (0), empty? " << empty_map.empty() << '\n';
+			std::cout << "max_size = " << empty_map.max_size() << '\n';
+			std::cout << "size: " << empty_map.size() << " (0), empty? " << empty_map.empty() << '\n';
+		}
 
 		ft::Map<key_type, value_type> mp;
 		mp[5+offset] = 42;
 		mp[7+offset] = 28;
 		mp[9+offset] = 44;
+		{
+			std::cout << "map [5:42, 7:28, 9:44].size() = " << mp.size() << '\n';
+			typename ft::Map<key_type, value_type>::iterator it = mp.begin();
+			std::cout << "[5:42, 7:28, 9:44].[5] = " << mp[5+offset] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+			it = --mp.end();
+			std::cout << "[5:42, 7:28, 9:44].[9] = " << mp[9+offset] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
 
-		std::cout << "map [5:42, 7:28, 9:44].size() = " << mp.size() << '\n';
-		typename ft::Map<key_type, value_type>::iterator it = mp.begin();
-		std::cout << "[5:42, 7:28, 9:44].[5] = " << mp[5+offset] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
-		it = --mp.end();
-		std::cout << "[5:42, 7:28, 9:44].[9] = " << mp[9+offset] << " (it: first: " << (*it).first << ", second: " << (*it).second << ")" << '\n';
+			ft::Map<key_type, value_type> mp2 = mp;
 
-		ft::Map<key_type, value_type> mp2 = mp;
+			display_container("copied map2 [5:42, 7:28, 9:44]:", mp2);
+			mp2.clear();
+			display_container("cleared map2 []:", mp2);
 
-		display_container("copied map2 [5:42, 7:28, 9:44]:", mp2);
-		mp2.clear();
-		display_container("cleared map2 []:", mp2);
+			display_container("map [5:42, 7:28, 9:44]:", mp);
+			mp.erase(7+offset);
+			display_container("map [5:42, 9:44]:", mp);
+			mp.erase(5+offset);
+			display_container("map [9:44]:", mp);
+			mp.erase(9+offset);
+			display_container("map []:", mp);
 
-		display_container("map [5:42, 7:28, 9:44]:", mp);
-		mp.erase(7+offset);
-		display_container("map [5:42, 9:44]:", mp);
-		mp.erase(5+offset);
-		display_container("map [9:44]:", mp);
-		mp.erase(9+offset);
-		display_container("map []:", mp);
-
-		mp.key_comp();
-		mp.value_comp();
+			mp.key_comp();
+			mp.value_comp();
+		}
 	}
 
 	std::cout << "\n---basic (bigger map)\n\n";

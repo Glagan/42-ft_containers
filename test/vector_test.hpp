@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 18:40:22 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 18:04:24 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,35 +17,46 @@ template<typename test_type>
 void test_Vector(void)
 {
 	std::cout << "\n---basic\n\n";
-
-	ft::Vector<test_type> empty_vector;
-	if (empty_vector.begin() == empty_vector.end())
-		std::cout << "[begin] == [end] on empty vector" << '\n';
-	else
-		std::cout << "!!! [begin] != [end] on empty vector !!!" << '\n';
-	std::cout << "capacity? " << empty_vector.capacity() << '\n';
-	std::cout << "max_size " << empty_vector.max_size() << '\n';
-	std::cout << "empty? " << empty_vector.empty() << '\n';
-	std::cout << "empty vector size = " << empty_vector.size() << '\n';
-
-	ft::Vector<test_type> vec;
-	vec.push_back(5);
-	vec.push_back(42);
-
-	std::cout << "vector [5, 42].size() = " << vec.size() << '\n';
-	std::cout << "[5, 42].front() = " << vec.front() << " (it:" << *vec.begin() << ")" << '\n';
-	std::cout << "[5, 42].back()  = " << vec.back() << " (it:" << *--vec.end() << ")" << '\n';
-
-	for (size_t i = 0; i < 2; i++)
-		std::cout << "vector[" << i << "] = " << vec[i] << " == vector.at(" << i << ") = " << vec.at(i) << '\n';
-	display_container("vector [5, 42] with iterators:", vec);
-
-	std::cout << "reverse:\n";
 	{
+		ft::Vector<test_type> empty_vector;
+		{
+			assert(empty_vector.begin() == empty_vector.end());
+			assert(empty_vector.capacity() == 0);
+			assert(empty_vector.empty());
+			assert(empty_vector.size() == 0);
+
+			std::cout << "[begin] == [end] on empty vector" << '\n';
+			std::cout << "capacity? " << empty_vector.capacity() << '\n';
+			std::cout << "max_size " << empty_vector.max_size() << '\n';
+			std::cout << "empty? " << empty_vector.empty() << '\n';
+			std::cout << "empty vector size = " << empty_vector.size() << '\n';
+		}
+
+		ft::Vector<test_type> vec;
+		vec.push_back(5);
+		vec.push_back(42);
+		{
+			assert(vec.size() == 2);
+			assert(vec.front() == 5);
+			assert(*vec.begin() == 5);
+			assert(vec.back() == 42);
+			assert(*--vec.end() == 42);
+
+			std::cout << "vector [5, 42].size() = " << vec.size() << '\n';
+			std::cout << "[5, 42].front() = " << vec.front() << " (it:" << *vec.begin() << ")" << '\n';
+			std::cout << "[5, 42].back()  = " << vec.back() << " (it:" << *--vec.end() << ")" << '\n';
+
+			for (size_t i = 0; i < 2; i++) {
+				assert(vec[i] == vec.at(i));
+				std::cout << "vector[" << i << "] = " << vec[i] << " == vector.at(" << i << ") = " << vec.at(i) << '\n';
+			}
+			display_container("vector [5, 42] with iterators:", vec);
+		}
+
+		std::cout << "reverse:\n";
 		typename ft::Vector<test_type>::reverse_iterator it = vec.rbegin();
 		typename ft::Vector<test_type>::reverse_iterator ite = vec.rend();
-		while (it != ite)
-		{
+		while (it != ite) {
 			std::cout << *it++;
 			if (it == ite)
 				std::cout << '\n';

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 15:54:57 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 18:40:17 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:46:19 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ void test_Stack(void)
 	std::cout << "\n---basic\n\n";
 
 	ft::Stack<test_type> empty_stack;
-	std::cout << "empty? " << empty_stack.empty() << '\n';
-	std::cout << "empty stack size = " << empty_stack.size() << '\n';
+	{
+		assert(empty_stack.empty());
+		assert(empty_stack.size() == 0);
+
+		std::cout << "empty? " << empty_stack.empty() << '\n';
+		std::cout << "empty stack size = " << empty_stack.size() << '\n';
+	}
 
 	ft::Stack<test_type> stk;
 	std::cout << "[] (size: " << stk.size() << ")\n";

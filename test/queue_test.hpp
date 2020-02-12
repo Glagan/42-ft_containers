@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 16:45:43 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/12 18:39:15 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:46:14 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ void test_Queue(void)
 	std::cout << "\n---basic\n\n";
 
 	ft::Queue<test_type> empty_queue;
-	std::cout << "empty? " << empty_queue.empty() << '\n';
-	std::cout << "empty queue size = " << empty_queue.size() << '\n';
+	{
+		assert(empty_queue.empty());
+		assert(empty_queue.size() == 0);
+
+		std::cout << "empty? " << empty_queue.empty() << '\n';
+		std::cout << "empty queue size = " << empty_queue.size() << '\n';
+	}
 
 	ft::Queue<test_type> que;
 	std::cout << "[] (size: " << que.size() << ")\n";

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/02 00:09:38 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:07:58 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "include/Stack.hpp"
 # include "include/Queue.hpp"
 # include "include/Map.hpp"
-# include "include/Deque.hpp"
+// # include "include/Deque.hpp"
 # include "include/Set.hpp"
 # include "include/Multiset.hpp"
 # include "include/Multimap.hpp"

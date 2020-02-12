@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:53 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/31 02:48:13 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/02/24 17:21:47 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <cstddef>
 # include <cmath>
-# include "include/Node.hpp"
-# include "include/Iterator.hpp"
-# include "include/Algorithm.hpp"
+# include "Node.hpp"
+# include "Iterator.hpp"
+# include "Algorithm.hpp"
 
 namespace ft
 {
