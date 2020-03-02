@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:03 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 18:10:45 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:58:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,10 @@ public:
 		return (*this);
 	}
 
-	// TODO: Check return type
-	typename std::pair<iterator, bool> insert(const_reference val) {
+	iterator insert(const_reference val) {
 		node_pointer inserted = this->tree.insert(val);
 		++this->size_;
-		return (std::make_pair(iterator(inserted), true));
+		return (iterator(inserted));
 	}
 	iterator insert(iterator position, const_reference val) {
 		++this->size_;

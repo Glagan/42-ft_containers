@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 16:18:32 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:53:20 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,15 @@ int main(void)
 #endif
 	end_test("Map");
 
-// 	test("Deque");
-// 	test_Deque<int>();
-// #ifdef FULL
-// 	test_Deque<Number>();
-// #endif
-// 	end_test("Deque");
+	test("Multimap");
+	test_Multimap<int, int>();
+#ifdef FULL
+	test_Multimap<char, int>(48);
+	test_Multimap<char, Number>(48);
+	test_Multimap<Number, int>();
+	test_Multimap<Number, Number>();
+#endif
+	end_test("Multimap");
 
 	test("Set");
 	test_Set<int>();
@@ -69,15 +72,12 @@ int main(void)
 #endif
 	end_test("Multiset");
 
-	test("Multimap");
-	test_Multimap<int, int>();
-#ifdef FULL
-	test_Multimap<char, int>(48);
-	test_Multimap<char, Number>(48);
-	test_Multimap<Number, int>();
-	test_Multimap<Number, Number>();
-#endif
-	end_test("Multimap");
+// 	test("Deque");
+// 	test_Deque<int>();
+// #ifdef FULL
+// 	test_Deque<Number>();
+// #endif
+// 	end_test("Deque");
 
 	// Check Number count
 	std::cout << "Total Number created: " << Number::getCreated() << '\n'

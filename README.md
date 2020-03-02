@@ -7,8 +7,6 @@
     * Add **tests**
 * ``MultiSet``
     * Add **tests**
-* ``MultiMap``
-    * Add **tests**
 * Fix ``max_size``
 
 ## Ressources
