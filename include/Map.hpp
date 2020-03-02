@@ -6,113 +6,72 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 18:15:22 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 18:10:00 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 # define MAP_HPP
 
-# include <limits>
-# include <utility>
-# include "Algorithm.hpp"
-# include "Tree.hpp"
+# include "MapBase.hpp"
 
 namespace ft
 {
 template<typename K, typename T, typename Compare = ft::less<K> >
-class Map
+class MapKeyCompare:
+	std::binary_function<std::pair<K, T>, std::pair<K, T>, bool>
 {
 public:
-	typedef ptrdiff_t difference_type;
-	typedef size_t size_type;
-	typedef K const key_type;
-	typedef T mapped_type;
-	typedef typename std::pair<key_type, mapped_type> value_type;
-	typedef value_type* pointer;
-	typedef value_type const * const_pointer;
-	typedef value_type& reference;
-	typedef value_type const & const_reference;
-	typedef Compare key_compare;
-	class value_compare:
-		std::binary_function<value_type, value_type, bool>
-	{
-	friend class Map<K, T, Compare>;
-	private:
-		Compare comp;
-	public:
-		value_compare(Compare const &comp=Compare()): comp(comp) {}
-		virtual ~value_compare() {}
-
-		bool operator()(const_reference a, const_reference b) const {
-			return (comp(a.first, b.first));
-		}
-		bool operator()(const_reference a, const K& b) const {
-			return (comp(a.first, b));
-		}
-		bool operator()(const K& a, const_reference b) const {
-			return (comp(a, b.first));
-		}
-	};
-	typedef Tree<value_type, value_compare> tree_type;
-	typedef typename tree_type::Node node_type;
-	typedef node_type* node_pointer;
-	typedef TreeIterator<value_type, node_type> iterator;
-	typedef TreeIterator<value_type const, node_type const> const_iterator;
-	typedef ReverseIterator<iterator> reverse_iterator;
-	typedef ReverseIterator<const_iterator> const_reverse_iterator;
+	typedef typename std::pair<K, T> value_type;
 private:
-	tree_type tree;
-	size_type size_;
+	Compare comp;
 public:
-	Map(): tree(), size_(0) {}
-	Map(iterator first, iterator last):
-		tree(), size_(0) {
-		this->insert(first, last);
+	MapKeyCompare(Compare const &comp=Compare()): comp(comp) {}
+	virtual ~MapKeyCompare() {}
+
+	bool operator()(const value_type& a, const value_type& b) const {
+		return (comp(a.first, b.first));
 	}
-	Map(Map const &other): tree(other.tree), size_(other.size_) {}
+	bool operator()(const value_type& a, const K& b) const {
+		return (comp(a.first, b));
+	}
+	bool operator()(const K& a, const value_type& b) const {
+		return (comp(a, b.first));
+	}
+};
+template<typename K, typename T, typename Compare = MapKeyCompare<K, T> >
+class Map:
+	public MapBase<K, std::pair<K, T>, Compare>
+{
+public:
+	typedef MapBase<K, std::pair<K, T>, Compare> base;
+	using typename base::difference_type;
+	using typename base::size_type;
+	using typename base::key_type;
+	using typename base::value_type;
+	typedef T mapped_type;
+	using typename base::pointer;
+	using typename base::const_pointer;
+	using typename base::reference;
+	using typename base::const_reference;
+	using typename base::key_compare;
+	using typename base::value_compare;
+	using typename base::tree_type;
+	using typename base::node_type;
+	using typename base::node_pointer;
+	using typename base::iterator;
+	using typename base::const_iterator;
+	using typename base::reverse_iterator;
+	using typename base::const_reverse_iterator;
+public:
+	Map(): base() {}
+	Map(iterator first, iterator last): base(first, last) {}
+	Map(Map const &other): base(other) {}
 	virtual ~Map() {}
 
 	Map &operator=(Map const &other) {
-		this->clear();
-		this->tree = other.tree;
-		this->size_ = other.size_;
+		this->base::operator=(other);
 		return (*this);
-	}
-
-	iterator begin(void) {
-		return (iterator(this->tree.begin()));
-	}
-	const_iterator begin(void) const {
-		return (const_iterator(this->tree.begin()));
-	}
-	reverse_iterator rbegin(void) {
-		return (reverse_iterator(this->end()));
-	}
-	const_reverse_iterator rbegin(void) const {
-		return (const_reverse_iterator(this->end()));
-	}
-	iterator end(void) {
-		return (iterator(this->tree.end()));
-	}
-	const_iterator end(void) const {
-		return (const_iterator(this->tree.end()));
-	}
-	reverse_iterator rend(void) {
-		return (reverse_iterator(this->begin()));
-	}
-	const_reverse_iterator rend(void) const {
-		return (const_reverse_iterator(this->begin()));
-	}
-
-	bool empty(void) const {
-		return (this->size_ == 0);
-	}
-	size_type size(void) const {
-		return (this->size_);
-	}
-	size_type max_size(void) const {
-		return (std::numeric_limits<mapped_type>::max() - 1);
 	}
 
 	mapped_type &operator[](key_type const &k) {
@@ -144,130 +103,82 @@ public:
 			this->insert(*first++);
 	}
 
-	void erase(iterator position) {
-		this->tree.erase(position.as_node());
-		--this->size_;
-	}
-	size_type erase(key_type const &key) {
-		size_type count = this->tree.erase(key);
-		this->size_ -= count;
-		return (count);
-	}
-	void erase(iterator first, iterator last) {
-		if (first == this->begin() && last == this->end())
-			this->clear();
-		else {
-			iterator next;
-			while (first != last) {
-				first = this->tree.erase(first.as_node());
-				--this->size_;
-			}
-		}
-	}
-
-	void swap(Map &other) {
-		this->tree.swap(other.tree);
-		size_type tmp = this->size_;
-		this->size_ = other.size_;
-		other.size_ = tmp;
-	}
-
-	void clear(void) {
-		if (this->size_ > 0)
-			this->tree.make_empty();
-		this->size_ = 0;
-	}
-
-	// TODO:
-	value_compare key_comp(void) const {
-		return (this->tree.key_compare());
-	}
-	// TODO:
 	value_compare value_comp(void) const {
-		return (this->tree.key_compare());
-	}
-
-	iterator find(key_type const &key) {
-		node_pointer node = this->tree.find(key);
-		if (node)
-			return (iterator(node));
-		return (this->end());
-	}
-	const_iterator find(key_type const &key) const {
-		node_pointer node = this->tree.find(key);
-		if (node)
-			return (const_iterator(node));
-		return (this->end());
-	}
-
-	size_type count(key_type const &k) const {
-		const_iterator it = this->begin();
-		const_iterator ite = this->end();
-		size_type total = 0;
-
-		while (it != ite) {
-			if (!this->key_comp()(*it, k) && !this->key_comp()(k, *it))
-				++total;
-			++it;
-		}
-		return (total);
-	}
-
-	iterator lower_bound(key_type const &key) {
-		iterator it = this->begin();
-		iterator ite = this->end();
-
-		while (it != ite) {
-			if (!this->key_comp()(*it, key))
-				return (iterator(it));
-			++it;
-		}
-		return (this->end());
-	}
-	const_iterator lower_bound(key_type const &key) const {
-		const_iterator it = this->begin();
-		const_iterator ite = this->end();
-
-		while (it != ite) {
-			if (!this->key_comp()(*it, key))
-				return (const_iterator(it));
-			++it;
-		}
-		return (this->end());
-	}
-	iterator upper_bound(key_type const &key) {
-		iterator it = this->begin();
-		iterator ite = this->end();
-
-		while (it != ite) {
-			if (this->key_comp()(key, *it))
-				return (iterator(it));
-			++it;
-		}
-		return (this->end());
-	}
-	const_iterator upper_bound(key_type const &key) const {
-		const_iterator it = this->begin();
-		const_iterator ite = this->end();
-
-		while (it != ite) {
-			if (this->key_comp()(key, *it))
-				return (const_iterator(it));
-			++it;
-		}
-		return (this->end());
-	}
-
-	typename std::pair<iterator, iterator> equal_range(key_type const &key) {
-		return (std::pair<iterator, iterator>(this->lower_bound(key), this->upper_bound(key)));
-	}
-	typename std::pair<const_iterator, const_iterator> equal_range(key_type const &key) const {
-		return (std::pair<const_iterator, const_iterator>(this->lower_bound(key), this->upper_bound(key)));
+		return (value_compare()); // TODO
 	}
 };
 
 template<typename K, typename T, typename Compare>
 void swap(Map<K, T, Compare> &x, Map<K, T, Compare> &y) {
+	x.swap(y);
+}
+
+template<typename K, typename T, typename Compare = MapKeyCompare<K, T> >
+class Multimap:
+	public MapBase<K, std::pair<K, T>, Compare>
+{
+public:
+	typedef MapBase<K, std::pair<K, T>, Compare> base;
+	using typename base::difference_type;
+	using typename base::size_type;
+	using typename base::key_type;
+	using typename base::value_type;
+	typedef T mapped_type;
+	using typename base::pointer;
+	using typename base::const_pointer;
+	using typename base::reference;
+	using typename base::const_reference;
+	using typename base::key_compare;
+	using typename base::value_compare;
+	using typename base::tree_type;
+	using typename base::node_type;
+	using typename base::node_pointer;
+	using typename base::iterator;
+	using typename base::const_iterator;
+	using typename base::reverse_iterator;
+	using typename base::const_reverse_iterator;
+public:
+	Multimap(): base() {}
+	Multimap(iterator first, iterator last): base(first, last) {}
+	Multimap(Multimap const &other): base(other) {}
+	virtual ~Multimap() {}
+
+	Multimap &operator=(Multimap const &other) {
+		this->base::operator=(other);
+		return (*this);
+	}
+
+	mapped_type &operator[](key_type const &k) {
+		node_pointer found = this->tree.find(k);
+		if (found)
+			return (found->value.second);
+		++this->size_;
+		return (this->tree.insert(std::make_pair(k, mapped_type()))->value.second);
+	}
+
+	// TODO: Check return type
+	typename std::pair<iterator, bool> insert(const_reference val) {
+		node_pointer inserted = this->tree.insert(val);
+		++this->size_;
+		return (std::make_pair(iterator(inserted), true));
+	}
+	iterator insert(iterator position, const_reference val) {
+		++this->size_;
+		return (iterator(this->tree.insert(position.as_node(), val)));
+	}
+	template<class InputIterator>
+	void insert(InputIterator first, InputIterator last) {
+		while (first != last)
+			this->insert(*first++);
+	}
+
+	value_compare value_comp(void) const {
+		return (value_compare()); // TODO
+	}
+};
+
+template<typename K, typename T, typename Compare>
+void swap(Multimap<K, T, Compare> &x, Multimap<K, T, Compare> &y) {
 	x.swap(y);
 }
 }

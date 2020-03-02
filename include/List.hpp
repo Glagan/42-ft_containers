@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 18:19:21 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:47:39 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ public:
 		return (this->size_);
 	}
 	size_type max_size(void) const {
-		return (std::numeric_limits<value_type>::max() - 1);
+		return (std::numeric_limits<value_type>::max() - 1); // TODO
 	}
 
 	reference front() {

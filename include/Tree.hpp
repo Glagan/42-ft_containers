@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/14 23:10:11 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 18:26:24 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:38:39 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -416,8 +416,7 @@ public:
 
 		if (this->end_->parent)
 			this->end_->parent->right = nullptr;
-		while ((node = this->find(key)))
-		{
+		while ((node = this->find(key))) {
 			this->erase_node(node);
 			total++;
 		}

@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:46 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/27 18:21:24 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:47:51 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,13 @@ protected:
 		this->last = this->first + chunk_size;
 	}
 public:
-
-	// TODO: Constructors
+	DequeIterator():
+		current(nullptr), first(nullptr), last(nullptr), node(nullptr) {}
+	DequeIterator(DequeIterator const &other):
+		current(other.current), first(other.first), last(other.last), node(other.node) {}
+	DequeIterator(pointer current, chunk node):
+		current(current), first(*other.node), last(*other.node + chunk_size), node(node) {}
+	virtual ~DequeIterator() {}
 
 	reference operator*() {
 		return (*this->current);
@@ -172,7 +177,6 @@ private:
 				// (pointer)::operator new (sizeof(value_type) * 10); // Create Single Chunk
 			}
 			this->m_capacity = chunk_count * 10;
-			this->m_size = 0;
 			this->m_first = this->m_container[chunk_count / 2];
 			this->m_last = this->m_first;
 		} else if (this->m_capacity < elements) {
@@ -224,10 +228,12 @@ public:
 		::operator delete(this->m_container);
 	}
 
-	Deque &operator=(Deque const &other); // TODO
+	Deque &operator=(Deque const &other) {
+		this->assign(other.m_first, other.m_last);
+	}
 
 	iterator begin(void) {
-		return (iterator(this->m_first));
+		return (iterator(this->m_first, ));
 	}
 	const_iterator begin(void) const {
 		return (const_iterator(this->m_first));
@@ -258,7 +264,7 @@ public:
 		return (this->m_size);
 	}
 	size_type max_size(void) const {
-		return (std::numeric_limits<value_type>::max() - 1);
+		return (std::numeric_limits<value_type>::max() - 1); // TODO
 	}
     void resize(size_type n, value_type val=value_type()); // TODO
 

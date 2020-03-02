@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 17:07:53 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:18:32 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int main(void)
 #endif
 	end_test("Map");
 
-	test("Deque");
-	test_Deque<int>();
-#ifdef FULL
-	test_Deque<Number>();
-#endif
-	end_test("Deque");
+// 	test("Deque");
+// 	test_Deque<int>();
+// #ifdef FULL
+// 	test_Deque<Number>();
+// #endif
+// 	end_test("Deque");
 
 	test("Set");
 	test_Set<int>();
@@ -61,6 +61,23 @@ int main(void)
 	test_Set<Number>();
 #endif
 	end_test("Set");
+
+	test("Multiset");
+	test_Multiset<int>();
+#ifdef FULL
+	test_Multiset<Number>();
+#endif
+	end_test("Multiset");
+
+	test("Multimap");
+	test_Multimap<int, int>();
+#ifdef FULL
+	test_Multimap<char, int>(48);
+	test_Multimap<char, Number>(48);
+	test_Multimap<Number, int>();
+	test_Multimap<Number, Number>();
+#endif
+	end_test("Multimap");
 
 	// Check Number count
 	std::cout << "Total Number created: " << Number::getCreated() << '\n'

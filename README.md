@@ -4,11 +4,11 @@
 
 * ``Deque``
 * ``Set``
-    * With a ``Tree``, like ``Map``
+    * Add **tests**
 * ``MultiSet``
-    * With a ``Tree``, like ``Map``
+    * Add **tests**
 * ``MultiMap``
-    * With a ``Tree``, like ``Map``
+    * Add **tests**
 * Fix ``max_size``
 
 ## Ressources
