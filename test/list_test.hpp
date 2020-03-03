@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 18:03:39 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:53:51 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ bool sort_desc(T const &nbr1, T const &nbr2)
 bool same_integral_part(double first, double second)
 {
 	return (int(first) == int(second));
+}
+
+bool equal_plus_one(int first, int second) {
+	return (second == (first + 1));
 }
 
 template<typename test_type>
@@ -379,6 +383,23 @@ void test_List(void)
 			lst.unique(&same_integral_part);
 			display_container("[2.72, 3.14, 12.15, 15.3, 72.25, 73.0] {same_integral_part}:", lst);
 		}
+	}
+
+	std::cout << "\n---unique (binary pred again)\n\n";
+	{
+		ft::List<test_type> lst;
+		lst.push_back(1);
+		lst.push_back(2);
+		lst.push_back(1);
+		lst.push_back(2);
+		lst.push_back(3);
+		lst.push_back(2);
+		lst.push_back(6);
+
+		display_container("[1, 2, 1, 2, 3, 2, 6]:", lst);
+
+		lst.unique(equal_plus_one);
+		display_container("[1, 1, 3, 2, 6] {equal_plus_one}:", lst);
 	}
 
 	std::cout << "\n---merge\n\n";

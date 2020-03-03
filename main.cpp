@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:31 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 18:53:20 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:52:26 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int main(void)
 #ifdef FULL
 	test_Stack<Number>();
 #endif
+
 	end_test("Stack");
 	test("Queue");
 	test_Queue<int>();

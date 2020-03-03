@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 17:47:39 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/03 16:53:40 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,12 +413,13 @@ public:
 		iterator next = previous;
 		iterator last = this->end();
 
-		++next;
 		while (next != last) {
-			if ((*binary_pred)(*next, *previous++))
-				next = this->erase(next);
-			else
-				++next;
+			++next;
+			if ((*binary_pred)(*previous, *next)) {
+				this->erase(next);
+				next = previous;
+			} else
+				previous = next;
 		}
 	}
 
