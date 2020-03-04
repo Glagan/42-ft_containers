@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:27:56 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 18:17:03 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/04 19:11:58 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@
 # include "include/Map.hpp"
 # include "include/Set.hpp"
 // # include "include/Deque.hpp"
+
+# include <vector>
+# include <list>
+# include <stack>
+# include <queue>
+# include <map>
+# include <set>
+# include <deque>
 
 void test(std::string const &what)
 {
@@ -57,6 +65,44 @@ void display_container(std::string const &header, Container const &ctn)
 }
 
 template<typename key_type, typename value_type>
+void display_container(std::string const &header, std::map<key_type, value_type> const &ctn)
+{
+	typename std::map<key_type, value_type>::const_iterator it = ctn.begin();
+	typename std::map<key_type, value_type>::const_iterator ite = ctn.end();
+	std::cout << header;
+	if (it == ite)
+		std::cout << " empty !";
+	std::cout << '\n';
+	while (it != ite)
+	{
+		std::cout << (*it).first << " => " << (*it).second;
+		if (++it == ite)
+			std::cout << '\n';
+		else
+			std::cout <<  ", ";
+	}
+}
+
+template<typename key_type, typename value_type>
+void display_container(std::string const &header, std::multimap<key_type, value_type> const &ctn)
+{
+	typename std::multimap<key_type, value_type>::const_iterator it = ctn.begin();
+	typename std::multimap<key_type, value_type>::const_iterator ite = ctn.end();
+	std::cout << header;
+	if (it == ite)
+		std::cout << " empty !";
+	std::cout << '\n';
+	while (it != ite)
+	{
+		std::cout << (*it).first << " => " << (*it).second;
+		if (++it == ite)
+			std::cout << '\n';
+		else
+			std::cout <<  ", ";
+	}
+}
+
+template<typename key_type, typename value_type>
 void display_container(std::string const &header, ft::Map<key_type, value_type> const &ctn)
 {
 	typename ft::Map<key_type, value_type>::const_iterator it = ctn.begin();
@@ -75,8 +121,6 @@ void display_container(std::string const &header, ft::Map<key_type, value_type> 
 	}
 }
 
-// TODO: AVOID DOING THIS
-
 template<typename key_type, typename value_type>
 void display_container(std::string const &header, ft::Multimap<key_type, value_type> const &ctn)
 {
@@ -89,44 +133,6 @@ void display_container(std::string const &header, ft::Multimap<key_type, value_t
 	while (it != ite)
 	{
 		std::cout << (*it).first << " => " << (*it).second;
-		if (++it == ite)
-			std::cout << '\n';
-		else
-			std::cout <<  ", ";
-	}
-}
-
-template<typename key_type>
-void display_container(std::string const &header, ft::Set<key_type> const &ctn)
-{
-	typename ft::Set<key_type>::const_iterator it = ctn.begin();
-	typename ft::Set<key_type>::const_iterator ite = ctn.end();
-	std::cout << header;
-	if (it == ite)
-		std::cout << " empty !";
-	std::cout << '\n';
-	while (it != ite)
-	{
-		std::cout << (*it);
-		if (++it == ite)
-			std::cout << '\n';
-		else
-			std::cout <<  ", ";
-	}
-}
-
-template<typename key_type>
-void display_container(std::string const &header, ft::Multiset<key_type> const &ctn)
-{
-	typename ft::Multiset<key_type>::const_iterator it = ctn.begin();
-	typename ft::Multiset<key_type>::const_iterator ite = ctn.end();
-	std::cout << header;
-	if (it == ite)
-		std::cout << " empty !";
-	std::cout << '\n';
-	while (it != ite)
-	{
-		std::cout << (*it);
 		if (++it == ite)
 			std::cout << '\n';
 		else

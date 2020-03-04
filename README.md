@@ -3,11 +3,10 @@
 ## TODO
 
 * ``Deque``
-* ``Set``
-    * Add **tests**
-* ``MultiSet``
-    * Add **tests**
 * Fix ``max_size``
+* ``List``:
+	* Fix ``merge``
+	* Fix ``reverse``
 
 ## Ressources
 

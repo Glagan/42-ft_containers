@@ -6,7 +6,7 @@
 #    By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/02 15:57:50 by ncolomer          #+#    #+#              #
-#    Updated: 2020/03/03 16:52:38 by ncolomer         ###   ########.fr        #
+#    Updated: 2020/03/04 20:14:38 by ncolomer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,15 @@ fclean:			clean
 re:				fclean $(NAME)
 
 test:			fclean $(NAME)
-				./ft_containers
+				@rm -f std_out ft_out
+				@echo "Running tests..."
+				@./ft_containers
+				@diff -y --suppress-common-lines --text std_out ft_out
 
 test_full:		fclean $(NAME)
-				./ft_containers
+				@rm -f std_out ft_out
+				@echo "Running tests..."
+				@./ft_containers
+				@diff -y --suppress-common-lines --text std_out ft_out
 
 .PHONY:			test all clean fclean re

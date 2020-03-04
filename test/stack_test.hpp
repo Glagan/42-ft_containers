@@ -6,88 +6,113 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 15:54:57 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 17:46:19 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/04 19:04:50 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_TEST_HPP
 # define STACK_TEST_HPP
 
-template<typename test_type>
+template<class StackType, class ListType>
 void test_Stack(void)
 {
 	std::cout << "\n---basic\n\n";
 
-	ft::Stack<test_type> empty_stack;
+	StackType empty_stack;
 	{
-		assert(empty_stack.empty());
-		assert(empty_stack.size() == 0);
-
 		std::cout << "empty? " << empty_stack.empty() << '\n';
 		std::cout << "empty stack size = " << empty_stack.size() << '\n';
+			assert(empty_stack.empty());
+			assert(empty_stack.size() == 0);
 	}
 
-	ft::Stack<test_type> stk;
+	StackType stk;
 	std::cout << "[] (size: " << stk.size() << ")\n";
+		assert(stk.size() == 0);
 	stk.push(5);
 	std::cout << "[5].top() = " << stk.top() << " (size: " << stk.size() << ", empty? " << stk.empty() << ")\n";
+		assert(stk.top() == 5);
+		assert(stk.size() == 1);
 	stk.push(42);
 	std::cout << "[5, 42].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+		assert(stk.top() == 42);
 
 	std::cout << "stack [5, 42].size() = " << stk.size() << '\n';
+		assert(stk.size() == 2);
 
 	stk.top() = 99;
 	std::cout << "[5, 99].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+		assert(stk.top() == 99);
+		assert(stk.size() == 2);
 	stk.pop();
 	std::cout << "[5].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+		assert(stk.top() == 5);
+		assert(stk.size() == 1);
 	stk.pop();
 	std::cout << "[] (size: " << stk.size() << ")\n";
+		assert(stk.size() == 0);
 
 	std::cout << "\n---with container\n\n";
 	{
-		ft::List<test_type> lst;
+		ListType lst;
 		lst.push_back(5);
 		lst.push_back(42);
 		lst.push_back(43);
 		lst.push_back(99);
-		display_container("[5, 42, 43, 99] {ft::List}:", lst);
+		display_container("[5, 42, 43, 99] {List}:", lst);
+			assert(lst.size() == 4);
 
-		ft::Stack<test_type> stk(lst);
+		StackType stk(lst);
 		std::cout << "stack empty? " << stk.empty() << '\n';
 		std::cout << "stack size = " << stk.size() << '\n';
+			assert(!stk.empty());
+			assert(stk.size() == 4);
 
 		std::cout << "[5, 42, 43, 99].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+			assert(stk.top() == 99);
+			assert(stk.size() == 4);
 		stk.pop();
 		std::cout << "[5, 42, 43].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+			assert(stk.top() == 43);
+			assert(stk.size() == 3);
 		stk.pop();
 		std::cout << "[5, 42].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+			assert(stk.top() == 42);
+			assert(stk.size() == 2);
 		stk.pop();
 		std::cout << "[5].top() = " << stk.top() << " (size: " << stk.size() << ")\n";
+			assert(stk.top() == 5);
+			assert(stk.size() == 1);
 		stk.pop();
 		std::cout << "[] (size: " << stk.size() << ")\n";
+			assert(stk.size() == 0);
 
 		display_container("[5, 42, 43, 99] {ft::List after, no change}:", lst);
 	}
 
 	std::cout << "\n---comparison\n\n";
 	{
-		ft::Stack<test_type> stk;
+		StackType stk;
 		stk.push(5);
 		stk.push(42);
+		assert(stk.size() == 2);
 
-		ft::Stack<test_type> stk2;
+		StackType stk2;
 		stk2.push(5);
 		stk2.push(42);
+		assert(stk2.size() == 2);
 
-		ft::Stack<test_type> stk3;
+		StackType stk3;
 		stk3.push(5);
 		stk3.push(42);
 		stk3.push(43);
+		assert(stk3.size() == 3);
 
-		ft::Stack<test_type> stk4;
+		StackType stk4;
 		stk4.push(99);
 		stk4.push(5);
 		stk4.push(42);
+		assert(stk4.size() == 3);
 
 		std::cout << "same stack:\n"
 			<< "comparison == " << (stk == stk2) << '\n'
@@ -96,6 +121,12 @@ void test_Stack(void)
 			<< "comparison >  " << (stk > stk2) << '\n'
 			<< "comparison <= " << (stk <= stk2) << '\n'
 			<< "comparison >= " << (stk >= stk2) << '\n';
+		assert(stk == stk2);
+		assert(!(stk != stk2));
+		assert(!(stk < stk2));
+		assert(!(stk > stk2));
+		assert(stk <= stk2);
+		assert(stk >= stk2);
 
 		std::cout << "lesser stack:\n"
 			<< "comparison == " << (stk == stk3) << '\n'
@@ -104,6 +135,12 @@ void test_Stack(void)
 			<< "comparison >  " << (stk > stk3) << '\n'
 			<< "comparison <= " << (stk <= stk3) << '\n'
 			<< "comparison >= " << (stk >= stk3) << '\n';
+		assert(!(stk == stk3));
+		assert(stk != stk3);
+		assert(stk < stk3);
+		assert(!(stk > stk3));
+		assert(stk <= stk3);
+		assert(!(stk >= stk3));
 
 		std::cout << "upper stack:\n"
 			<< "comparison == " << (stk4 == stk) << '\n'
@@ -112,6 +149,12 @@ void test_Stack(void)
 			<< "comparison >  " << (stk4 > stk) << '\n'
 			<< "comparison <= " << (stk4 <= stk) << '\n'
 			<< "comparison >= " << (stk4 >= stk) << '\n';
+		assert(!(stk4 == stk));
+		assert(stk4 != stk);
+		assert(!(stk4 < stk));
+		assert(stk4 > stk);
+		assert(!(stk4 <= stk));
+		assert(stk4 >= stk);
 	}
 
 	std::cout << '\n';

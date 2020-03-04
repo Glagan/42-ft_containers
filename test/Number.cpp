@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/28 15:14:47 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/01/11 19:00:01 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/04 20:02:28 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,46 @@ Number &Number::operator=(Number const &other)
 Number &Number::operator=(int value)
 {
 	this->n = value;
+	return (*this);
+}
+
+Number Number::operator+(int a) {
+	Number tmp(*this);
+	return (tmp += a);
+}
+
+Number &Number::operator+=(int a) {
+	this->n += a;
+	return (*this);
+}
+
+Number Number::operator-(int a) {
+	Number tmp(*this);
+	return (tmp -= a);
+}
+
+Number &Number::operator-=(int a) {
+	this->n -= a;
+	return (*this);
+}
+
+Number Number::operator+(Number const &other) {
+	Number tmp(*this);
+	return (tmp += other);
+}
+
+Number &Number::operator+=(Number const &other) {
+	this->n += other.n;
+	return (*this);
+}
+
+Number Number::operator-(Number const &other) {
+	Number tmp(*this);
+	return (tmp -= other);
+}
+
+Number &Number::operator-=(Number const &other) {
+	this->n -= other.n;
 	return (*this);
 }
 

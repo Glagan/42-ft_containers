@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:51 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 18:59:33 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/04 19:24:44 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,6 @@ public:
 	Multimap &operator=(Multimap const &other) {
 		this->base::operator=(other);
 		return (*this);
-	}
-
-	mapped_type &operator[](key_type const &k) {
-		node_pointer found = this->tree.find(k);
-		if (found)
-			return (found->value.second);
-		++this->size_;
-		return (this->tree.insert(std::make_pair(k, mapped_type()))->value.second);
 	}
 
 	iterator insert(const_reference val) {
