@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 20:11:27 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:43:18 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void test_Map(int offset=0)
 		{
 			std::cout << "[begin] == [end] on empty map" << '\n';
 				assert(empty_map.begin() == empty_map.end());
-			std::cout << "max_size = " << empty_map.max_size() << '\n';
+			// std::cout << "max_size (map) = " << empty_map.max_size() << '\n';
 			std::cout << "size: " << empty_map.size() << " (0), empty? " << empty_map.empty() << '\n';
 				assert(empty_map.empty());
 				assert(empty_map.size() == 0);

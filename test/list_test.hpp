@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 19:57:50 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:43:21 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void test_List(void)
 		{
 			std::cout << "[begin] == [end] on empty list" << '\n';
 				assert(empty_list.begin() == empty_list.end());
-			std::cout << "max_size = " << empty_list.max_size() << '\n';
+			// std::cout << "max_size (list) = " << empty_list.max_size() << '\n';
 			std::cout << "empty? " << empty_list.empty() << '\n';
 				assert(empty_list.empty());
 			std::cout << "empty list size = " << empty_list.size() << '\n';

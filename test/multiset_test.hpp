@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 02:35:10 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 19:29:38 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:43:11 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void test_Multiset(void)
 
 			std::cout << "[begin] == [end] on empty set" << '\n';
                 assert(empty_set.begin() == empty_set.end());
-			std::cout << "max_size = " << empty_set.max_size() << '\n';
+			// std::cout << "max_size (multiset) = " << empty_set.max_size() << '\n';
 			std::cout << "size: " << empty_set.size() << " (0), empty? " << empty_set.empty() << '\n';
                 assert(empty_set.empty());
                 assert(empty_set.size() == 0);

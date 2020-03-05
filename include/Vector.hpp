@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:57:07 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 19:56:04 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:43:57 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,8 @@ template<typename T>
 class Vector
 {
 public:
-	typedef size_t size_type;
+    typedef std::ptrdiff_t difference_type;
+	typedef unsigned long size_type;
 	typedef T value_type;
 	typedef T* pointer;
 	typedef T const * const_pointer;
@@ -203,8 +204,8 @@ public:
 	}
 
 	size_type max_size(void) const {
-		return (123);
-		// return (std::numeric_limits<value_type>::max() - 1); // TODO
+		return (ft::min((size_type) std::numeric_limits<difference_type>::max(),
+						std::numeric_limits<size_type>::max() / sizeof(value_type)));
 	}
 
 	void resize(size_type size, value_type val=value_type()) {

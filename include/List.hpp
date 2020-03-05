@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:49 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 19:56:59 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:44:34 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ public:
 	ListIterator(node_pointer p): p(p) {}
 	ListIterator(ListIterator const &other): p(other.p) {}
 	virtual ~ListIterator() {}
+
+	node_pointer &ptr(void) {
+		return (this->p);
+	}
 
 	node_pointer as_node(void) const {
 		return (this->p);
@@ -123,7 +127,8 @@ template<typename T>
 class List
 {
 public:
-	typedef size_t size_type;
+    typedef std::ptrdiff_t difference_type;
+	typedef unsigned long size_type;
 	typedef T value_type;
 	typedef Node<value_type> node_type;
 	typedef node_type* node_pointer;
@@ -211,8 +216,8 @@ public:
 		return (this->size_);
 	}
 	size_type max_size(void) const {
-		return (123);
-		// return (std::numeric_limits<value_type>::max() - 1); // TODO
+		return (ft::min((size_type) std::numeric_limits<difference_type>::max(),
+						std::numeric_limits<size_type>::max() / sizeof(value_type)));
 	}
 
 	reference front() {
@@ -438,28 +443,25 @@ public:
 			x.clear();
 			return ;
 		}
-		iterator otherFirst = x.begin();
-		iterator next = otherFirst;
-		iterator otherLast = x.end();
+		iterator f1 = this->begin();
+		iterator e1 = this->end();
+		iterator f2 = x.begin();
+		iterator e2 = x.end();
 
-		while (next != otherLast) {
-			iterator first = this->begin();
-			iterator last = this->end();
-
-			otherFirst = next++;
-			while (first != last) {
-				if ((*comp)(*otherFirst, *first))
-					break ;
-				++first;
-			}
-			otherFirst.as_node()->disconnect();
-			first.as_node()->insert_before(otherFirst.as_node());
-			if (first == this->begin())
-				this->begin_ = this->begin_->previous();
-			++this->size_;
+		while (f1 != e1 && f2 != e2) {
+			if ((*comp)(*f2, *f1)) {
+				x.begin_ = f2.as_node()->next();
+				--x.size_;
+				f2.as_node()->disconnect();
+				f1.as_node()->insert_before(f2.as_node());
+				if (f1 == this->begin())
+					this->begin_ = this->begin_->previous();
+				++this->size_;
+				f2 = x.begin();
+			} else
+				++f1;
 		}
-		x.size_ = 0;
-		x.reset_bounds();
+		this->splice(e1, x);
 	}
 
 	void sort(void) {
@@ -495,15 +497,16 @@ public:
 	void reverse(void) {
 		if (this->size_ <= 1)
 			return ;
-		size_t limit = this->size_ / 2;
-		iterator first = this->begin();
-		iterator last = this->end();
+		iterator begin = this->begin();
+		iterator end = --this->end();
 
-		this->begin_ = this->end_->previous();
-		for (size_t i = 0; i < limit; i++) {
-			--last;
-			first++.as_node()->swap(last--.as_node());
+		size_t limit = this->size_ / 2;
+		for (size_t i = 0; i < limit; ++i) {
+			begin++.as_node()->swap(end--.as_node());
 		}
+		while (end.as_node()->previous())
+			--end;
+		this->begin_ = end.ptr();
 	}
 };
 

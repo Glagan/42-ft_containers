@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:26:29 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 19:05:13 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:42:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void test_Vector(void)
 		{
 			std::cout << "[begin] == [end] on empty vector" << '\n';
 			std::cout << "capacity? " << empty_vector.capacity() << '\n';
-			std::cout << "max_size " << empty_vector.max_size() << '\n';
+			// std::cout << "max_size (vector) " << empty_vector.max_size() << '\n';
 			std::cout << "empty? " << empty_vector.empty() << '\n';
 			std::cout << "empty vector size = " << empty_vector.size() << '\n';
 				assert(empty_vector.begin() == empty_vector.end());

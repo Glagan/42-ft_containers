@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 20:04:47 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:43:14 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void test_Multimap(int offset=0)
 		{
 			std::cout << "[begin] == [end] on empty map" << '\n';
 				assert(empty_map.begin() == empty_map.end());
-			std::cout << "max_size = " << empty_map.max_size() << '\n';
+			// std::cout << "max_size (multimap) = " << empty_map.max_size() << '\n';
 			std::cout << "size: " << empty_map.size() << " (0), empty? " << empty_map.empty() << '\n';
 				assert(empty_map.empty());
 				assert(empty_map.size() == 0);
@@ -122,19 +122,20 @@ void test_Multimap(int offset=0)
 		mp.insert(--mp.end(), std::make_pair(k(7), 46));
 		display_container("map [3:45, 4:44, 5:42, 6:43, 7:46, 7:46]:", mp);
 			assert(mp.size() == 6);
+		mp.insert(std::make_pair(k(5), 48));
 		mp.insert(--mp.end(), std::make_pair(k(5), 44));
-		display_container("map [3:45, 4:44, 5:42, 5:44, 6:43, 7:46, 7:46]:", mp);
-			assert(mp.size() == 7);
+		display_container("map [3:45, 4:44, 5:42, 5:44, 5:48, 6:43, 7:46, 7:46]:", mp);
+			assert(mp.size() == 8);
 
 		MapType mp2;
 		mp2.insert(mp.begin(), mp.end());
 		display_container("map2 [3:45, 4:44, 5:42, 5:44, 6:43, 7:46, 7:46]:", mp2);
-			assert(mp2.size() == 7);
+			assert(mp2.size() == 8);
 		mp.erase(mp.begin(), mp.end());
 		display_container("map cleared:", mp);
 			assert(mp.size() == 0);
 		display_container("map2 (map cleared) [3:45, 4:44, 5:42, 5:44, 6:43, 7:46, 7:46]:", mp2);
-			assert(mp2.size() == 7);
+			assert(mp2.size() == 8);
 	}
 
 	std::cout << "\n---erase\n\n";

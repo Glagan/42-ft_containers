@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/02 17:09:11 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 18:14:11 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:42:01 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ template<typename K, typename T, typename Compare = ft::less<K> >
 class MapBase
 {
 public:
-	typedef ptrdiff_t difference_type;
-	typedef size_t size_type;
+	typedef std::ptrdiff_t difference_type;
+	typedef unsigned long size_type;
 	typedef K key_type;
 	typedef T value_type;
 	typedef value_type* pointer;
@@ -91,8 +91,8 @@ public:
 		return (this->size_);
 	}
 	size_type max_size(void) const {
-		return (123); // TODO
-		// return (std::numeric_limits<node_type>::max() - 1);
+		return (ft::min((size_type) std::numeric_limits<difference_type>::max(),
+						std::numeric_limits<size_type>::max() / sizeof(node_type)));
 	}
 
 	void erase(iterator position) {

@@ -4,9 +4,6 @@
 
 * ``Deque``
 * Fix ``max_size``
-* ``List``:
-	* Fix ``merge``
-	* Fix ``reverse``
 
 ## Ressources
 

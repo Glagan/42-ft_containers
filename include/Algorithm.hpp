@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 19:01:39 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 18:22:22 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:30:30 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ struct less: public std::binary_function<T, T, bool>
 		return (x < y);
 	}
 };
+
+template<class value_type>
+value_type const &min(value_type const &a, value_type const &b) {
+	return (a < b ? a : b);
+}
 
 template<class value_type>
 bool equal(value_type const &a, value_type const &b) {

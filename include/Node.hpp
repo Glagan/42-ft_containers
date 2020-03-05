@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/07 17:09:12 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 18:12:57 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 14:57:29 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ public:
 			node->previous_ = previous;
 			node->next_ = next;
 		}
+	}
+
+	void reverse(void) {
+		Node<value_type> *tmp = this->previous_;
+		this->previous_ = this->next_;
+		this->next_ = tmp;
 	}
 
 	void swap_values(Node *node) {

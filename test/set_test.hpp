@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/11 18:39:23 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/04 19:29:16 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/05 16:43:05 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void test_Set(void)
 
 			std::cout << "[begin] == [end] on empty set" << '\n';
                 assert(empty_set.begin() == empty_set.end());
-			std::cout << "max_size = " << empty_set.max_size() << '\n';
+			// std::cout << "max_size (set) = " << empty_set.max_size() << '\n';
 			std::cout << "size: " << empty_set.size() << " (0), empty? " << empty_set.empty() << '\n';
                 assert(empty_set.empty());
                 assert(empty_set.size() == 0);
