@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 15:56:46 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/03/02 17:47:51 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/11 18:58:28 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ template<typename T, size_t chunk_size>
 class DequeIterator
 {
 public:
+	typedef size_t size_type;
 	typedef T value_type;
 	typedef value_type* pointer;
 	typedef pointer* chunk;
@@ -32,10 +33,10 @@ public:
 	typedef value_type const & const_reference;
 	typedef ptrdiff_t difference_type;
 protected:
+	chunk node;
 	pointer current;
 	pointer first;
 	pointer last;
-	chunk node;
 
 	void set_chunk(chunk new_chunk) {
 		this->node = new_chunk;
@@ -44,11 +45,16 @@ protected:
 	}
 public:
 	DequeIterator():
-		current(nullptr), first(nullptr), last(nullptr), node(nullptr) {}
+		node(nullptr), current(nullptr), first(nullptr), last(nullptr) {}
 	DequeIterator(DequeIterator const &other):
-		current(other.current), first(other.first), last(other.last), node(other.node) {}
-	DequeIterator(pointer current, chunk node):
-		current(current), first(*other.node), last(*other.node + chunk_size), node(node) {}
+		node(other.node), current(other.current), first(other.first), last(other.last) {}
+	DequeIterator(chunk node, size_type idx):
+		node(node) {
+		size_type map = (idx % 10);
+		this->first = node[map];
+		this->current = node[map] + (idx / 10);
+		this->last = node[map] + chunk_size;
+	}
 	virtual ~DequeIterator() {}
 
 	reference operator*() {
@@ -121,22 +127,22 @@ public:
 	}
 
 	bool operator==(DequeIterator const &other) const {
-		return (this->p == other.p);
+		return (this->current == other.current);
 	}
 	bool operator!=(DequeIterator const &other) const {
-		return (this->p != other.p);
+		return (this->current != other.current);
 	}
 	bool operator<(DequeIterator const &other) const {
-		return (this->p < other.p);
+		return (this->current < other.current);
 	}
 	bool operator<=(DequeIterator const &other) const {
-		return (this->p <= other.p);
+		return (this->current <= other.current);
 	}
 	bool operator>(DequeIterator const &other) const {
-		return (this->p > other.p);
+		return (this->current > other.current);
 	}
 	bool operator>=(DequeIterator const &other) const {
-		return (this->p >= other.p);
+		return (this->current >= other.current);
 	}
 };
 
@@ -157,68 +163,68 @@ public:
 	typedef ReverseIterator<iterator> reverse_iterator;
 	typedef ReverseIterator<const_iterator> const_reverse_iterator;
 private:
-	iterator m_first;
-	iterator m_last;
 	chunk m_container;
-	size_type m_capacity;
+	size_type m_start;
 	size_type m_size;
+	size_type m_chunk_count;
+	size_type m_capacity;
+
+	pointer allocate_pointer(void) {
+		return ((pointer)::operator new (sizeof(value_type) * 10)); // Create Single Chunk
+	}
 
 	void ensure_capacity(size_type elements) {
 		if (this->m_capacity == 0) {
+			// Allocate new (chunk) and set everything to nullptr
 			size_type rounded = (elements % 10);
-			if (rounded > 0) {
+			if (rounded > 0)
 				elements += rounded;
-			}
 			elements = (elements > 100) ? elements : 100;
-			size_type chunk_count = (elements / 10) + 1;
-			this->m_container = (chunk)::operator new (sizeof(pointer) * chunk_count); // Create Map
-			for (size_type i = 0; i < chunk_count; ++i) {
+			this->m_chunk_count = (elements / 10) + 1;
+			this->m_container = (chunk)::operator new (sizeof(pointer) * this->m_chunk_count); // Create Map
+			for (size_type i = 0; i < this->m_chunk_count; ++i)
 				this->m_container[i] = nullptr;
-				// (pointer)::operator new (sizeof(value_type) * 10); // Create Single Chunk
-			}
-			this->m_capacity = chunk_count * 10;
-			this->m_first = this->m_container[chunk_count / 2];
-			this->m_last = this->m_first;
+			this->m_capacity = this->m_chunk_count * 10;
+			this->m_start = 10 * (this->m_chunk_count / 2);
 		} else if (this->m_capacity < elements) {
-			size_type const oldCapacity = this->m_capacity;
 			do {
 				this->m_capacity *= 2;
 			} while (this->m_capacity < elements);
-			size_type chunk_count = (this->m_capacity / 10) + 1;
-			chunk tmp = (chunk)::operator new (sizeof(pointer) * chunk_count);
-
-			// TODO: Find which new pointers to allocate in the map (the first x and last y)
-
-			size_type new_first_pos = (chunk_count / 2) - ((this->size / 10) / 2);
-			iterator new_first = tmp[new_first_pos] + (this->size % 10);
-			iterator old_first = this->begin();
-			while (old_first != this->end()) {
-				new (new_first++) value_type(*old_first++);
+			size_type new_chunk_count = (this->m_capacity / 10) + 1;
+			// allocate new (chunk)
+			chunk tmp = (chunk)::operator new (sizeof(pointer) * new_chunk_count);
+			size_type chunk_count_diff = (new_chunk_count - this->m_chunk_count) / 2;
+			// Copy old (pointer)s to the new (chunk) -- set new (pointer)s to nullptr
+			for (size_type j = 0; j < new_chunk_count; ++j) {
+				if (j < chunk_count_diff || j > this->m_chunk_count)
+					tmp[j] = nullptr;
+				else
+					tmp[chunk_count_diff + j] = this->m_container[j];
 			}
 			::operator delete(this->m_container);
 			this->m_container = tmp;
-			this->m_first = tmp[new_first_pos] + (this->size % 10);
-			this->m_last = new_first;
+			this->m_start = this->m_start + (chunk_count_diff * 10);
+			this->m_chunk_count = new_chunk_count;
 		}
 	}
 public:
 	Deque():
-		m_first(nullptr), m_last(nullptr),
-		m_container(nullptr), m_capacity(0), m_size(0) {}
+		m_container(nullptr), m_start(0), m_size(0),
+		m_chunk_count(0), m_capacity(0) {}
 	Deque(size_type n, const_reference val=value_type()):
-		m_first(nullptr), m_last(nullptr),
-		m_container(nullptr), m_capacity(0), m_size(0) {
+		m_container(nullptr), m_start(0), m_size(0),
+		m_chunk_count(0), m_capacity(0) {
 		this->assign(n, val);
 	}
 	Deque(iterator first, iterator last):
-		m_first(nullptr), m_last(nullptr),
-		m_container(nullptr), m_capacity(0), m_size(0) {
+		m_container(nullptr), m_start(0), m_size(0),
+		m_chunk_count(0), m_capacity(0) {
 		this->assign(first, last);
 	}
 	Deque(Deque const &other):
-		m_first(nullptr), m_last(nullptr),
-		m_container(nullptr), m_capacity(0), m_size(0) {
-		this->assign(other.m_first, other.m_last);
+		m_container(nullptr), m_start(0), m_size(0),
+		m_chunk_count(0), m_capacity(0) {
+		this->assign(other.begin(), other.end());
 	}
 	virtual ~Deque() {
 		this->clear();
@@ -229,14 +235,14 @@ public:
 	}
 
 	Deque &operator=(Deque const &other) {
-		this->assign(other.m_first, other.m_last);
+		this->assign(other.begin(), other.end());
 	}
 
 	iterator begin(void) {
-		return (iterator(this->m_first, ));
+		return (iterator(this->m_container, this->m_start));
 	}
 	const_iterator begin(void) const {
-		return (const_iterator(this->m_first));
+		return (const_iterator(this->m_container, this->m_start));
 	}
 	reverse_iterator rbegin(void) {
 		return (reverse_iterator(this->end()));
@@ -245,10 +251,10 @@ public:
 		return (const_reverse_iterator(this->end()));
 	}
 	iterator end(void) {
-		return (iterator(this->m_last));
+		return (iterator(this->m_container, this->m_start + this->m_size));
 	}
 	const_iterator end(void) const {
-		return (const_iterator(this->m_last));
+		return (const_iterator(this->m_container, this->m_start + this->m_size));
 	}
 	reverse_iterator rend(void) {
 		return (reverse_iterator(this->begin()));
@@ -264,80 +270,92 @@ public:
 		return (this->m_size);
 	}
 	size_type max_size(void) const {
-		return (std::numeric_limits<value_type>::max() - 1); // TODO
+		return (ft::min((size_type) std::numeric_limits<difference_type>::max(),
+						std::numeric_limits<size_type>::max() / sizeof(value_type)));
 	}
-    void resize(size_type n, value_type val=value_type()); // TODO
+    void resize(size_type n, value_type val=value_type()) {
+		if (n > this->m_capacity) {
+			this->ensure_capacity(n);
+			while (this->m_size < n)
+				this->push_back(val);
+		} else if (n < this->m_capacity) {
+			while (this->m_size > n)
+				this->pop_back();
+		}
+	}
 
     reference operator[](size_type n) {
-		return (this->m_first[n]);
+		size_type pos = (this->m_start + n);
+		return (this->m_container[pos % 10][pos / 10]);
 	}
     const_reference operator[](size_type n) const {
-		return (this->m_first[n]);
+		size_type pos = (this->m_start + n);
+		return (this->m_container[pos % 10][pos / 10]);
 	}
     reference at(size_type n) {
 		if (n < this->m_size)
 			throw std::out_of_range("Deque index out of range");
-		return (this->m_first[n]);
+		return (this->operator[](n));
 	}
     const_reference at(size_type n) const {
 		if (n < this->m_size)
 			throw std::out_of_range("Deque index out of range");
-		return (this->m_first[n]);
+		return (this->operator[](n));
 	}
 
     reference front(void) {
-		return (*this->m_first);
+		return (this->operator[](0));
 	}
     const_reference front(void) const {
-		return (*this->m_first);
+		return (this->operator[](0));
 	}
     reference back(void) {
-		iterator tmp = m_last;
-		--tmp;
-		return (*--tmp);
+		return (this->operator[](this->m_size - 1));
 	}
     const_reference back(void) const {
-		iterator tmp = m_last;
-		--tmp;
-		return (*--tmp);
+		return (this->operator[](this->m_size - 1));
 	}
 
-	void assign(iterator first, iterator last) {
+	void assign(iterator first, iterator last); /* {
 		this->clear();
 		this->ensure_capacity(last - first);
-		 // TODO
-	}
-    void assign(size_type n, const_reference val) {
+		// TODO
+	} */
+    void assign(size_type n, const_reference val); /* {
 		this->clear();
 		this->ensure_capacity(n);
 		// TODO
-	}
+	} */
 
     void push_back(const_reference val) {
 		this->ensure_capacity(this->m_size + 1);
-		// TODO
+		size_type pos = (this->m_start + this->m_size++);
+		size_type chunk = (pos % 10);
+		if (!this->m_container[chunk])
+			this->m_container[chunk] = this->allocate_pointer();
+		new(&this->m_container[chunk][pos / 10]) value_type(val);
 	}
     void pop_back(void); // TODO
 
-    void push_front(const_reference val) {
+    void push_front(const_reference val); /* {
 		this->ensure_capacity(this->m_size + 1);
 		// TODO
-	}
+	} */
     void pop_front(void); // TODO
 
-    iterator insert(iterator position, const_reference val) {
+    iterator insert(iterator position, const_reference val); /* {
 		this->ensure_capacity(this->m_size + 1);
 		// TODO
-	}
-    void insert(iterator position, size_type n, const_reference val) {
+	} */
+    void insert(iterator position, size_type n, const_reference val); /* {
 		this->ensure_capacity(this->m_size + n);
 		// TODO
-	}
+	} */
     template<typename InputIterator>
-    void insert(iterator position, InputIterator first, InputIterator last) {
+    void insert(iterator position, InputIterator first, InputIterator last); /* {
 		this->ensure_capacity(this->m_size + (last - first));
 		 // TODO
-	}
+	} */
 
     iterator erase(iterator position); // TODO
     iterator erase(iterator first, iterator last); // TODO
@@ -352,21 +370,21 @@ public:
 		stmp = this->m_capacity;
 		this->m_capacity = other.m_capacity;
 		other.m_capacity = stmp;
-		iterator itmp = this->m_first;
-		this->m_first = other.m_first;
-		other.m_first = itmp;
-		itmp = this->m_last;
-		this->m_last = other.m_last;
-		other.m_last = itmp;
+		stmp = this->m_start;
+		this->m_start = other.m_start;
+		other.m_start = stmp;
+		stmp = this->m_chunk_count;
+		this->m_chunk_count = other.m_chunk_count;
+		other.m_chunk_count = stmp;
 	}
     void clear(void) {
-		while (this->m_first != this->m_last) {
-			// (*this->m_first++).value_type::~value_type(); // TODO
-		}
-		size_type chunk_count = (this->m_capacity / 10) + 1;
-		this->m_first = this->m_container[chunk_count / 2];
-		this->m_last = this->m_first;
-		this->m_size = 0;
+		// while (this->m_first != this->m_last) {
+		// 	(*this->m_first++).value_type::~value_type(); // TODO
+		// }
+		// size_type chunk_count = (this->m_capacity / 10) + 1;
+		// this->m_first = this->m_container[chunk_count / 2];
+		// this->m_last = this->m_first;
+		// this->m_size = 0;
 	}
 };
 

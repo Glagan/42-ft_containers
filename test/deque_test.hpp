@@ -6,7 +6,7 @@
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/31 02:35:17 by ncolomer          #+#    #+#             */
-/*   Updated: 2020/02/24 17:08:09 by ncolomer         ###   ########.fr       */
+/*   Updated: 2020/03/11 15:22:32 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 # define DEQUE_TEST_HPP
 
 
-template<typename value_type>
+template<typename DequeType>
 void test_Deque(void)
 {
+	DequeType dq;
+	for (size_t i = 0; i < 500; i++)
+		dq.push_back(i);
+
+	display_container("big deque: ", dq);
 }
 
 #endif

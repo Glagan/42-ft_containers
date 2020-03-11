@@ -3,7 +3,7 @@
 ## TODO
 
 * ``Deque``
-* Fix ``max_size``
+	* ``const_iterator`` not working (wront type)
 
 ## Ressources
 
