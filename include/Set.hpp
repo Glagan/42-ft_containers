@@ -52,19 +52,19 @@ public:
 	}
 
 	typename std::pair<iterator, bool> insert(const_reference val) {
-		node_pointer node = this->tree.find(val);
+		node_pointer node = this->m_tree.find(val);
 		if (node)
 			return (std::make_pair(iterator(node), false));
-		node_pointer inserted = this->tree.insert(val);
-		++this->size_;
+		node_pointer inserted = this->m_tree.insert(val);
+		++this->m_size;
 		return (std::make_pair(iterator(inserted), true));
 	}
 	iterator insert(iterator position, const_reference val) {
-		node_pointer node = this->tree.find(position.as_node(), val);
+		node_pointer node = this->m_tree.find(position.as_node(), val);
 		if (node)
 			return (iterator(node));
-		++this->size_;
-		return (iterator(this->tree.insert(position.as_node(), val)));
+		++this->m_size;
+		return (iterator(this->m_tree.insert(position.as_node(), val)));
 	}
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last) {
@@ -73,7 +73,7 @@ public:
 	}
 
 	value_compare value_comp(void) const {
-		return (this->tree.key_compare());
+		return (this->m_tree.key_compare());
 	}
 };
 
@@ -117,13 +117,13 @@ public:
 	}
 
 	iterator insert(const_reference val) {
-		node_pointer inserted = this->tree.insert(val);
-		++this->size_;
+		node_pointer inserted = this->m_tree.insert(val);
+		++this->m_size;
 		return (iterator(inserted));
 	}
 	iterator insert(iterator position, const_reference val) {
-		++this->size_;
-		return (iterator(this->tree.insert(position.as_node(), val)));
+		++this->m_size;
+		return (iterator(this->m_tree.insert(position.as_node(), val)));
 	}
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last) {
@@ -132,7 +132,7 @@ public:
 	}
 
 	value_compare value_comp(void) const {
-		return (this->tree.key_compare());
+		return (this->m_tree.key_compare());
 	}
 };
 

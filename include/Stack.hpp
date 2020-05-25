@@ -29,65 +29,65 @@ public:
 	typedef T& reference;
 	typedef T const & const_reference;
 protected:
-	container_type c;
+	container_type container;
 public:
-	Stack(container_type const &container=container_type()): c(container) {}
+	Stack(container_type const &container=container_type()): container(container) {}
 	virtual ~Stack() {}
 
 	Stack &operator=(Stack const &other) {
-		this->c = other.c;
+		this->container = other.container;
 		return (*this);
 	}
 
 	bool empty(void) const {
-		return (this->c.empty());
+		return (this->container.empty());
 	}
 	size_t size(void) const {
-		return (this->c.size());
+		return (this->container.size());
 	}
 
 	reference top(void) {
-		return (this->c.back());
+		return (this->container.back());
 	}
 	const_reference top(void) const {
-		return (this->c.back());
+		return (this->container.back());
 	}
 
 	void push(const_reference val) {
-		this->c.push_back(val);
+		this->container.push_back(val);
 	}
 	void pop(void) {
-		this->c.pop_back();
+		this->container.pop_back();
 	}
 
 	template<typename stack_type>
 	friend bool operator==(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
-		return (lhs.c == rhs.c);
+		return (lhs.container == rhs.container);
 	}
 
 	template<typename stack_type>
 	friend bool operator!=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
-		return (lhs.c != rhs.c);
+		return (lhs.container != rhs.container);
 	}
 
 	template<typename stack_type>
 	friend bool operator<(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
-		return (lhs.c < rhs.c);
+		return (lhs.container < rhs.container);
 	}
 
 	template<typename stack_type>
 	friend bool operator<=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
-		return (lhs.c <= rhs.c);
+		return (lhs.container <= rhs.container);
 	}
 
 	template<typename stack_type>
 	friend bool operator>(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
-		return (lhs.c > rhs.c);
+		return (lhs.container > rhs.container);
 	}
 
 	template<typename stack_type>
 	friend bool operator>=(Stack<stack_type> const &lhs, Stack<stack_type> const &rhs) {
-		return (lhs.c >= rhs.c);
+		return (lhs.container >= rhs.container);
 	}
 };
 }

@@ -21,120 +21,120 @@ template<typename value_type>
 class Node
 {
 private:
-	Node<value_type> *previous_;
-	value_type value_;
-	Node<value_type> *next_;
+	Node<value_type> *m_previous;
+	value_type m_value;
+	Node<value_type> *m_next;
 public:
-	Node(): previous_(nullptr), value_(), next_(nullptr) {}
+	Node(): m_previous(nullptr), m_value(), m_next(nullptr) {}
 	Node(value_type const &val):
-		previous_(nullptr), value_(val), next_(nullptr) {}
+		m_previous(nullptr), m_value(val), m_next(nullptr) {}
 	Node(Node *previous, value_type const &val, Node *next=nullptr):
-		previous_(previous), value_(val), next_(next) {}
+		m_previous(previous), m_value(val), m_next(next) {}
 	Node(Node const &other):
-		previous_(other.previous_), value_(other.val), next_(other.next_) {}
+		m_previous(other.m_previous), m_value(other.val), m_next(other.m_next) {}
 	virtual ~Node() {}
 
 	Node &operator=(Node const &other) {
-		this->previous_ = other.previous_;
-		this->value_ = other.value_;
-		this->next_ = other.next_;
+		this->m_previous = other.m_previous;
+		this->m_value = other.m_value;
+		this->m_next = other.m_next;
 		return (*this);
 	}
 
 	void insert_before(Node *node) {
-		if (this->previous_) {
-			node->previous_ = this->previous_;
-			this->previous_->next_ = node;
+		if (this->m_previous) {
+			node->m_previous = this->m_previous;
+			this->m_previous->m_next = node;
 		}
-		node->next_ = this;
-		this->previous_ = node;
+		node->m_next = this;
+		this->m_previous = node;
 	}
 	void insert_after(Node *node) {
-		if (this->next_) {
-			node->next_ = this->next_;
-			this->next_->previous_ = node;
+		if (this->m_next) {
+			node->m_next = this->m_next;
+			this->m_next->m_previous = node;
 		}
-		node->previous_ = this;
-		this->next_ = node;
+		node->m_previous = this;
+		this->m_next = node;
 	}
 
 	void disconnect(void) {
-		if (this->previous_)
-			this->previous_->next_ = this->next_;
-		if (this->next_)
-			this->next_->previous_ = this->previous_;
+		if (this->m_previous)
+			this->m_previous->m_next = this->m_next;
+		if (this->m_next)
+			this->m_next->m_previous = this->m_previous;
 	}
 
 	void swap(Node *node) {
-		if (this->next_ == node) {
-			if (this->previous_)
-				this->previous_->next_ = node;
-			node->previous_ = this->previous_;
-			this->previous_ = node;
-			if (node->next_)
-				node->next_->previous_ = this;
-			this->next_ = node->next_;
-			node->next_ = this;
-		} else if (this->previous_ == node) {
-			if (node->previous_)
-				node->previous_->next_ = this;
-			this->previous_ = node->previous_;
-			node->previous_ = this;
-			if (this->next_)
-				this->next_->previous_ = node;
-			node->next_ = this->next_;
-			this->next_ = node;
+		if (this->m_next == node) {
+			if (this->m_previous)
+				this->m_previous->m_next = node;
+			node->m_previous = this->m_previous;
+			this->m_previous = node;
+			if (node->m_next)
+				node->m_next->m_previous = this;
+			this->m_next = node->m_next;
+			node->m_next = this;
+		} else if (this->m_previous == node) {
+			if (node->m_previous)
+				node->m_previous->m_next = this;
+			this->m_previous = node->m_previous;
+			node->m_previous = this;
+			if (this->m_next)
+				this->m_next->m_previous = node;
+			node->m_next = this->m_next;
+			this->m_next = node;
 		} else {
-			Node<value_type> *previous = this->previous_;
-			Node<value_type> *next = this->next_;
+			Node<value_type> *previous = this->m_previous;
+			Node<value_type> *next = this->m_next;
 
-			if (this->previous_)
-				this->previous_->next_ = node;
-			if (this->next_)
-				this->next_->previous_ = node;
-			this->previous_ = node->previous_;
-			this->next_ = node->next_;
-			if (node->previous_)
-				node->previous_->next_ = this;
-			if (node->next_)
-				node->next_->previous_ = this;
-			node->previous_ = previous;
-			node->next_ = next;
+			if (this->m_previous)
+				this->m_previous->m_next = node;
+			if (this->m_next)
+				this->m_next->m_previous = node;
+			this->m_previous = node->m_previous;
+			this->m_next = node->m_next;
+			if (node->m_previous)
+				node->m_previous->m_next = this;
+			if (node->m_next)
+				node->m_next->m_previous = this;
+			node->m_previous = previous;
+			node->m_next = next;
 		}
 	}
 
 	void reverse(void) {
-		Node<value_type> *tmp = this->previous_;
-		this->previous_ = this->next_;
-		this->next_ = tmp;
+		Node<value_type> *tmp = this->m_previous;
+		this->m_previous = this->m_next;
+		this->m_next = tmp;
 	}
 
 	void swap_values(Node *node) {
 		value_type tmp;
-		std::memmove(static_cast<void*>(&tmp), static_cast<void*>(&node->value_), 1);
-		std::memmove(static_cast<void*>(&node->value_), static_cast<void*>(&this->value_), 1);
-		std::memmove(static_cast<void*>(&this->value_), static_cast<void*>(&tmp), 1);
+		std::memmove(static_cast<void*>(&tmp), static_cast<void*>(&node->m_value), 1);
+		std::memmove(static_cast<void*>(&node->m_value), static_cast<void*>(&this->m_value), 1);
+		std::memmove(static_cast<void*>(&this->m_value), static_cast<void*>(&tmp), 1);
 	}
 
 	value_type &value(void) {
-		return (this->value_);
+		return (this->m_value);
 	}
 	value_type const &value(void) const {
-		return (this->value_);
+		return (this->m_value);
 	}
 
 	Node *&previous(void) {
-		return (this->previous_);
+		return (this->m_previous);
 	}
 	Node const *previous(void) const {
-		return (this->previous_);
+		return (this->m_previous);
 	}
 
 	Node *&next(void) {
-		return (this->next_);
+		return (this->m_next);
 	}
 	Node const *next(void) const {
-		return (this->next_);
+		return (this->m_next);
 	}
 };
 }

@@ -173,10 +173,10 @@ public:
 	};
 	typedef Node* node_pointer;
 protected:
-	node_pointer root;
-	node_pointer begin_;
-	node_pointer end_;
-	Compare comp;
+	node_pointer m_root;
+	node_pointer m_begin;
+	node_pointer m_end;
+	Compare m_comp;
 
 	void unbound_node(node_pointer node) {
 		if (!node)
@@ -187,29 +187,29 @@ protected:
 	}
 
 	void make_bounds(void) {
-		this->begin_ = new Node();
-		this->end_ = this->begin_;
-		this->root = this->end_;
+		this->m_begin = new Node();
+		this->m_end = this->m_begin;
+		this->m_root = this->m_end;
 	}
 
 	void repair_bounds(void) {
-		node_pointer tmp = this->root;
+		node_pointer tmp = this->m_root;
 		while (tmp->left)
 			tmp = tmp->left;
-		this->begin_ = tmp;
-		tmp = this->root;
+		this->m_begin = tmp;
+		tmp = this->m_root;
 		while (tmp->right)
 			tmp = tmp->right;
-		tmp->right = this->end_;
-		this->end_->parent = tmp;
+		tmp->right = this->m_end;
+		this->m_end->parent = tmp;
 	}
 
 	template<typename Tp>
 	node_pointer find_node(Tp const &val, node_pointer node) {
-		if (node == this->end_ || !node)
+		if (node == this->m_end || !node)
 			return (nullptr);
-		bool comp_left = this->comp(val, node->value);
-		if (!comp_left && !this->comp(node->value, val))
+		bool comp_left = this->m_comp(val, node->value);
+		if (!comp_left && !this->m_comp(node->value, val))
 			return (node);
 		if (comp_left)
 			return (this->find_node(val, node->left));
@@ -217,7 +217,7 @@ protected:
 	}
 
 	void insert_node_at(node_pointer node, node_pointer new_node) {
-		if (this->comp(new_node->value, node->value)) {
+		if (this->m_comp(new_node->value, node->value)) {
 			if (node->left) {
 				this->insert_node_at(node->left, new_node);
 				return ;
@@ -253,9 +253,9 @@ protected:
 		node_pointer ret = node;
 		// no children
 		if (!node->left && !node->right) {
-			if (node == this->root) {
-				this->root = this->begin_ = this->end_;
-				this->unbound_node(this->end_);
+			if (node == this->m_root) {
+				this->m_root = this->m_begin = this->m_end;
+				this->unbound_node(this->m_end);
 			}
 			if (node->parent) {
 				if (node->parent->left == node)
@@ -274,8 +274,8 @@ protected:
 					node->parent->right = node->right;
 			}
 			node->right->parent = node->parent;
-			if (node == this->root)
-				this->root = node->right;
+			if (node == this->m_root)
+				this->m_root = node->right;
 			ret = node->right;
 			delete node;
 		// one child (left)
@@ -287,8 +287,8 @@ protected:
 					node->parent->right = node->left;
 			}
 			node->left->parent = node->parent;
-			if (node == this->root)
-				this->root = node->left;
+			if (node == this->m_root)
+				this->m_root = node->left;
 			ret = node->parent;
 			delete node;
 		// two children
@@ -305,8 +305,8 @@ protected:
 			tmp->parent = node->parent;
 			node->value.value_type::~value_type();
 			new(&node->value) value_type(tmp->value);
-			if (node == this->root)
-				this->root = node;
+			if (node == this->m_root)
+				this->m_root = node;
 			node->right = erase_node(node->right); // delete the duplicate node
 			ret = node;
 		}
@@ -314,7 +314,7 @@ protected:
 	}
 
 	void delete_recurse(node_pointer node) {
-		if (!node || node == this->end_)
+		if (!node || node == this->m_end)
 			return ;
 		delete_recurse(node->left);
 		delete_recurse(node->right);
@@ -322,66 +322,66 @@ protected:
 	}
 public:
 	Tree():
-		root(nullptr), comp() {
+		m_root(nullptr), m_comp() {
 		this->make_bounds();
 	}
 	Tree(Compare const &comp):
-		root(nullptr), comp(comp) {
+		m_root(nullptr), m_comp(comp) {
 		this->make_bounds();
 	}
 	Tree(Tree const &other):
-		root(other.root), comp(other.comp) {
+		m_root(other.m_root), m_comp(other.m_comp) {
 		this->make_bounds();
 		this->copy(other);
 	}
 	virtual ~Tree() {
 		this->make_empty();
-		delete this->end_;
+		delete this->m_end;
 	}
 
 	Tree &operator=(Tree const &other) {
-		if (this->root != this->end_)
+		if (this->m_root != this->m_end)
 			this->make_empty();
-		this->comp = other.comp;
+		this->m_comp = other.m_comp;
 		this->copy(other);
 		return (*this);
 	}
 
 	void copy(Tree const &other) {
-		if (other.root == other.end_)
+		if (other.m_root == other.m_end)
 			return ;
-		this->root = new Node(*other.root);
-		if (other.root->left) {
-			this->copy_node_recurse(&this->root->left, other.root->left, other.end_);
-			this->root->left->parent = this->root;
+		this->m_root = new Node(*other.m_root);
+		if (other.m_root->left) {
+			this->copy_node_recurse(&this->m_root->left, other.m_root->left, other.m_end);
+			this->m_root->left->parent = this->m_root;
 		}
-		if (other.root->right) {
-			this->copy_node_recurse(&this->root->right, other.root->right, other.end_);
-			this->root->right->parent = this->root;
+		if (other.m_root->right) {
+			this->copy_node_recurse(&this->m_root->right, other.m_root->right, other.m_end);
+			this->m_root->right->parent = this->m_root;
 		}
 		this->repair_bounds();
 	}
 
 	node_pointer insert(const_reference val) {
 		node_pointer new_node = new Node(val);
-		if (this->root == this->end_)
-			this->root = new_node;
+		if (this->m_root == this->m_end)
+			this->m_root = new_node;
 		else {
-			if (this->end_->parent)
-				this->end_->parent->right = nullptr;
-			this->insert_node_at(this->root, new_node);
+			if (this->m_end->parent)
+				this->m_end->parent->right = nullptr;
+			this->insert_node_at(this->m_root, new_node);
 		}
 		this->repair_bounds();
 		return (new_node);
 	}
 
 	node_pointer insert(node_pointer hint, const_reference val) {
-		if (!hint || this->root == this->end_
-			|| (hint->parent && (comp(val, hint->parent->value) || comp(hint->parent->value, val))))
+		if (!hint || this->m_root == this->m_end
+			|| (hint->parent && (m_comp(val, hint->parent->value) || m_comp(hint->parent->value, val))))
 			return (this->insert(val));
 		node_pointer new_node = new Node(val);
-		if (this->end_->parent)
-			this->end_->parent->right = nullptr;
+		if (this->m_end->parent)
+			this->m_end->parent->right = nullptr;
 		this->insert_node_at(hint, new_node);
 		this->repair_bounds();
 		return (new_node);
@@ -389,21 +389,21 @@ public:
 
 	template<typename Tp>
 	node_pointer find(Tp const &val) {
-		return (this->find_node(val, this->root));
+		return (this->find_node(val, this->m_root));
 	}
 
 	template<typename Tp>
 	node_pointer find(node_pointer hint, Tp const &val) {
 		if (!hint)
-			return (this->find_node(val, this->root));
-		if (!comp(hint->value, val) && !comp(val, hint->value))
+			return (this->find_node(val, this->m_root));
+		if (!m_comp(hint->value, val) && !m_comp(val, hint->value))
 			return (hint);
 		return (this->find_node(val, hint));
 	}
 
 	node_pointer erase(node_pointer node) {
-		if (this->end_->parent)
-			this->end_->parent->right = nullptr;
+		if (this->m_end->parent)
+			this->m_end->parent->right = nullptr;
 		node_pointer next = this->erase_node(node);
 		this->repair_bounds();
 		return (next);
@@ -414,8 +414,8 @@ public:
 		node_pointer node = nullptr;
 		size_type total = 0;
 
-		if (this->end_->parent)
-			this->end_->parent->right = nullptr;
+		if (this->m_end->parent)
+			this->m_end->parent->right = nullptr;
 		while ((node = this->find(key))) {
 			this->erase_node(node);
 			total++;
@@ -425,38 +425,30 @@ public:
 	}
 
 	Compare key_compare(void) const {
-		return (this->comp);
+		return (this->m_comp);
 	}
 
 	node_pointer begin(void) const {
-		return (this->begin_);
+		return (this->m_begin);
 	}
 
 	node_pointer end(void) const {
-		return (this->end_);
+		return (this->m_end);
 	}
 
 	void make_empty(void) {
-		this->delete_recurse(this->root);
-		this->end_->parent = nullptr;
-		this->end_->left = nullptr;
-		this->end_->right = nullptr;
-		this->begin_ = this->root = this->end_;
+		this->delete_recurse(this->m_root);
+		this->m_end->parent = nullptr;
+		this->m_end->left = nullptr;
+		this->m_end->right = nullptr;
+		this->m_begin = this->m_root = this->m_end;
 	}
 
 	void swap(Tree &other) {
-		node_pointer tmp = this->root;
-		this->root = other.root;
-		other.root = tmp;
-		tmp = this->begin_;
-		this->begin_ = other.begin_;
-		other.begin_ = tmp;
-		tmp = this->end_;
-		this->end_ = other.end_;
-		other.end_ = tmp;
-		Compare compTmp = this->comp;
-		this->comp = other.comp;
-		other.comp = compTmp;
+		ft::swap(this->m_root, other.m_root);
+		ft::swap(this->m_begin, other.m_begin);
+		ft::swap(this->m_end, other.m_end);
+		ft::swap(this->m_comp, other.m_comp);
 	}
 };
 }

@@ -75,27 +75,27 @@ public:
 	}
 
 	mapped_type &operator[](key_type const &k) {
-		node_pointer found = this->tree.find(k);
+		node_pointer found = this->m_tree.find(k);
 		if (found)
 			return (found->value.second);
-		++this->size_;
-		return (this->tree.insert(std::make_pair(k, mapped_type()))->value.second);
+		++this->m_size;
+		return (this->m_tree.insert(std::make_pair(k, mapped_type()))->value.second);
 	}
 
 	typename std::pair<iterator, bool> insert(const_reference val) {
-		node_pointer node = this->tree.find(val);
+		node_pointer node = this->m_tree.find(val);
 		if (node)
 			return (std::make_pair(iterator(node), false));
-		node_pointer inserted = this->tree.insert(val);
-		++this->size_;
+		node_pointer inserted = this->m_tree.insert(val);
+		++this->m_size;
 		return (std::make_pair(iterator(inserted), true));
 	}
 	iterator insert(iterator position, const_reference val) {
-		node_pointer node = this->tree.find(position.as_node(), val);
+		node_pointer node = this->m_tree.find(position.as_node(), val);
 		if (node)
 			return (iterator(node));
-		++this->size_;
-		return (iterator(this->tree.insert(position.as_node(), val)));
+		++this->m_size;
+		return (iterator(this->m_tree.insert(position.as_node(), val)));
 	}
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last) {
@@ -149,13 +149,13 @@ public:
 	}
 
 	iterator insert(const_reference val) {
-		node_pointer inserted = this->tree.insert(val);
-		++this->size_;
+		node_pointer inserted = this->m_tree.insert(val);
+		++this->m_size;
 		return (iterator(inserted));
 	}
 	iterator insert(iterator position, const_reference val) {
-		++this->size_;
-		return (iterator(this->tree.insert(position.as_node(), val)));
+		++this->m_size;
+		return (iterator(this->m_tree.insert(position.as_node(), val)));
 	}
 	template<class InputIterator>
 	void insert(InputIterator first, InputIterator last) {

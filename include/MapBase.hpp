@@ -41,29 +41,29 @@ public:
 	typedef ReverseIterator<iterator> reverse_iterator;
 	typedef ReverseIterator<const_iterator> const_reverse_iterator;
 protected:
-	tree_type tree;
-	size_type size_;
+	tree_type m_tree;
+	size_type m_size;
 public:
-	MapBase(): tree(), size_(0) {}
-	MapBase(iterator first, iterator last): tree(), size_(0) {
+	MapBase(): m_tree(), m_size(0) {}
+	MapBase(iterator first, iterator last): m_tree(), m_size(0) {
 		this->insert(first, last);
 	}
 	MapBase(MapBase const &other):
-		tree(other.tree), size_(other.size_) {}
+		m_tree(other.m_tree), m_size(other.m_size) {}
 	virtual ~MapBase() {}
 
 	MapBase &operator=(MapBase const &other) {
 		this->clear();
-		this->tree = other.tree;
-		this->size_ = other.size_;
+		this->m_tree = other.m_tree;
+		this->m_size = other.m_size;
 		return (*this);
 	}
 
 	iterator begin(void) {
-		return (iterator(this->tree.begin()));
+		return (iterator(this->m_tree.begin()));
 	}
 	const_iterator begin(void) const {
-		return (const_iterator(this->tree.begin()));
+		return (const_iterator(this->m_tree.begin()));
 	}
 	reverse_iterator rbegin(void) {
 		return (reverse_iterator(this->end()));
@@ -72,10 +72,10 @@ public:
 		return (const_reverse_iterator(this->end()));
 	}
 	iterator end(void) {
-		return (iterator(this->tree.end()));
+		return (iterator(this->m_tree.end()));
 	}
 	const_iterator end(void) const {
-		return (const_iterator(this->tree.end()));
+		return (const_iterator(this->m_tree.end()));
 	}
 	reverse_iterator rend(void) {
 		return (reverse_iterator(this->begin()));
@@ -85,10 +85,10 @@ public:
 	}
 
 	bool empty(void) const {
-		return (this->size_ == 0);
+		return (this->m_size == 0);
 	}
 	size_type size(void) const {
-		return (this->size_);
+		return (this->m_size);
 	}
 	size_type max_size(void) const {
 		return (ft::min((size_type) std::numeric_limits<difference_type>::max(),
@@ -96,12 +96,12 @@ public:
 	}
 
 	void erase(iterator position) {
-		this->tree.erase(position.as_node());
-		--this->size_;
+		this->m_tree.erase(position.as_node());
+		--this->m_size;
 	}
 	size_type erase(key_type const &key) {
-		size_type count = this->tree.erase(key);
-		this->size_ -= count;
+		size_type count = this->m_tree.erase(key);
+		this->m_size -= count;
 		return (count);
 	}
 	void erase(iterator first, iterator last) {
@@ -110,40 +110,38 @@ public:
 		else {
 			iterator next;
 			while (first != last) {
-				first = this->tree.erase(first.as_node());
-				--this->size_;
+				first = this->m_tree.erase(first.as_node());
+				--this->m_size;
 			}
 		}
 	}
 
 	void swap(MapBase &other) {
-		this->tree.swap(other.tree);
-		size_type tmp = this->size_;
-		this->size_ = other.size_;
-		other.size_ = tmp;
+		this->m_tree.swap(other.m_tree);
+		ft::swap(this->m_size, other.m_size);
 	}
 
 	void clear(void) {
-		if (this->size_ > 0)
-			this->tree.make_empty();
-		this->size_ = 0;
+		if (this->m_size > 0)
+			this->m_tree.make_empty();
+		this->m_size = 0;
 	}
 
 	iterator find(key_type const &key) {
-		node_pointer node = this->tree.find(key);
+		node_pointer node = this->m_tree.find(key);
 		if (node)
 			return (iterator(node));
 		return (this->end());
 	}
 	const_iterator find(key_type const &key) const {
-		node_pointer node = this->tree.find(key);
+		node_pointer node = this->m_tree.find(key);
 		if (node)
 			return (const_iterator(node));
 		return (this->end());
 	}
 
 	value_compare key_comp(void) const {
-		return (this->tree.key_compare());
+		return (this->m_tree.key_compare());
 	}
 
 	size_type count(key_type const &k) const {

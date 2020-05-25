@@ -13,7 +13,6 @@
 #ifndef DEQUE_TEST_HPP
 # define DEQUE_TEST_HPP
 
-
 template<typename DequeType>
 void test_Deque(void)
 {

@@ -136,49 +136,49 @@ public:
 	typedef ReverseIterator<iterator> reverse_iterator;
 	typedef ReverseIterator<const_iterator> const_reverse_iterator;
 private:
-	size_type capacity_;
-	size_type size_;
-	pointer container;
+	pointer m_container;
+	size_type m_capacity;
+	size_type m_size;
 
 	void copy_construct(size_type idx, const_reference val) {
-		new(&this->container[idx]) value_type(val);
+		new(&this->m_container[idx]) value_type(val);
 	}
 public:
-	Vector(): capacity_(0), size_(0), container(nullptr) {}
+	Vector(): m_capacity(0), m_size(0), m_container(nullptr) {}
 	Vector(size_type n, const_reference val=value_type()):
-		capacity_(0), size_(0), container(nullptr) {
+		m_capacity(0), m_size(0), m_container(nullptr) {
 		this->assign(n, val);
 	}
 	Vector(iterator first, iterator last):
-		capacity_(0), size_(0), container(nullptr) {
+		m_capacity(0), m_size(0), m_container(nullptr) {
 		this->assign(first, last);
 	}
 	Vector(Vector const &other):
-		capacity_(0), size_(other.size_), container(nullptr) {
-		this->reserve(other.capacity_);
+		m_capacity(0), m_size(other.m_size), m_container(nullptr) {
+		this->reserve(other.m_capacity);
 		// this->assign(other.begin(), other.end());
-		std::memcpy(static_cast<void*>(this->container), static_cast<void*>(other.container), other.size_ * sizeof(value_type));
+		std::memcpy(static_cast<void*>(this->m_container), static_cast<void*>(other.m_container), other.m_size * sizeof(value_type));
 	}
 	virtual ~Vector() {
 		this->clear();
-		if (this->container)
-			::operator delete(this->container);
+		if (this->m_container)
+			::operator delete(this->m_container);
 	}
 
 	Vector &operator=(Vector const &other) {
 		this->clear();
-		if (this->capacity_ < other.capacity_)
-			this->reserve(other.capacity_);
+		if (this->m_capacity < other.m_capacity)
+			this->reserve(other.m_capacity);
 		// this->assign(other.begin(), other.end());
-		std::memcpy(static_cast<void*>(this->container), static_cast<void*>(other.container), other.size_ * sizeof(value_type));
+		std::memcpy(static_cast<void*>(this->m_container), static_cast<void*>(other.m_container), other.m_size * sizeof(value_type));
 		return (*this);
 	}
 
 	iterator begin(void) {
-		return (iterator(this->container));
+		return (iterator(this->m_container));
 	}
 	const_iterator begin(void) const {
-		return (const_iterator(this->container));
+		return (const_iterator(this->m_container));
 	}
 	reverse_iterator rbegin(void) {
 		return (reverse_iterator(this->end()));
@@ -187,10 +187,10 @@ public:
 		return (const_reverse_iterator(this->end()));
 	}
 	iterator end(void) {
-		return (iterator(&(this->container[this->size_])));
+		return (iterator(&(this->m_container[this->m_size])));
 	}
 	const_iterator end(void) const {
-		return (const_iterator(&(this->container[this->size_])));
+		return (const_iterator(&(this->m_container[this->m_size])));
 	}
 	reverse_iterator rend(void) {
 		return (reverse_iterator(this->begin()));
@@ -200,7 +200,7 @@ public:
 	}
 
 	size_type size(void) const {
-		return (this->size_);
+		return (this->m_size);
 	}
 
 	size_type max_size(void) const {
@@ -209,133 +209,133 @@ public:
 	}
 
 	void resize(size_type size, value_type val=value_type()) {
-		if (size > this->capacity_)
+		if (size > this->m_capacity)
 			this->reserve(size);
-		if (size > this->size_) {
-			for (size_type i = this->size_; i < size; ++i)
+		if (size > this->m_size) {
+			for (size_type i = this->m_size; i < size; ++i)
 				this->copy_construct(i, val);
-			this->size_ = size;
-		} else if (size < this->size_) {
-			for (size_type i = size; i < this->size_; ++i)
-				this->container[i].value_type::~value_type();
-			this->size_ = size;
+			this->m_size = size;
+		} else if (size < this->m_size) {
+			for (size_type i = size; i < this->m_size; ++i)
+				this->m_container[i].value_type::~value_type();
+			this->m_size = size;
 		}
 	}
 
 	size_type capacity(void) const {
-		return (this->capacity_);
+		return (this->m_capacity);
 	}
 
 	bool empty(void) const {
-		return (this->size_ == 0);
+		return (this->m_size == 0);
 	}
 
 	void reserve(size_type size) {
-		if (this->capacity_ == 0) {
+		if (this->m_capacity == 0) {
 			size = (size > 128) ? size : 128;
-			this->container = static_cast<value_type*>(::operator new(sizeof(value_type) * size));
-			this->capacity_ = size;
-		} else if (size > this->capacity_) {
-			size = (size > this->capacity_ * 2) ? size : this->capacity_ * 2;
+			this->m_container = static_cast<value_type*>(::operator new(sizeof(value_type) * size));
+			this->m_capacity = size;
+		} else if (size > this->m_capacity) {
+			size = (size > this->m_capacity * 2) ? size : this->m_capacity * 2;
 			value_type *tmp = static_cast<value_type*>(::operator new(sizeof(value_type) * size));
-			if (this->container) {
-				//std::memmove(static_cast<void*>(tmp), static_cast<void*>(this->container), this->size_ * sizeof(value_type));
-				for (size_t i = 0; i < this->size_; ++i)
-					new(&tmp[i]) value_type(this->container[i]);
-				::operator delete(this->container);
+			if (this->m_container) {
+				//std::memmove(static_cast<void*>(tmp), static_cast<void*>(this->container), this->m_size * sizeof(value_type));
+				for (size_t i = 0; i < this->m_size; ++i)
+					new(&tmp[i]) value_type(this->m_container[i]);
+				::operator delete(this->m_container);
 			}
-			this->container = tmp;
-			this->capacity_ = size;
+			this->m_container = tmp;
+			this->m_capacity = size;
 		}
 	}
 
 	reference operator[](size_type idx) {
-		return (this->container[idx]);
+		return (this->m_container[idx]);
 	}
 	const_reference operator[](size_type idx) const {
-		return (this->container[idx]);
+		return (this->m_container[idx]);
 	}
 	reference at(size_type idx) {
-		if (idx >= this->size_)
+		if (idx >= this->m_size)
 			throw std::out_of_range("Vector index out of range");
-		return (this->container[idx]);
+		return (this->m_container[idx]);
 	}
 	const_reference at(size_type idx) const {
-		if (idx >= this->size_)
+		if (idx >= this->m_size)
 			throw std::out_of_range("Vector index out of range");
-		return (this->container[idx]);
+		return (this->m_container[idx]);
 	}
 
 	reference front(void) {
-		return (this->container[0]);
+		return (this->m_container[0]);
 	}
 	const_reference front(void) const {
-		return (this->container[0]);
+		return (this->m_container[0]);
 	}
 	reference back(void) {
-		return (this->container[this->size_ - 1]);
+		return (this->m_container[this->m_size - 1]);
 	}
 	const_reference back(void) const {
-		return (this->container[this->size_ - 1]);
+		return (this->m_container[this->m_size - 1]);
 	}
 
 	void assign(iterator first, iterator last) {
 		size_t length = last - first;
-		if (length > this->capacity_)
+		if (length > this->m_capacity)
 			this->reserve(length);
 		size_t i = 0;
 		while (first != last) {
-			if (i >= this->size_)
+			if (i >= this->m_size)
 				this->copy_construct(i, *first);
 			else
-				this->container[i] = *first;
+				this->m_container[i] = *first;
 			++first;
 			++i;
 		}
-		while (i < this->size_)
-			this->container[i++].value_type::~value_type();
-		this->size_ = length;
+		while (i < this->m_size)
+			this->m_container[i++].value_type::~value_type();
+		this->m_size = length;
 	}
 	void assign(const_iterator first, const_iterator last) {
 		size_t length = last - first;
-		if (length > this->capacity_)
+		if (length > this->m_capacity)
 			this->reserve(length);
 		size_t i = 0;
 		while (first != last) {
-			if (i >= this->size_)
+			if (i >= this->m_size)
 				this->copy_construct(i, *first);
 			else
-				this->container[i] = *first;
+				this->m_container[i] = *first;
 			++first;
 			++i;
 		}
-		while (i < this->size_)
-			this->container[i++].value_type::~value_type();
-		this->size_ = length;
+		while (i < this->m_size)
+			this->m_container[i++].value_type::~value_type();
+		this->m_size = length;
 	}
 	void assign(size_type size, const_reference val) {
-		if (size > this->capacity_)
+		if (size > this->m_capacity)
 			this->reserve(size);
 		size_t i = 0;
 		while (i < size) {
-			if (i >= this->size_)
+			if (i >= this->m_size)
 				this->copy_construct(i, val);
 			else
-				this->container[i] = val;
+				this->m_container[i] = val;
 			++i;
 		}
-		while (i < this->size_)
-			this->container[i++].value_type::~value_type();
-		this->size_ = size;
+		while (i < this->m_size)
+			this->m_container[i++].value_type::~value_type();
+		this->m_size = size;
 	}
 
 	void push_back(const_reference val) {
-		if (this->size_ == this->capacity_)
-			this->reserve(this->capacity_ * 2);
-		new(&this->container[this->size_++]) value_type(val);
+		if (this->m_size == this->m_capacity)
+			this->reserve(this->m_capacity * 2);
+		new(&this->m_container[this->m_size++]) value_type(val);
 	}
 	void pop_back(void) {
-		this->container[--this->size_].value_type::~value_type();
+		this->m_container[--this->m_size].value_type::~value_type();
 	}
 
 	iterator insert(iterator position, const_reference val) {
@@ -344,36 +344,36 @@ public:
 	}
 	void insert(iterator position, size_type size, const_reference val) {
 		iterator it = this->begin();
-		if (this->size_ + size >= this->capacity_)
-			this->reserve(this->size_ + size);
+		if (this->m_size + size >= this->m_capacity)
+			this->reserve(this->m_size + size);
 		size_type i = 0;
 		while (it != position) {
 			++it;
 			++i;
 		}
 		// std::memmove
-		for (size_type j = this->size_; j >= 1 && j >= i; j--)
-			this->copy_construct(i + j + size - 1, this->container[j - 1]);
+		for (size_type j = this->m_size; j >= 1 && j >= i; j--)
+			this->copy_construct(i + j + size - 1, this->m_container[j - 1]);
 		for (size_type j = 0; j < size; j++)
 			this->copy_construct(i + j, val);
-		this->size_ += size;
+		this->m_size += size;
 	}
 	void insert(iterator position, iterator first, iterator last) {
 		size_type size = last - first;
 		iterator it = this->begin();
-		if (this->size_ + size >= this->capacity_)
-			this->reserve(this->size_ + size);
+		if (this->m_size + size >= this->m_capacity)
+			this->reserve(this->m_size + size);
 		size_type i = 0;
 		while (it != position) {
 			++it;
 			++i;
 		}
 		// std::memmove
-		for (size_type j = this->size_ - 1; j > i + 1; j++)
-			this->copy_construct(i + j + size, this->container[ + j - 1]);
+		for (size_type j = this->m_size - 1; j > i + 1; j++)
+			this->copy_construct(i + j + size, this->m_container[ + j - 1]);
 		for (size_type j = 0; j < size; j++)
 			this->copy_construct(i + j, *first++);
-		this->size_ += size;
+		this->m_size += size;
 	}
 
 	iterator erase(iterator position) {
@@ -399,28 +399,22 @@ public:
 			++stopPos;
 		}
 		// std::memmove ?
-		for ( ; stopPos < this->size_; ++stopPos)
-			this->copy_construct(i++, this->container[stopPos]);
-		this->size_ -= deletedElements;
-		return (iterator(&this->container[returnPosition]));
+		for ( ; stopPos < this->m_size; ++stopPos)
+			this->copy_construct(i++, this->m_container[stopPos]);
+		this->m_size -= deletedElements;
+		return (iterator(&this->m_container[returnPosition]));
 	}
 
 	void swap(Vector &other) {
-		pointer tmp = this->container;
-		this->container = other.container;
-		other.container = tmp;
-		size_type stmp = this->size_;
-		this->size_ = other.size_;
-		other.size_ = stmp;
-		stmp = this->capacity_;
-		this->capacity_ = other.capacity_;
-		other.capacity_ = stmp;
+		ft::swap(this->m_container, other.m_container);
+		ft::swap(this->m_capacity, other.m_capacity);
+		ft::swap(this->m_size, other.m_size);
 	}
 
 	void clear(void) {
-		for (size_type i = 0; i < this->size_; i++)
-			this->container[i].value_type::~value_type();
-		this->size_ = 0;
+		for (size_type i = 0; i < this->m_size; i++)
+			this->m_container[i].value_type::~value_type();
+		this->m_size = 0;
 	}
 };
 
