@@ -21,8 +21,12 @@
 namespace ft
 {
 template<typename T>
-class DequeIterator
+class Deque;
+
+template<typename T>
+class DequeIterator: IteratorTrait
 {
+	friend class Deque<T>;
 public:
 	typedef size_t size_type;
 	typedef T value_type;
@@ -32,33 +36,33 @@ public:
 	typedef value_type const & const_reference;
 	typedef ptrdiff_t difference_type;
 protected:
-	pointer p;
+	pointer const * p;
 public:
 	DequeIterator():
 		p(nullptr) {}
 	DequeIterator(DequeIterator const &other):
 		p(other.p) {}
-	DequeIterator(pointer p):
+	DequeIterator(pointer const * p):
 		p(p) {}
 	virtual ~DequeIterator() {}
 
 	reference operator*() {
-		return (*this->p);
+		return (**this->p);
 	}
 	const_reference operator*() const {
-		return (*this->p);
+		return (**this->p);
 	}
 	pointer operator->() {
-		return (this->p);
+		return (*this->p);
 	}
 	const_pointer operator->() const {
-		return (this->p);
+		return (*this->p);
 	}
     reference operator[](int val) {
-		return (*(this->p + val));
+		return (**(this->p + val));
 	}
     const_reference operator[](int val) const {
-		return (*(this->p + val));
+		return (**(this->p + val));
 	}
 
 	DequeIterator operator++(int) {
@@ -132,7 +136,7 @@ public:
 	typedef value_type const & const_reference;
 	typedef ptrdiff_t difference_type;
 	typedef DequeIterator<value_type> iterator;
-	typedef DequeIterator<value_type const> const_iterator;
+	typedef DequeIterator<value_type> const_iterator;
 	typedef ReverseIterator<iterator> reverse_iterator;
 	typedef ReverseIterator<const_iterator> const_reverse_iterator;
 private:
@@ -144,18 +148,20 @@ private:
 	void reserve(size_type capacity) {
 		if (capacity > this->m_capacity) {
 			// Double capacity on every new allocations
-			size_type real_capacity = (this->m_capacity == 0) ? (capacity > 128) ? capacity : 128
+			size_type real_capacity = (this->m_capacity == 0) ? (capacity > 64) ? capacity : 64
 									: (this->m_capacity * 2 > capacity) ? this->m_capacity * 2 : capacity;
 			// Allocate an array of *blocks* Block*
-			pointer* tmp = static_cast<pointer*>(::operator new(sizeof(pointer) * capacity));
+			pointer* tmp = static_cast<pointer*>(::operator new(sizeof(pointer*) * real_capacity));
 			// Offset to center the old blocks - 2 center, 1 back, 0 front
-			size_type offset = (capacity / 2) - (this->m_size / 2);
+			size_type offset = (real_capacity / 2) - (this->m_size / 2);
 			// Move old blocks
-			for (size_type i = offset, j = 0; i < this->m_size; ++i, ++j)
+			for (size_type i = offset, j = this->m_start; j < this->m_start + this->m_size; ++i, ++j)
 				tmp[i] = this->m_container[j];
 			// Move tmp to m_container
 			::operator delete(this->m_container);
 			this->m_container = tmp;
+			this->m_capacity = real_capacity;
+			this->m_start = offset;
 		}
 	}
 public:
@@ -186,11 +192,11 @@ public:
 	}
 
 	iterator begin(void) {
-		return (iterator(this->m_container[0]));
+		return (iterator(this->m_container + this->m_start));
 	}
 
 	const_iterator begin(void) const {
-		return (const_iterator(this->m_container[0]));
+		return (const_iterator(this->m_container + this->m_start));
 	}
 
 	reverse_iterator rbegin(void) {
@@ -202,13 +208,11 @@ public:
 	}
 
 	iterator end(void) {
-		const size_type last_block = this->m_offset + this->m_block_length;
-		return (iterator(this->m_container[this->m_start + this->m_size]));
+		return (iterator(this->m_container + this->m_start + this->m_size));
 	}
 
 	const_iterator end(void) const {
-		const size_type last_block = this->m_offset + this->m_block_length;
-		return (const_iterator(this->m_container[this->m_start + this->m_size]));
+		return (const_iterator(this->m_container + this->m_start + this->m_size));
 	}
 
 	reverse_iterator rend(void) {
@@ -233,15 +237,13 @@ public:
 	}
 
 	void resize(size_type n, value_type val=value_type()) {
-		if (n > this->m_capacity) {
-			this->reserve(n);
-			while (this->m_size < n) {
-				this->push_back(val);
+		if (n > this->m_size) {
+			this->insert(this->end(), n - this->m_size, val);
+		} else if (n < this->m_size) {
+			for (size_type i = n; i < this->m_size; ++i) {
+				delete(this->m_container[this->m_start + i]);
 			}
-		} else if (n < this->m_capacity) {
-			while (this->m_size > n) {
-				this->pop_back();
-			}
+			this->m_size = n;
 		}
 	}
 
@@ -288,7 +290,7 @@ public:
 			this->reserve(size);
 		}
 		// Center the assign
-		this->m_start = (this->m_capacity - size) / 2;
+		this->m_start = (this->m_capacity / 2) - ((this->m_capacity - size) / 2);
 		while (first != last) {
 			this->m_container[this->m_start + this->m_size++] = new value_type(*first);
 			++first;
@@ -300,7 +302,7 @@ public:
 			this->reserve(size);
 		}
 		// Center the assign
-		this->m_start = (this->m_capacity - size) / 2;
+		this->m_start = (this->m_capacity / 2) - ((this->m_capacity - size) / 2);
 		for (; this->m_size < size; ++this->m_size) {
 			this->m_container[this->m_start + this->m_size] = new value_type(val);
 		}
@@ -315,7 +317,7 @@ public:
 		this->m_container[this->m_start + this->m_size++] = new value_type(val);
 	}
     void pop_back(void) {
-		delete(this->m_start + --this->m_size);
+		delete(this->m_container[this->m_start + --this->m_size]);
 	}
 
 	void push_front(const_reference val) {
@@ -328,25 +330,84 @@ public:
 		++this->m_size;
 	}
     void pop_front(void) {
-		delete(this->m_start++);
-		--this->m_size
+		delete(this->m_container[this->m_start++]);
+		--this->m_size;
 	}
 
-	// TODO
-	iterator insert(iterator position, const_reference val);
-	// TODO
-    void insert(iterator position, size_type n, const_reference val);
-	// TODO
-    template<typename InputIterator>
-    void insert(iterator position, InputIterator first, InputIterator last);
+	iterator insert(iterator position, const_reference val) {
+		const size_type index = position.p - this->m_container - this->m_start;
+		this->insert(position, 1, val);
+		return (this->m_container + this->m_start + index);
+	}
+    void insert(iterator position, size_type count, const_reference val) {
+		if (count == 0) return;
+		// Index -- before possible reallocation
+		size_type index = position.p - this->m_container - this->m_start;
+		// Capacity
+		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
+			this->reserve(this->m_capacity + this->m_start + this->m_size + count);
+		}
+		// TODO: Handle not having enough capacity on the right after reallocation
+		// Move everything to the right -- or left
+		const size_type relative_index = this->m_start + index;
+		for (size_type j = this->m_start + this->m_size; j > this->m_start && j >= relative_index; --j) {
+			this->m_container[j + count - 1] = this->m_container[j - 1];
+		}
+		// Insert on the left of position
+		for (size_type i = 0; i < count; ++i) {
+			this->m_container[relative_index + i] = new value_type(val);
+		}
+		this->m_size += count;
+	}
+    void insert(iterator position, iterator first, iterator last) {
+		// Index relative to container end -- before possible reallocation
+		const size_type index = position.p - this->m_container - this->m_start;
+		const size_type count = last - first;
+		// Capacity
+		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
+			this->reserve(this->m_start + this->m_size + count);
+		}
+		// Move everything to the right -- or left
+		const size_type relative_index = this->m_start + index;
+		for (size_type j = this->m_start + this->m_size; j > this->m_start && j >= relative_index; --j) {
+			this->m_container[j + count - 1] = this->m_container[j - 1];
+		}
+		// Insert on the left of position
+		size_type i = 0;
+		while (first != last) {
+			this->m_container[relative_index + i++] = new value_type(*first);
+			++first;
+		}
+		this->m_size += count;
+	}
 
-	// TODO
-    iterator erase(iterator position);
-	// TODO
-    iterator erase(iterator first, iterator last);
+    iterator erase(iterator position) {
+		iterator tmp(position);
+		++tmp;
+		return (this->erase(position, tmp));
+	}
+    iterator erase(iterator first, iterator last) {
+		if (first == last) return last;
+		const size_type count = last - first;
+		const size_type start_index = first.p - this->m_container - this->m_start;
+		const size_type relative_index = this->m_start + start_index;
+		const size_type relative_end_index = last.p - this->m_container;
+		// Remove elements
+		for (size_type i = 0; i < count; ++i) {
+			delete(this->m_container[relative_index + i]);
+		}
+		// Move elements after erased to fill gaps
+		for (size_type i = this->m_start + this->m_size, j = 0; i > relative_end_index; --i, ++j) {
+			this->m_container[relative_index + j] = this->m_container[i - 1];
+		}
+		this->m_size -= count;
+		return (this->end());
+	}
 
 	void swap(Deque &other) {
-		ft::swap(this->m_container, other.m_container);
+		pointer* tmp = this->m_container;
+		this->m_container = other.m_container;
+		other.m_container = tmp;
 		ft::swap(this->m_capacity, other.m_capacity);
 		ft::swap(this->m_start, other.m_start);
 		ft::swap(this->m_size, other.m_size);

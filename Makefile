@@ -39,13 +39,13 @@ re:				fclean $(NAME)
 test:			fclean $(NAME)
 				@rm -f std_out ft_out
 				@echo "Running tests..."
-				@./ft_containers
+				@./$(NAME)
 				@diff -y --suppress-common-lines --text std_out ft_out
 
 test_full:		fclean $(NAME)
 				@rm -f std_out ft_out
 				@echo "Running tests..."
-				@./ft_containers
+				@./$(NAME)
 				@diff -y --suppress-common-lines --text std_out ft_out
 
 .PHONY:			test all clean fclean re

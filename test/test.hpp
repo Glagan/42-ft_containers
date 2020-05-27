@@ -34,14 +34,13 @@
 # include <map>
 # include <set>
 # include <deque>
+# include <cassert>
 
-void test(std::string const &what)
-{
+void test(std::string const &what) {
 	std::cout << "######################################## START TEST " << what << std::endl;
 }
 
-void end_test(std::string const &what)
-{
+void end_test(std::string const &what) {
 	std::cout << "######################################## END TEST " << what << '\n' << std::endl;
 }
 

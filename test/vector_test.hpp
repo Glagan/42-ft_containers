@@ -21,13 +21,13 @@ void test_Vector(void)
 		VectorType empty_vector;
 		{
 			std::cout << "[begin] == [end] on empty vector" << '\n';
+				assert(empty_vector.begin() == empty_vector.end());
 			std::cout << "capacity? " << empty_vector.capacity() << '\n';
+				assert(empty_vector.capacity() == 0);
 			// std::cout << "max_size (vector) " << empty_vector.max_size() << '\n';
 			std::cout << "empty? " << empty_vector.empty() << '\n';
-			std::cout << "empty vector size = " << empty_vector.size() << '\n';
-				assert(empty_vector.begin() == empty_vector.end());
-				assert(empty_vector.capacity() == 0);
 				assert(empty_vector.empty());
+			std::cout << "empty vector size = " << empty_vector.size() << '\n';
 				assert(empty_vector.size() == 0);
 		}
 
@@ -145,12 +145,12 @@ void test_Vector(void)
 			assert(vec.size() == 2);
 
 		typename VectorType::iterator it = vec.erase(--vec.end());
-		std::cout << "deleted [end]";
+		std::cout << "deleted [end]\n";
 			assert(it == vec.end());
 			assert(vec.size() == 1);
 
 		it = vec.erase(vec.begin());
-		std::cout << "deleted [begin]";
+		std::cout << "deleted [begin]\n";
 			assert(it == vec.end());
 			assert(vec.size() == 0);
 	}
@@ -184,11 +184,13 @@ void test_Vector(void)
 
 		vec.insert(vec.begin(), 5);
 		display_container("[5]:", vec);
+			assert(vec.front() == 5);
 			assert(vec.back() == 5);
 			assert(vec.size() == 1);
 
 		vec.insert(vec.begin(), 2, 42);
 		display_container("vec[42, 42, 5]:", vec);
+			assert(vec.front() == 42);
 			assert(vec.back() == 5);
 			assert(vec.size() == 3);
 
@@ -197,11 +199,13 @@ void test_Vector(void)
 
 		vec2.insert(vec2.begin(), vec.begin(), vec.end());
 		display_container("vec2[42, 42, 5]:", vec2);
+			assert(vec2.front() == 42);
 			assert(vec2.back() == 5);
 			assert(vec2.size() == 3);
 
 		vec2.insert(vec2.end(), vec.begin(), vec.end());
 		display_container("vec + vec2[42, 42, 5, 42, 42, 5]:", vec2);
+			assert(vec2.front() == 42);
 			assert(vec2.back() == 5);
 			assert(vec2.size() == 6);
 	}

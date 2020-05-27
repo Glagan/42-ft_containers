@@ -79,12 +79,12 @@ void start_all_std_tests(void) {
 // #endif
 // 	end_test("Multiset");
 
-// 	test("Deque");
-// 	test_Deque<std::deque<int> >();
-// #ifdef FULL
-// 	test_Deque<std::deque<Number> >();
-// #endif
-// 	end_test("Deque");
+	test("Deque");
+	test_Deque<std::deque<int> >();
+#ifdef FULL
+	test_Deque<std::deque<Number> >();
+#endif
+	end_test("Deque");
 }
 
 /**
@@ -172,12 +172,12 @@ int main(void)
 
     std::cout.rdbuf(coutbuf);
 
-	// std::ofstream ftOut("ft_out");
-    // std::cout.rdbuf(ftOut.rdbuf());
+	std::ofstream ftOut("ft_out");
+    std::cout.rdbuf(ftOut.rdbuf());
 	start_all_ft_tests();
-	// ftOut.close();
+	ftOut.close();
 
-    // std::cout.rdbuf(coutbuf);
+    std::cout.rdbuf(coutbuf);
 
 	// Check Number count
 #ifdef FULL

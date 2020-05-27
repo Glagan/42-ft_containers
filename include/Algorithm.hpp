@@ -57,7 +57,7 @@ bool more_than(value_type const &a, value_type const &b) {
 }
 
 template<class value_type>
-void swap(value_type const &a, value_type const &b) {
+void swap(value_type &a, value_type &b) {
 	value_type tmp(a);
 	a = b;
 	b = tmp;
