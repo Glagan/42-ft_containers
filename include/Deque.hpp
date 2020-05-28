@@ -241,7 +241,7 @@ public:
 			this->insert(this->end(), n - this->m_size, val);
 		} else if (n < this->m_size) {
 			for (size_type i = n; i < this->m_size; ++i) {
-				delete(this->m_container[this->m_start + i]);
+				delete this->m_container[this->m_start + i];
 			}
 			this->m_size = n;
 		}
@@ -317,7 +317,7 @@ public:
 		this->m_container[this->m_start + this->m_size++] = new value_type(val);
 	}
     void pop_back(void) {
-		delete(this->m_container[this->m_start + --this->m_size]);
+		delete this->m_container[this->m_start + --this->m_size];
 	}
 
 	void push_front(const_reference val) {
@@ -330,7 +330,7 @@ public:
 		++this->m_size;
 	}
     void pop_front(void) {
-		delete(this->m_container[this->m_start++]);
+		delete this->m_container[this->m_start++];
 		--this->m_size;
 	}
 
@@ -347,13 +347,23 @@ public:
 		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
 			this->reserve(this->m_capacity + this->m_start + this->m_size + count);
 		}
-		// TODO: Handle not having enough capacity on the right after reallocation
-		// Move everything to the right -- or left
-		const size_type relative_index = this->m_start + index;
-		for (size_type j = this->m_start + this->m_size; j > this->m_start && j >= relative_index; --j) {
+		// If there is not enough space on the right move everything to the right
+		size_type move_start = this->m_start;
+		if (this->m_start + count + this->m_size > this->m_capacity) {
+			size_type missing_space = (this->m_start + count + this->m_size) - this->m_capacity;
+			// everything between m_start and relative_index is moved to the right
+			for (size_t i = 0; i < missing_space; i++) {
+				this->m_container[this->m_start - missing_space + i] = this->m_container[this->m_start + i];
+			}
+			this->m_start -= missing_space;
+		}
+		// Move everything to the right
+		size_type relative_index = move_start + index;
+		for (size_type j = move_start + this->m_size; j > move_start && j >= relative_index; --j) {
 			this->m_container[j + count - 1] = this->m_container[j - 1];
 		}
 		// Insert on the left of position
+		relative_index = this->m_start + index;
 		for (size_type i = 0; i < count; ++i) {
 			this->m_container[relative_index + i] = new value_type(val);
 		}
@@ -367,12 +377,23 @@ public:
 		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
 			this->reserve(this->m_start + this->m_size + count);
 		}
+		// If there is not enough space on the right move everything to the right
+		size_type move_start = this->m_start;
+		if (this->m_start + count + this->m_size > this->m_capacity) {
+			size_type missing_space = (this->m_start + count + this->m_size) - this->m_capacity;
+			// everything between m_start and relative_index is moved to the right
+			for (size_t i = 0; i < missing_space; i++) {
+				this->m_container[this->m_start - missing_space + i] = this->m_container[this->m_start + i];
+			}
+			this->m_start -= missing_space;
+		}
 		// Move everything to the right -- or left
-		const size_type relative_index = this->m_start + index;
-		for (size_type j = this->m_start + this->m_size; j > this->m_start && j >= relative_index; --j) {
+		size_type relative_index = this->m_start + index;
+		for (size_type j = move_start + this->m_size; j > move_start && j >= relative_index; --j) {
 			this->m_container[j + count - 1] = this->m_container[j - 1];
 		}
 		// Insert on the left of position
+		relative_index = this->m_start + index;
 		size_type i = 0;
 		while (first != last) {
 			this->m_container[relative_index + i++] = new value_type(*first);
@@ -394,7 +415,7 @@ public:
 		const size_type relative_end_index = last.p - this->m_container;
 		// Remove elements
 		for (size_type i = 0; i < count; ++i) {
-			delete(this->m_container[relative_index + i]);
+			delete this->m_container[relative_index + i];
 		}
 		// Move elements after erased to fill gaps
 		for (size_type i = this->m_start + this->m_size, j = 0; i > relative_end_index; --i, ++j) {
@@ -414,8 +435,8 @@ public:
 	}
 
 	void clear(void) {
-		for (size_type i = this->m_start; i < this->m_size; ++i)
-			delete(this->m_container[i]);
+		for (size_type i = 0; i < this->m_size; ++i)
+			delete this->m_container[this->m_start + i];
 		this->m_start = this->m_capacity / 2;
 		this->m_size = 0;
 	}

@@ -257,12 +257,20 @@ void test_Deque(void)
 		std::cout << "back\n";
 			assert(deq2.size() == 3);
 		std::cout << "size\n";
-
 		deq2.insert(deq2.end(), deq.begin(), deq.end());
 		display_container("deq + deq2[42, 42, 5, 42, 42, 5]:", deq2);
 			assert(deq2.front() == 42);
 			assert(deq2.back() == 5);
 			assert(deq2.size() == 6);
+
+		DequeType deq3;
+			assert(deq3.size() == 0);
+		deq3.insert(deq3.begin(), 66, 66);
+		display_container("deq3 66x66:", deq3);
+			assert(deq3.size() == 66);
+		deq3.insert(deq3.begin() + 20, 66, 66);
+		display_container("deq3 132x66", deq3);
+			assert(deq3.size() == 132);
 	}
 
 	std::cout << "\n---resize\n\n";

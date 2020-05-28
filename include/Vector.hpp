@@ -144,17 +144,17 @@ private:
 		new(&this->m_container[idx]) value_type(val);
 	}
 public:
-	Vector(): m_capacity(0), m_size(0), m_container(nullptr) {}
+	Vector(): m_container(nullptr), m_capacity(0), m_size(0) {}
 	Vector(size_type n, const_reference val=value_type()):
-		m_capacity(0), m_size(0), m_container(nullptr) {
+		m_container(nullptr), m_capacity(0), m_size(0) {
 		this->assign(n, val);
 	}
 	Vector(iterator first, iterator last):
-		m_capacity(0), m_size(0), m_container(nullptr) {
+		m_container(nullptr), m_capacity(0), m_size(0) {
 		this->assign(first, last);
 	}
 	Vector(Vector const &other):
-		m_capacity(0), m_size(other.m_size), m_container(nullptr) {
+		m_container(nullptr), m_capacity(0), m_size(other.m_size) {
 		this->reserve(other.m_capacity);
 		// this->assign(other.begin(), other.end());
 		std::memcpy(static_cast<void*>(this->m_container), static_cast<void*>(other.m_container), other.m_size * sizeof(value_type));
