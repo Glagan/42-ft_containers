@@ -216,7 +216,7 @@ public:
 	}
 	size_type max_size(void) const {
 		return (ft::min((size_type) std::numeric_limits<difference_type>::max(),
-						std::numeric_limits<size_type>::max() / sizeof(value_type)));
+						std::numeric_limits<size_type>::max() / (sizeof(node_type) - sizeof(pointer))));
 	}
 
 	reference front() {

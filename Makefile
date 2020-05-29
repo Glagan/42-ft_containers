@@ -44,7 +44,7 @@ test:			fclean $(NAME)
 
 test_full:		fclean $(NAME)
 				@rm -f std_out ft_out
-				@echo "Running tests..."
+				@echo "Running tests... std results | my results"
 				@./$(NAME)
 				@diff -y --suppress-common-lines --text std_out ft_out
 

@@ -164,6 +164,28 @@ private:
 			this->m_start = offset;
 		}
 	}
+
+	void pre_insert(size_type count, size_type index) {
+		// Capacity
+		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
+			this->reserve(this->m_capacity + this->m_start + this->m_size + count);
+		}
+		// If there is not enough space on the right move everything to the right
+		size_type move_start = this->m_start;
+		if (this->m_start + count + this->m_size > this->m_capacity) {
+			size_type missing_space = (this->m_start + count + this->m_size) - this->m_capacity;
+			// everything between m_start and relative_index is moved to the right
+			for (size_t i = 0; i < missing_space; i++) {
+				this->m_container[this->m_start - missing_space + i] = this->m_container[this->m_start + i];
+			}
+			this->m_start -= missing_space;
+		}
+		// Move everything to the right
+		size_type relative_index = move_start + index;
+		for (size_type j = move_start + this->m_size; j > move_start && j >= relative_index; --j) {
+			this->m_container[j + count - 1] = this->m_container[j - 1];
+		}
+	}
 public:
 	Deque(): m_container(nullptr), m_capacity(0), m_start(0), m_size(0) {}
 
@@ -343,27 +365,9 @@ public:
 		if (count == 0) return;
 		// Index -- before possible reallocation
 		size_type index = position.p - this->m_container - this->m_start;
-		// Capacity
-		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
-			this->reserve(this->m_capacity + this->m_start + this->m_size + count);
-		}
-		// If there is not enough space on the right move everything to the right
-		size_type move_start = this->m_start;
-		if (this->m_start + count + this->m_size > this->m_capacity) {
-			size_type missing_space = (this->m_start + count + this->m_size) - this->m_capacity;
-			// everything between m_start and relative_index is moved to the right
-			for (size_t i = 0; i < missing_space; i++) {
-				this->m_container[this->m_start - missing_space + i] = this->m_container[this->m_start + i];
-			}
-			this->m_start -= missing_space;
-		}
-		// Move everything to the right
-		size_type relative_index = move_start + index;
-		for (size_type j = move_start + this->m_size; j > move_start && j >= relative_index; --j) {
-			this->m_container[j + count - 1] = this->m_container[j - 1];
-		}
+		this->pre_insert(count, index);
 		// Insert on the left of position
-		relative_index = this->m_start + index;
+		size_type relative_index = this->m_start + index;
 		for (size_type i = 0; i < count; ++i) {
 			this->m_container[relative_index + i] = new value_type(val);
 		}
@@ -371,29 +375,12 @@ public:
 	}
     void insert(iterator position, iterator first, iterator last) {
 		// Index relative to container end -- before possible reallocation
-		const size_type index = position.p - this->m_container - this->m_start;
 		const size_type count = last - first;
-		// Capacity
-		if (this->m_start + this->m_size + count - 1 >= this->m_capacity) {
-			this->reserve(this->m_start + this->m_size + count);
-		}
-		// If there is not enough space on the right move everything to the right
-		size_type move_start = this->m_start;
-		if (this->m_start + count + this->m_size > this->m_capacity) {
-			size_type missing_space = (this->m_start + count + this->m_size) - this->m_capacity;
-			// everything between m_start and relative_index is moved to the right
-			for (size_t i = 0; i < missing_space; i++) {
-				this->m_container[this->m_start - missing_space + i] = this->m_container[this->m_start + i];
-			}
-			this->m_start -= missing_space;
-		}
-		// Move everything to the right -- or left
-		size_type relative_index = this->m_start + index;
-		for (size_type j = move_start + this->m_size; j > move_start && j >= relative_index; --j) {
-			this->m_container[j + count - 1] = this->m_container[j - 1];
-		}
+		if (count == 0) return;
+		const size_type index = position.p - this->m_container - this->m_start;
+		this->pre_insert(count, index);
 		// Insert on the left of position
-		relative_index = this->m_start + index;
+		size_type relative_index = this->m_start + index;
 		size_type i = 0;
 		while (first != last) {
 			this->m_container[relative_index + i++] = new value_type(*first);

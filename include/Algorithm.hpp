@@ -42,6 +42,11 @@ value_type const &min(value_type const &a, value_type const &b) {
 }
 
 template<class value_type>
+value_type const &max(value_type const &a, value_type const &b) {
+	return (a < b ? b : a);
+}
+
+template<class value_type>
 bool equal(value_type const &a, value_type const &b) {
 	return (a == b);
 }

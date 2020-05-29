@@ -24,7 +24,7 @@ void test_Vector(void)
 				assert(empty_vector.begin() == empty_vector.end());
 			std::cout << "capacity? " << empty_vector.capacity() << '\n';
 				assert(empty_vector.capacity() == 0);
-			// std::cout << "max_size (vector) " << empty_vector.max_size() << '\n';
+			std::cout << "max_size (vector) " << empty_vector.max_size() << '\n';
 			std::cout << "empty? " << empty_vector.empty() << '\n';
 				assert(empty_vector.empty());
 			std::cout << "empty vector size = " << empty_vector.size() << '\n';

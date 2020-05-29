@@ -22,7 +22,7 @@ void test_Deque(void)
 		{
 			std::cout << "[begin] == [end] on empty deque" << '\n';
 				assert(empty_deque.begin() == empty_deque.end());
-			// std::cout << "max_size (deque) " << empty_deque.max_size() << '\n';
+			std::cout << "max_size (deque) " << empty_deque.max_size() << '\n';
 			std::cout << "empty? " << empty_deque.empty() << '\n';
 				assert(empty_deque.empty());
 			std::cout << "empty deque size = " << empty_deque.size() << '\n';

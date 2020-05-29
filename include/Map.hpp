@@ -104,7 +104,7 @@ public:
 	}
 
 	value_compare value_comp(void) const {
-		return (value_compare()); // TODO
+		return (value_compare());
 	}
 };
 
@@ -164,7 +164,7 @@ public:
 	}
 
 	value_compare value_comp(void) const {
-		return (value_compare()); // TODO
+		return (value_compare());
 	}
 };
 

@@ -56,7 +56,7 @@ void test_List(void)
 		{
 			std::cout << "[begin] == [end] on empty list" << '\n';
 				assert(empty_list.begin() == empty_list.end());
-			// std::cout << "max_size (list) = " << empty_list.max_size() << '\n';
+			std::cout << "max_size (list) = " << empty_list.max_size() << '\n';
 			std::cout << "empty? " << empty_list.empty() << '\n';
 				assert(empty_list.empty());
 			std::cout << "empty list size = " << empty_list.size() << '\n';
