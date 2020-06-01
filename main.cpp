@@ -33,15 +33,19 @@ void start_all_std_tests(void) {
 
 	test("Stack");
 	test_Stack<std::stack<int>, std::deque<int> >();
+	test_Stack<std::stack<int, std::vector<int> >, std::vector<int> >();
 #ifdef FULL
 	test_Stack<std::stack<Number>, std::deque<Number> >();
+	test_Stack<std::stack<Number, std::vector<Number> >, std::vector<Number> >();
 #endif
 	end_test("Stack");
 
 	test("Queue");
 	test_Queue<std::queue<int>, std::deque<int> >();
+	test_Queue<std::queue<int, std::list<int> >, std::list<int> >();
 #ifdef FULL
 	test_Queue<std::queue<Number>, std::deque<Number> >();
+	test_Queue<std::queue<Number, std::list<Number> >, std::list<Number> >();
 #endif
 	end_test("Queue");
 
@@ -107,15 +111,19 @@ void start_all_ft_tests(void) {
 
 	test("Stack");
 	test_Stack<ft::Stack<int>, ft::List<int> >();
+	test_Stack<ft::Stack<int, ft::Vector<int> >, ft::Vector<int> >();
 #ifdef FULL
 	test_Stack<ft::Stack<Number>, ft::List<Number> >();
+	test_Stack<ft::Stack<Number, ft::Deque<Number> >, ft::Deque<Number> >();
 #endif
 	end_test("Stack");
 
 	test("Queue");
 	test_Queue<ft::Queue<int>, ft::List<int> >();
+	test_Queue<ft::Queue<int, ft::Deque<int> >, ft::Deque<int> >();
 #ifdef FULL
-	test_Queue<ft::Queue<Number>,ft::List<Number> >();
+	test_Queue<ft::Queue<Number>, ft::List<Number> >();
+	test_Queue<ft::Queue<Number, ft::Deque<Number> >, ft::Deque<Number> >();
 #endif
 	end_test("Queue");
 

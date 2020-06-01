@@ -156,7 +156,6 @@ public:
 	Vector(Vector const &other):
 		m_container(nullptr), m_capacity(0), m_size(other.m_size) {
 		this->reserve(other.m_capacity);
-		// this->assign(other.begin(), other.end());
 		std::memcpy(static_cast<void*>(this->m_container), static_cast<void*>(other.m_container), other.m_size * sizeof(value_type));
 	}
 	virtual ~Vector() {
@@ -169,7 +168,6 @@ public:
 		this->clear();
 		if (this->m_capacity < other.m_capacity)
 			this->reserve(other.m_capacity);
-		// this->assign(other.begin(), other.end());
 		std::memcpy(static_cast<void*>(this->m_container), static_cast<void*>(other.m_container), other.m_size * sizeof(value_type));
 		return (*this);
 	}

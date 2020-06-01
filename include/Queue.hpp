@@ -17,13 +17,13 @@
 
 namespace ft
 {
-template<typename T>
+template<typename T, typename K = ft::List<T> >
 class Queue
 {
 public:
 	typedef size_t size_type;
 	typedef T value_type;
-	typedef List<value_type> container_type;
+	typedef K container_type;
 	typedef T* pointer;
 	typedef T const * const_pointer;
 	typedef T& reference;
@@ -32,6 +32,7 @@ protected:
 	container_type container;
 public:
 	Queue(container_type const &container=container_type()): container(container) {}
+	Queue(Queue<T, K> const &other): container(other.container) {}
 	virtual ~Queue() {}
 
 	Queue &operator=(Queue const &other) {
@@ -67,33 +68,33 @@ public:
 		this->container.pop_front();
 	}
 
-	template<typename queue_type>
-	friend bool operator==(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs) {
+	template<typename queue_type, typename container_type>
+	friend bool operator==(Queue<queue_type, container_type> const &lhs, Queue<queue_type, container_type> const &rhs) {
 		return (lhs.container == rhs.container);
 	}
 
-	template<typename queue_type>
-	friend bool operator!=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs) {
+	template<typename queue_type, typename container_type>
+	friend bool operator!=(Queue<queue_type, container_type> const &lhs, Queue<queue_type, container_type> const &rhs) {
 		return (lhs.container != rhs.container);
 	}
 
-	template<typename queue_type>
-	friend bool operator<(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs) {
+	template<typename queue_type, typename container_type>
+	friend bool operator<(Queue<queue_type, container_type> const &lhs, Queue<queue_type, container_type> const &rhs) {
 		return (lhs.container < rhs.container);
 	}
 
-	template<typename queue_type>
-	friend bool operator<=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs) {
+	template<typename queue_type, typename container_type>
+	friend bool operator<=(Queue<queue_type, container_type> const &lhs, Queue<queue_type, container_type> const &rhs) {
 		return (lhs.container <= rhs.container);
 	}
 
-	template<typename queue_type>
-	friend bool operator>(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs) {
+	template<typename queue_type, typename container_type>
+	friend bool operator>(Queue<queue_type, container_type> const &lhs, Queue<queue_type, container_type> const &rhs) {
 		return (lhs.container > rhs.container);
 	}
 
-	template<typename queue_type>
-	friend bool operator>=(Queue<queue_type> const &lhs, Queue<queue_type> const &rhs) {
+	template<typename queue_type, typename container_type>
+	friend bool operator>=(Queue<queue_type, container_type> const &lhs, Queue<queue_type, container_type> const &rhs) {
 		return (lhs.container >= rhs.container);
 	}
 };

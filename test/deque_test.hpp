@@ -63,19 +63,6 @@ void test_Deque(void)
 		}
 	}
 
-	// std::cout << "\n---reserve\n\n";
-	// {
-	// 	DequeType deq;
-	// 	std::cout << "empty deque capacity " << deq.capacity() << '\n';
-	// 		assert(deq.capacity() == 0);
-	// 	deq.reserve(256);
-	// 		assert(deq.capacity() == 256);
-	// 	std::cout << "empty deque{reserved 256} capacity " << deq.capacity() << '\n';
-	// 	deq.reserve(64);
-	// 	std::cout << "empty deque{reserved 64, no change} capacity " << deq.capacity() << '\n';
-	// 		assert(deq.capacity() == 256);
-	// }
-
 	std::cout << "\n---push_back\n\n";
 	{
 		DequeType deq;

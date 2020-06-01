@@ -13,7 +13,7 @@
 #ifndef STACK_TEST_HPP
 # define STACK_TEST_HPP
 
-template<class StackType, class ListType>
+template<class StackType, class ContainerType>
 void test_Stack(void)
 {
 	std::cout << "\n---basic\n\n";
@@ -54,15 +54,15 @@ void test_Stack(void)
 
 	std::cout << "\n---with container\n\n";
 	{
-		ListType lst;
-		lst.push_back(5);
-		lst.push_back(42);
-		lst.push_back(43);
-		lst.push_back(99);
-		display_container("[5, 42, 43, 99] {List}:", lst);
-			assert(lst.size() == 4);
+		ContainerType ctn;
+		ctn.push_back(5);
+		ctn.push_back(42);
+		ctn.push_back(43);
+		ctn.push_back(99);
+		display_container("[5, 42, 43, 99] {List or Deque}:", ctn);
+			assert(ctn.size() == 4);
 
-		StackType stk(lst);
+		StackType stk(ctn);
 		std::cout << "stack empty? " << stk.empty() << '\n';
 		std::cout << "stack size = " << stk.size() << '\n';
 			assert(!stk.empty());
@@ -87,7 +87,7 @@ void test_Stack(void)
 		std::cout << "[] (size: " << stk.size() << ")\n";
 			assert(stk.size() == 0);
 
-		display_container("[5, 42, 43, 99] {ft::List after, no change}:", lst);
+		display_container("[5, 42, 43, 99] {ft::List after, no change}:", ctn);
 	}
 
 	std::cout << "\n---comparison\n\n";

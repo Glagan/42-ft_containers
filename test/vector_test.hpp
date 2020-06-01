@@ -69,11 +69,11 @@ void test_Vector(void)
 		std::cout << "empty vector capacity " << vec.capacity() << '\n';
 			assert(vec.capacity() == 0);
 		vec.reserve(256);
-			assert(vec.capacity() == 256);
+			assert(vec.capacity() >= 256);
 		std::cout << "empty vector{reserved 256} capacity " << vec.capacity() << '\n';
 		vec.reserve(64);
 		std::cout << "empty vector{reserved 64, no change} capacity " << vec.capacity() << '\n';
-			assert(vec.capacity() == 256);
+			assert(vec.capacity() >= 256);
 	}
 
 	std::cout << "\n---push_back\n\n";
